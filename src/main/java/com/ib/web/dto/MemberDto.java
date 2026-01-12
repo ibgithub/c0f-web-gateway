@@ -3,10 +3,11 @@ package com.ib.web.dto;
 public class MemberDto {
 
     private Long id;
-    private Long userId;
+    private String nrp;
     private String fullName;
-    private Integer graduationYear;
-    private String major;
+    private String nickName;
+    private String gender;
+    private String phoneNumber;
 
     public MemberDto() {
     }
@@ -19,12 +20,12 @@ public class MemberDto {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getNrp() {
+        return nrp;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setNrp(String nrp) {
+        this.nrp = nrp;
     }
 
     public String getFullName() {
@@ -35,19 +36,27 @@ public class MemberDto {
         this.fullName = fullName;
     }
 
-    public Integer getGraduationYear() {
-        return graduationYear;
+    public String getNickName() {
+        return nickName;
     }
 
-    public void setGraduationYear(Integer graduationYear) {
-        this.graduationYear = graduationYear;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
-    public String getMajor() {
-        return major;
+    public String getGender() {
+        return gender;
     }
 
-    public void setMajor(String major) {
-        this.major = major;
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

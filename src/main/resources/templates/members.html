@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Members</title>
+</head>
+<body>
+
+<h1>Daftar Member</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>NRP</th>
+        <th>Nama</th>
+        <th>Email</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="m : ${members}">
+        <td th:text="${m.nrp}"></td>
+        <td th:text="${m.fullName}"></td>
+        <td th:text="${m.phoneNumber}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
