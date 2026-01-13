@@ -18,18 +18,18 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         String uri = request.getRequestURI();
 
-        // 🔑 INI PENTING: allow GET & POST /login
-        if (uri.equals("/login")) {
-            return true;
-        }
-
-        HttpSession session = request.getSession(false);
-        boolean loggedIn = session != null && session.getAttribute("JWT") != null;
-
-        if (!loggedIn) {
-            response.sendRedirect("/login");
-            return false;
-        }
+//        // 🔑 INI PENTING: allow GET & POST /login
+//        if (uri.equals("/login")) {
+//            return true;
+//        }
+//
+//        HttpSession session = request.getSession(false);
+//        boolean loggedIn = session != null && session.getAttribute("JWT") != null;
+//
+//        if (!loggedIn) {
+//            response.sendRedirect("/login");
+//            return false;
+//        }
 
         return true;
     }
