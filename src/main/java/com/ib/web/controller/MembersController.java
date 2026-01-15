@@ -26,6 +26,7 @@ public class MembersController {
         if (jwt == null) {
             return "redirect:/login";
         }
+        model.addAttribute("activeMenu", "members");
         model.addAttribute("title", "Members");
         model.addAttribute("username", "admin"); // ambil dari JWT nanti
         List<MemberDto> memberDtos = memberClientService.getMembers(jwt);

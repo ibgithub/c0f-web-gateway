@@ -31,9 +31,9 @@ public class LoginController {
         session.setAttribute("JWT", jwt);
         return "redirect:/members";
     }
-//    @GetMapping("/logout")
-//    public String logout(HttpSession session) {
-//        session.invalidate();
-//        return "redirect:/login";
-//    }
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login";
+    }
 }
