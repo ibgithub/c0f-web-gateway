@@ -16,8 +16,19 @@ public class LoginController {
         this.authClientService = authClientService;
     }
 
+    @GetMapping("/")
+    public String home(HttpSession session) {
+        if (session.getAttribute("JWT") != null) {
+            return "redirect:/members";
+        }
+        return "redirect:/login";
+    }
+
     @GetMapping("/login")
-    public String loginPage() {
+    public String loginPage(HttpSession session) {
+        if (session.getAttribute("JWT") != null) {
+            return "redirect:/members";
+        }
         return "login";
     }
 
@@ -31,6 +42,7 @@ public class LoginController {
         session.setAttribute("JWT", jwt);
         return "redirect:/members";
     }
+
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();

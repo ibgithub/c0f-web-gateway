@@ -38,7 +38,6 @@ public class MembersController {
         model.addAttribute(
                 "members", memberDtos
         );
-
-        return "members";
+        return "members/index";
     }
 }
