@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base_layout}">
+<head>
+    <title>Home</title>
+    <!--<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Best Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">-->
+</head>
+<body>
+
+<section layout:fragment="content">
+    <div class="row">
+        <div class="col-md-3">
+            <span class="hipster img-fluid rounded"></span>
+        </div>
+
+        <div class="col-md-9">
+            <h3>Selamat Datang di website kami,
+            </h3>
+            <h1>Tanggap Sosial & Bencana IKA ITS</h1>
+
+
+            <div class="row mt-5">
+                <div class="col-lg-12">
+                    <h2>Kegiatan Kami</h2>
+                </div>
+            </div>
+            <div class="accordion" id="accordionActivity">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRecent" aria-expanded="true" aria-controls="collapseRecent">
+                            <span >Highlights</span>
+                        </button>
+                    </h2>
+                    <div id="collapseRecent" class="accordion-collapse collapse show" data-bs-parent="#accordionActivity">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-10">
+                                    <img src="/images/02lewotobi.jpg" class="img-fluid" sizes="" alt="Open Donation">
+                                </div>
+                                <div class="col-lg-1"></div>
+                            </div>
+                            <div class="row">
+                                <p><br>🤝<strong>[OPEN DONASI BENCANA GUNUNG LEWOTOBI LAKI LAKI FLORES NTT]</strong>🤝
+                                    <br><br>🙏 Assalamu'alaikum, salam sehat dan sejahtera teman-teman,
+                                    <br>Kita baru saja menerima kabar duka bahwa telah terjadi erupsi besar di Gunung Lewotobi Laki Laki Flores NTT yang menyebabkan kerusakan parah dan banyak warga yang terdampak.
+                                    <br>Dimana ada salah satu alumni ITS yang berdomisili di lokasi terdampak. Banyak rumah rusak, fasilitas umum hancur, dan ribuan orang terpaksa mengungsi.
+
+                                <p>Saat-saat seperti ini, kepedulian kita sangatlah berarti.
+                                    <br>PP IKA ITS membuka donasi untuk membantu saudara-saudara kita yang terkena dampak bencana.
+                                    <br>Donasi akan digunakan untuk:
+                                    <br>1. Menyediakan kebutuhan pokok (makanan, air bersih, obat-obatan).
+                                    <br>2. ⁠Bantuan pakaian dan perlengkapan darurat.
+                                    <br>3. ⁠Membantu pemulihan pasca-bencana.
+                                </p>
+
+                                <p>Bagi teman-teman yang ingin berbagi, bisa berdonasi melalui:
+                                    <br>🏧BNI, No Rek 1011195580
+                                    <br>Atas Nama:
+                                    <br>Ikatan Alumni ITS
+                                    <br>Transfer dengan kode unik 04 di belakang nominal.
+                                    <br>Contoh: 100,004
+
+                                    <br>📋 Form Konfirmasi Transfer: intip.in/donasilewotobi
+
+                                    <br>📱
+                                    <br>Salim: wa only: 085161655406
+                                    <br>Riris: wa only: 081393983838
+
+                                    <br>📆 Sampai Dengan
+                                    <br>8 Desember 2024
+                                </p>
+
+                                <p>Donasi akan kami salurkan melalui Kementerian Sosial.
+                                    <br>Setiap kepedulian yang diberikan akan sangat berarti bagi mereka yang membutuhkan.
+
+                                    <br>🇮🇩 Mari bersama-sama menunjukkan kepedulian dan solidaritas kita, sebagai wujud semangat kepahlawanan. Semoga kepedulian kita dapat meringankan beban saudara-saudara kita yang sedang mengalami kesulitan. Dan semangat pahlawan terus menginspirasi kita semua untuk berbuat kebaikan.
+
+                                    <br>🙏Terima kasih banyak atas perhatian dan partisipasinya. Semoga Allah SWT senantiasa memberikan keberkahan kepada kita semua.
+                                </p>
+
+                                <p>#IKAITSPeduli #SolidaritasIKAITSUntukSesama
+                                    <br>#IKAITSTOTHENEXTLEVEL
+                                    <br>#IKAITSTONEXTLEVEL
+                                    <br><br>Pengurus Pusat IKA ITS Koordinator Bidang Kepemudaan dan Sosial Kemasyarakatan
+                                    <br>Departemen Tanggap Sosial
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMasy" aria-expanded="false" aria-controls="collapseMasy">
+                            <span>Kepemudaan dan Sosial Kemasyarakatan</span>
+                        </button>
+                    </h2>
+                    <div id="collapseMasy" class="accordion-collapse collapse" data-bs-parent="#accordionActivity">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <canvas id="chBar"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="bs-component">
+                                        <div class="card text-white bg-info mb-3" style="max-width: 20rem">
+                                            <div><h4 class="card-header">Tanggap Bencana</h4></div>
+                                            <div class="card-body">
+                                                <p class="card-text">Pengumpulan dan penyampaian donasi serta bantuan secara cepat jika terjadi bencana alam</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="bs-component">
+                                        <div class="card text-white bg-success mb-3" style="max-width: 20rem">
+                                            <div><h4 class="card-header">Tanggap Sosial</h4></div>
+                                            <div class="card-body">
+                                                <p class="card-text">Bantuan sosial kepada masyarakat yang membutuhkan</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDisaster" aria-expanded="false" aria-controls="collapseDisaster">
+                            <span>Contoh Tanggap Bencana: Pengumpulan dan Penyerahan Bantuan Erupsi Gunung Berapi</span>
+                        </button>
+                    </h2>
+                    <div id="collapseDisaster" class="accordion-collapse collapse" data-bs-parent="#accordionActivity">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-10">
+                                    <img src="/images/flowcharts/01flow_chart_erupsi.png" class="img-fluid" sizes="" alt="Open Donation">
+                                </div>
+                                <div class="col-lg-1"></div>
+                            </div>
+                            <div class="row">
+                                <p>
+                                    <br><strong>Keterangan: -</strong>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSocial1" aria-expanded="false" aria-controls="collapseSocial1">
+                            <span>Contoh Tanggap Sosial: Bantuan Ke Sekolah Yang Tertinggal</span>
+                        </button>
+                    </h2>
+                    <div id="collapseSocial1" class="accordion-collapse collapse" data-bs-parent="#accordionActivity">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-10">
+                                    <img src="/images/flowcharts/02flow_chart_sekolah.png" class="img-fluid" sizes="" alt="Open Donation">
+                                </div>
+                                <div class="col-lg-1"></div>
+                            </div>
+                            <div class="row">
+                                <p>
+                                    <br><strong>Keterangan: -</strong>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-lg-12">
+                    <h2>Tentang Anggota</h2>
+                </div>
+            </div>
+            <div class="accordion" id="accordionMember">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMember" aria-expanded="true" aria-controls="collapseMember">
+                            <span>Alumni ITS yang terdaftar di MIDA</span>
+                        </button>
+                    </h2>
+                    <div id="collapseMember" class="accordion-collapse collapse" data-bs-parent="#accordionMember">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <canvas id="chPieAlumni"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="bs-component">
+                                        <div class="card text-white bg-info mb-3" style="max-width: 20rem">
+                                            <div><h4 class="card-header">Sinkronisasi Data Alumni</h4></div>
+                                            <div class="card-body">
+                                                <p class="card-text">Data Alumni (no whatsap dan kota domisili) didapatkan dari sinkronisasi data dari <a class="link-light" href="https://mida.gruup.id/">MIDA ITS</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="bs-component">
+                                        <div class="card text-white bg-success mb-3" style="max-width: 20rem">
+                                            <div><h4 class="card-header">Whatsap ke Alumni</h4></div>
+                                            <div class="card-body">
+                                                <p class="card-text">Terdapat pesan whatsap ke alumni jika ada pengumpulan dana atau kegiatan sosial lainnya</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<div class="col-lg-4"></div>
+                                <div class="col-lg-4">
+                                    <div class="bs-component">
+                                        <div class="card text-white bg-warning mb-3" style="max-width: 20rem">
+                                            <div><h4 class="card-header">Login Sebagai User</h4></div>
+                                            <div class="card-body">
+                                                <p class="card-text">Jika sudah terdataftar di MIDA maka akan bisa login ke tanggapsosial.com untuk melihat fitur seperti laporan keuangan, dsb</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4"></div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdmin" aria-expanded="false" aria-controls="collapseAdmin">
+                            <span>Admin Web Tanggap Sosial</span>
+                        </button>
+                    </h2>
+                    <div id="collapseAdmin" class="accordion-collapse collapse" data-bs-parent="#accordionMember">
+                        <div class="accordion-body">
+                            Mengadministrasikan website, menginformasikan jika ada kegiatan ataupun pengumpulan dana
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-lg-12">
+                    <h2>Keuangan</h2>
+                </div>
+            </div>
+            <div class="accordion" id="accordionFinancial">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFinancial" aria-expanded="true" aria-controls="collapseFinancial">
+                            <span>Laporan Keuangan</span>
+                        </button>
+                    </h2>
+                    <div id="collapseFinancial" class="accordion-collapse collapse" data-bs-parent="#accordionFinancial">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <canvas id="chBarFinancial"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="bs-component">
+                                        <div class="card text-white bg-info mb-3" style="max-width: 20rem">
+                                            <div><h4 class="card-header">Transparan</h4></div>
+                                            <div class="card-body">
+                                                <p class="card-text">Laporan keuangan ditampilkan secara transparan</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="bs-component">
+                                        <div class="card text-white bg-success mb-3" style="max-width: 20rem">
+                                            <div><h4 class="card-header">Mutasi Rekening</h4></div>
+                                            <div class="card-body">
+                                                <p class="card-text">Mutasi rekening akan terupdate 30 menit kemudian menggunakan scrapper internet banking</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAccountNo" aria-expanded="false" aria-controls="collapseAccountNo">
+                            <span>Nomor Rekening Kami</span>
+                        </button>
+                    </h2>
+                    <div id="collapseAccountNo" class="accordion-collapse collapse show" data-bs-parent="#accordionFinancial">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                </div>
+                                <div class="col-lg-4 center">
+                                    <strong>🏧BNI, No Rek 1011195580</strong>
+                                    <br><strong>Atas Nama: Ikatan Alumni ITS</strong>
+                                </div>
+                                <div class="col-lg-4">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

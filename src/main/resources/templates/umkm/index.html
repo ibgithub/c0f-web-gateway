@@ -1,14 +1,24 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html lang="id" xmlns:th="http://thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base_layout}"> <!--/fragments/layouts/-->
+<head>
+    <title>Daftar Alumni</title>
+</head>
+<body>
 
-<body th:replace="layout/main :: content">
-
-<section>
+<section layout:fragment="content">
     <h2>Optimasi UMKM</h2>
-    <p>Program pendampingan dan optimasi UMKM.</p>
 
-    <div class="alert alert-success">
-        Modul optimasi UMKM siap dikembangkan.
+    <div class="card shadow-sm mt-3">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Optimasi UMKM</h4>
+        </div>
+
+        <div class="card-body">
+            <div class="alert alert-success">
+                Modul optimasi UMKM siap dikembangkan.
+            </div>
+        </div>
     </div>
 </section>
 

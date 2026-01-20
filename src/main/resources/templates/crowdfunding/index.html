@@ -1,6 +1,6 @@
-<html xmlns:th="http://www.thymeleaf.org">
-
-<body th:replace="layout/main :: content">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/main :: layout(~{::section})}">
 
 <section>
     <h2>Crowd Funding</h2>
@@ -11,5 +11,4 @@
     </div>
 </section>
 
-</body>
 </html>

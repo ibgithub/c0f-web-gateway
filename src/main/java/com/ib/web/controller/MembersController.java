@@ -40,4 +40,24 @@ public class MembersController {
         );
         return "members/index";
     }
+
+    @GetMapping("/alumnies")
+    public String alumnies(Model model, HttpSession session) {
+
+        String jwt = (String) session.getAttribute("JWT");
+
+        if (jwt == null) {
+            return "redirect:/login";
+        }
+        String username = jwtUtil.getUsername(jwt);
+        model.addAttribute("activeMenu", "members");
+        model.addAttribute("title", "Members");
+        model.addAttribute("username", username);
+        List<MemberDto> memberDtos = memberClientService.getMembers(jwt);
+        model.addAttribute(
+                "members", memberDtos
+        );
+        return "alumnies/index";
+    }
+
 }

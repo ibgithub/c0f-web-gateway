@@ -1,8 +1,12 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/main :: layout(~{::section})}">
+<!doctype html>
+<html lang="id" xmlns:th="http://thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base_layout}"> <!--/fragments/layouts/-->
+<head>
+    <title>Daftar Alumni</title>
+</head>
+<body>
 
-<section>
+<section layout:fragment="content">
     <h2>Members</h2>
 
     <div class="card shadow-sm mt-3">
@@ -32,4 +36,5 @@
     </div>
 </section>
 
+</body>
 </html>

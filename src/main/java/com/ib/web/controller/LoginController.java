@@ -19,15 +19,20 @@ public class LoginController {
     @GetMapping("/")
     public String home(HttpSession session) {
         if (session.getAttribute("JWT") != null) {
-            return "redirect:/members";
+            return "redirect:/alumnies";
         }
-        return "redirect:/login";
+        return "redirect:/index";
+    }
+
+    @GetMapping({"/index"})
+    public String login() {
+        return "index";
     }
 
     @GetMapping("/login")
     public String loginPage(HttpSession session) {
         if (session.getAttribute("JWT") != null) {
-            return "redirect:/members";
+            return "redirect:/alumnies";
         }
         return "login";
     }
@@ -40,7 +45,7 @@ public class LoginController {
     ) {
         String jwt = authClientService.login(username, password);
         session.setAttribute("JWT", jwt);
-        return "redirect:/members";
+        return "redirect:/alumnies";
     }
 
     @GetMapping("/logout")
