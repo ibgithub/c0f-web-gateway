@@ -4,6 +4,7 @@ import com.ib.web.dto.MemberDto;
 import com.ib.web.security.JwtUtil;
 import com.ib.web.service.MemberClientService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,15 +42,16 @@ public class MembersController {
         return "members/index";
     }
 
-    @GetMapping("/alumnies")
-    public String alumnies(Model model, HttpSession session) {
+    @GetMapping("/alumni")
+    public String alumnies(Model model, Authentication authentication) {
 
-        String jwt = (String) session.getAttribute("JWT");
-
-        if (jwt == null) {
+        if (authentication == null || !authentication.isAuthenticated()) {
             return "redirect:/login";
         }
-        String username = jwtUtil.getUsername(jwt);
+
+        String jwt = (String) authentication.getCredentials();
+        String username = authentication.getName();
+
         model.addAttribute("activeMenu", "members");
         model.addAttribute("title", "Members");
         model.addAttribute("username", username);
@@ -57,7 +59,7 @@ public class MembersController {
         model.addAttribute(
                 "members", memberDtos
         );
-        return "alumnies/index";
+        return "alumni/index";
     }
 
 }
