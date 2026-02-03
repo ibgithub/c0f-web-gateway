@@ -56,7 +56,6 @@ public class LoginController {
             HttpServletRequest request
     ) {
         String jwt = authClientService.login(username, password);
-//        session.setAttribute("JWT", jwt); // 👉 BERITAHU SPRING SECURITY
 
         String user = jwtService.getUsername(jwt);
 
@@ -67,7 +66,6 @@ public class LoginController {
                         List.of(new SimpleGrantedAuthority("ROLE_USER"))
                 );
 
-//        SecurityContextHolder.getContext().setAuthentication(auth);
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(auth);
 
@@ -76,6 +74,8 @@ public class LoginController {
                         HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
                         context
                 );
+
+        request.getSession().setAttribute("JWT", jwt);
         return "redirect:/alumni";
     }
 
