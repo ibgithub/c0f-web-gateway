@@ -9,3 +9,6 @@ member:
     url: http://localhost:8082
 jwt:
   secret: my-super-secret-key-minimum-32-bytes!!!
+logging:
+  level:
+    org.springframework.web.servlet.mvc.method.annotation: DEBUG

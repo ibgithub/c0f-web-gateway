@@ -72,17 +72,18 @@
                             <span sec:authentication="name"></span>
                         </a>
                         <div class="dropdown-menu" >
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" th:href="@{/users/me}">
                                 <span>
                                     <i class="fa fa-id-card"></i>
                                     <span>Edit Profile</span>
                                 </span>
                             </a>
-                            <a class="dropdown-item" href="#">
-                                <span>
-                                    <i class="fa fa-lock"></i>
-                                    <span>Change Password</span>
-                                </span>
+                            <!-- USER MANAGEMENT (ADMIN ONLY) -->
+                            <a class="dropdown-item"
+                               th:if="${session.ROLE == 'ADMIN'}"
+                               th:href="@{/users}">
+                                <i class="fa fa-users-cog"></i>
+                                User Management
                             </a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/logout">

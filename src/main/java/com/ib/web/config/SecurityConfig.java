@@ -21,6 +21,7 @@ public class SecurityConfig {
                                 "/login",
                                 "/alumni",
                                 "/umkm",
+                                "/users/**",
                                 "/css/**",
                                 "/js/**",
                                 "/images/**"
