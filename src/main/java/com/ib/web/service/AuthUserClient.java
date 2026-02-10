@@ -32,7 +32,7 @@ public class AuthUserClient {
         HttpEntity<?> entity = new HttpEntity<>(headers(token));
         ResponseEntity<UserDto[]> res =
                 restTemplate.exchange(
-                        baseUrl + "/users",
+                        baseUrl + "/api/users",
                         HttpMethod.GET,
                         entity,
                         UserDto[].class

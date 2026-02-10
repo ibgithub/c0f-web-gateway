@@ -2,6 +2,7 @@ package com.ib.web.controller;
 
 import com.ib.web.service.AuthClientService;
 import com.ib.web.service.JwtService;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -57,13 +58,19 @@ public class LoginController {
     ) {
         String jwt = authClientService.login(username, password);
 
-        String user = jwtService.getUsername(jwt);
+        Claims claims = jwtService.validateToken(jwt);
+
+        String user = claims.getSubject();          // username
+        String role = claims.get("role", String.class); // ADMIN / USER
+
+        List<SimpleGrantedAuthority> authorities =
+                List.of(new SimpleGrantedAuthority("ROLE_" + role));
 
         Authentication auth =
                 new UsernamePasswordAuthenticationToken(
                         user,
                         jwt,
-                        List.of(new SimpleGrantedAuthority("ROLE_USER"))
+                        authorities
                 );
 
         SecurityContext context = SecurityContextHolder.createEmptyContext();

@@ -68,6 +68,9 @@ public class UserWebController {
     // ===============================
     @GetMapping
     public String listUsers(HttpSession session, Model model) {
+        if (session.getAttribute("JWT") == null) {
+            return "redirect:/login";
+        }
         String token = (String) session.getAttribute("JWT");
 
         List<UserDto> users = authUserClient.getUsers(token);
