@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/users")
+@RequestMapping("/users")
 @PreAuthorize("hasRole('ADMIN')")
 public class UserWebController {
 
@@ -37,30 +37,7 @@ public class UserWebController {
     public String saveUser(UserDto user, HttpSession session) {
         String token = (String) session.getAttribute("JWT");
         authUserClient.createUser(user, token);
-        return "redirect:/admin/users";
-    }
-
-    // ===============================
-    // MY PROFILE
-    // ===============================
-    @GetMapping("/me")
-    public String myProfile(HttpSession session, Model model) {
-        String token = (String) session.getAttribute("JWT");
-        UserDto me = authUserClient.getMe(token);
-        model.addAttribute("user", me);
-        return "profile/index";
-    }
-
-    // ===============================
-    // UPDATE MY PROFILE
-    // ===============================
-    @PostMapping("/me")
-    public String updateProfile(UserDto user, HttpSession session) {
-        String token = (String) session.getAttribute("JWT");
-        Long userId = (Long) session.getAttribute("USER_ID");
-
-        authUserClient.updateUser(userId, user, token);
-        return "redirect:/admin/users/me";
+        return "redirect:/users";
     }
 
     // ===============================
@@ -94,6 +71,7 @@ public class UserWebController {
         UserDto user = authUserClient.getById(id, token);
         model.addAttribute("user", user);
         model.addAttribute("mode", "view");
+        model.addAttribute("self", false);
         return "admin/user_form";
     }
 
@@ -112,6 +90,7 @@ public class UserWebController {
         UserDto user = authUserClient.getById(id, token);
         model.addAttribute("user", user);
         model.addAttribute("mode", "edit");
+        model.addAttribute("self", false);
         return "admin/user_form";
     }
 
@@ -127,6 +106,45 @@ public class UserWebController {
 
         user.setId(id);
         authUserClient.updateUser(id, user, token);
-        return "redirect:/admin/users";
+        return "redirect:/users";
     }
+
+    @GetMapping("/me")
+    public String myProfile(HttpSession session, Model model) {
+
+        String token = (String) session.getAttribute("JWT");
+        UserDto me = authUserClient.getMe(token);
+
+        model.addAttribute("user", me);
+        model.addAttribute("mode", "view");
+        model.addAttribute("self", true); // 👈 PENTING
+
+        return "admin/user_form";
+    }
+
+    @GetMapping("/me/edit")
+    public String editMyProfile(HttpSession session, Model model) {
+
+        String token = (String) session.getAttribute("JWT");
+        UserDto me = authUserClient.getMe(token);
+
+        model.addAttribute("user", me);
+        model.addAttribute("mode", "edit");
+        model.addAttribute("self", true); // 👈 PENTING
+
+        return "admin/user_form";
+    }
+
+    @PostMapping("/me/edit")
+    public String updateMyProfile(HttpSession session,
+                                  @ModelAttribute UserDto user) {
+
+        String token = (String) session.getAttribute("JWT");
+        Long userId = user.getId();
+
+        authUserClient.updateUser(userId, user, token);
+
+        return "redirect:/users/me";
+    }
+
 }

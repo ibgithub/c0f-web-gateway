@@ -58,42 +58,11 @@
                 </th:block>
 
                 <th:block sec:authorize="isAuthenticated() and hasRole('ADMIN') ">
-                    <li class="nav-item" >
-                        <a class="nav-link" th:href="@{/admin/users}">
-                        <span>
-                            <i class="fa fa-user-circle"></i>
-                            <span>Users</span>
-                        </span>
-                        </a>
-                    </li>
-                </th:block>
-                <th:block sec:authorize="!isAuthenticated()">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">
-                        <span>
-                            <i class="fa fa-user-circle"></i>
-                            <span>Login</span>
-                        </span>
-                        </a>
-                    </li>
-                </th:block>
-
-                <th:block sec:authorize="isAuthenticated()">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            <span sec:authentication="name"></span>
+                            <span>Admin</span>
                         </a>
                         <div class="dropdown-menu" >
-                            <a class="dropdown-item" th:href="@{/users/me}">
-                                <span>
-                                    <i class="fa fa-id-card"></i>
-                                    <span>Edit Profile</span>
-                                </span>
-                            </a>
-                            <div class="dropdown-item text-muted small">
-                                <div>User: <span sec:authentication="name"></span></div>
-                                <div>Roles: <span sec:authentication="authorities"></span></div>
-                            </div>
                             <!-- USER MANAGEMENT (ADMIN ONLY) -->
                             <a class="dropdown-item"
                                sec:authorize="hasRole('ADMIN')"
@@ -101,6 +70,23 @@
                                 <i class="fa fa-users-cog"></i>
                                 User Management
                             </a>
+                        </div>
+                    </li>
+                </th:block>
+
+                <th:block sec:authorize="isAuthenticated()">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            Hello <span sec:authentication="name"></span>
+                        </a>
+                        <div class="dropdown-menu" >
+                            <a class="dropdown-item" th:href="@{/users/me}">
+                                <span>
+                                    <i class="fa fa-id-card"></i>
+                                    <span>My Profile</span>
+                                </span>
+                            </a>
+
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/logout">
                             <span>
@@ -109,6 +95,17 @@
                             </span>
                             </a>
                         </div>
+                    </li>
+                </th:block>
+
+                <th:block sec:authorize="!isAuthenticated()">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">
+                        <span>
+                            <i class="fa fa-user-circle"></i>
+                            <span>Login</span>
+                        </span>
+                        </a>
                     </li>
                 </th:block>
             </ul>
