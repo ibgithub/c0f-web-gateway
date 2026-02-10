@@ -37,27 +37,29 @@
                         </span>
                     </a>
                 </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="/alumni">
+                <th:block sec:authorize="isAuthenticated()">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/alumni">
                         <span>
                             <i class="fa fa-users"></i>
                             <span>Daftar Alumni</span>
                         </span>
-                    </a>
-                </li>
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="/umkm">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/umkm">
                     <span>
                         <i class="fa fa-ambulance"></i>
                         <span>UMKM</span>
                     </span>
-                    </a>
-                </li>
+                        </a>
+                    </li>
+                </th:block>
+
                 <th:block sec:authorize="isAuthenticated() and hasRole('ADMIN') ">
                     <li class="nav-item" >
-                        <a class="nav-link" th:href="@{/users}">
+                        <a class="nav-link" th:href="@{/admin/users}">
                         <span>
                             <i class="fa fa-user-circle"></i>
                             <span>Users</span>

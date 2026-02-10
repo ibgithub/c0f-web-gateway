@@ -53,17 +53,27 @@ public class AuthUserClient {
     public void createUser(UserDto dto, String token) {
         HttpEntity<UserDto> entity =
                 new HttpEntity<>(dto, headers(token));
-        restTemplate.postForEntity(baseUrl + "/users", entity, Void.class);
+        restTemplate.postForEntity(baseUrl + "/api/users", entity, Void.class);
     }
 
     public void updateUser(Long id, UserDto dto, String token) {
         HttpEntity<UserDto> entity =
                 new HttpEntity<>(dto, headers(token));
         restTemplate.exchange(
-                baseUrl + "/users/" + id,
+                baseUrl + "/api/users/" + id,
                 HttpMethod.PUT,
                 entity,
                 Void.class
         );
+    }
+    public UserDto getById(Long id, String token) {
+        HttpEntity<?> entity = new HttpEntity<>(headers(token));
+
+        return restTemplate.exchange(
+                baseUrl + "/api/users/" + id,
+                HttpMethod.GET,
+                entity,
+                UserDto.class
+        ).getBody();
     }
 }

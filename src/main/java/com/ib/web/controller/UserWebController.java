@@ -3,16 +3,16 @@ package com.ib.web.controller;
 import com.ib.web.dto.UserDto;
 import com.ib.web.service.AuthUserClient;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/admin/users")
+@PreAuthorize("hasRole('ADMIN')")
 public class UserWebController {
 
     private final AuthUserClient authUserClient;
@@ -27,7 +27,7 @@ public class UserWebController {
     @GetMapping("/add")
     public String addForm(Model model) {
         model.addAttribute("user", new UserDto());
-        return "users/add";
+        return "admin/users/add";
     }
 
     // ===============================
@@ -37,7 +37,7 @@ public class UserWebController {
     public String saveUser(UserDto user, HttpSession session) {
         String token = (String) session.getAttribute("JWT");
         authUserClient.createUser(user, token);
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 
     // ===============================
@@ -60,7 +60,7 @@ public class UserWebController {
         Long userId = (Long) session.getAttribute("USER_ID");
 
         authUserClient.updateUser(userId, user, token);
-        return "redirect:/users/me";
+        return "redirect:/admin/users/me";
     }
 
     // ===============================
@@ -77,5 +77,56 @@ public class UserWebController {
         model.addAttribute("users", users);
 
         return "admin/user_list";
+    }
+
+    /* ======================
+       VIEW USER (READ ONLY)
+       ====================== */
+    @GetMapping("/{id}")
+    public String viewUser(HttpSession session,
+                           @PathVariable Long id,
+            Model model
+    ) {
+        if (session.getAttribute("JWT") == null) {
+            return "redirect:/login";
+        }
+        String token = (String) session.getAttribute("JWT");
+        UserDto user = authUserClient.getById(id, token);
+        model.addAttribute("user", user);
+        model.addAttribute("mode", "view");
+        return "admin/user_form";
+    }
+
+    /* ======================
+       EDIT USER (FORM)
+       ====================== */
+    @GetMapping("/{id}/edit")
+    public String editUser(HttpSession session,
+            @PathVariable Long id,
+            Model model
+    ) {
+        if (session.getAttribute("JWT") == null) {
+            return "redirect:/login";
+        }
+        String token = (String) session.getAttribute("JWT");
+        UserDto user = authUserClient.getById(id, token);
+        model.addAttribute("user", user);
+        model.addAttribute("mode", "edit");
+        return "admin/user_form";
+    }
+
+    /* ======================
+       SAVE USER
+       ====================== */
+    @PostMapping("/{id}/edit")
+    public String updateUser(HttpSession session,
+                             @PathVariable Long id,
+            @ModelAttribute UserDto user
+    ) {
+        String token = (String) session.getAttribute("JWT");
+
+        user.setId(id);
+        authUserClient.updateUser(id, user, token);
+        return "redirect:/admin/users";
     }
 }

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="id"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base_layout}">
+
+<head>
+    <title>User Detail</title>
+</head>
+
+<body>
+<section layout:fragment="content">
+
+    <div class="container mt-4">
+
+        <h3 th:text="${mode == 'view'} ? 'View User' : 'Edit User'"></h3>
+        <p class="text-muted">User information</p>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <form th:action="@{/admin/users/{id}/edit(id=${user.id})}"
+                      th:object="${user}"
+                      method="post">
+
+                    <!-- USERNAME -->
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input class="form-control"
+                               th:field="*{username}"
+                               readonly />
+                    </div>
+
+                    <!-- EMAIL -->
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input class="form-control"
+                               th:field="*{email}"
+                               th:readonly="${mode == 'view'}" />
+                    </div>
+
+                    <!-- ROLE (ADMIN ONLY) -->
+                    <div class="mb-3">
+                        <label class="form-label">Role</label>
+                        <select class="form-select"
+                                th:field="*{role}"
+                                th:disabled="${mode == 'view'}">
+                            <option value="USER">USER</option>
+                            <option value="ADMIN">ADMIN</option>
+                        </select>
+                    </div>
+
+                    <!-- BUTTONS -->
+                    <div class="d-flex justify-content-between">
+
+                        <div th:if="${mode == 'view'}">
+                            <a th:href="@{/admin/users/{id}/edit(id=${user.id})}"
+                               class="btn btn-primary">
+                                Edit
+                            </a>
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-primary"
+                                th:if="${mode == 'edit'}">
+                            Save
+                        </button>
+                        <a th:href="@{/admin/users}"
+                           class="btn btn-secondary">
+                            Cancel
+                        </a>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+</section>
+</body>
+</html>
