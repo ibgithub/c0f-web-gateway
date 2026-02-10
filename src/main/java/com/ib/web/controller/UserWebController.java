@@ -22,19 +22,6 @@ public class UserWebController {
     }
 
     // ===============================
-    // USER LIST (ADMIN)
-    // ===============================
-    @GetMapping
-    public String listUsers(HttpSession session, Model model) {
-        String token = (String) session.getAttribute("JWT");
-
-        List<UserDto> users = authUserClient.getUsers(token);
-        model.addAttribute("users", users);
-
-        return "users/list";
-    }
-
-    // ===============================
     // ADD USER FORM
     // ===============================
     @GetMapping("/add")
@@ -74,5 +61,18 @@ public class UserWebController {
 
         authUserClient.updateUser(userId, user, token);
         return "redirect:/users/me";
+    }
+
+    // ===============================
+    // USER LIST (ADMIN)
+    // ===============================
+    @GetMapping
+    public String listUsers(HttpSession session, Model model) {
+        String token = (String) session.getAttribute("JWT");
+
+        List<UserDto> users = authUserClient.getUsers(token);
+        model.addAttribute("users", users);
+
+        return "admin/user_list";
     }
 }
