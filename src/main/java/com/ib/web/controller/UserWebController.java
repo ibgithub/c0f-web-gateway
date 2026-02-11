@@ -147,4 +147,15 @@ public class UserWebController {
         return "redirect:/users/me";
     }
 
+    @GetMapping("/admin/users/{id}/password")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String adminChangePasswordForm(
+            @PathVariable Long id,
+            Model model
+    ) {
+        User user = userService.findById(id);
+        model.addAttribute("user", user);
+        model.addAttribute("passwordForm", new AdminChangePasswordDTO());
+        return "admin/users/change_password";
+    }
 }
