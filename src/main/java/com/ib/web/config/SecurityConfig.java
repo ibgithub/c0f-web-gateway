@@ -1,5 +1,7 @@
 package com.ib.web.config;
 
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,24 +17,28 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(auth -> auth
+                        .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                         .requestMatchers(
-                                "/",
-                                "/index",
                                 "/login",
-                                "/alumni",
-                                "/umkm",
-                                "/admin/**",
+                                "/error",
                                 "/css/**",
                                 "/js/**",
                                 "/images/**"
                         ).permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/users/**").authenticated()
+                        .anyRequest().permitAll()   // 👈 INI PENTING
                 )
                 .formLogin(form -> form.disable())
 
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
+                )
+
+                .exceptionHandling(ex -> ex
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                        })
                 )
 
                 .csrf(csrf -> csrf.disable());
