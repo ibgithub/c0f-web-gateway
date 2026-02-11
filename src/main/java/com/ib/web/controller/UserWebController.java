@@ -1,5 +1,6 @@
 package com.ib.web.controller;
 
+import com.ib.web.dto.ChangePasswordDto;
 import com.ib.web.dto.UserDto;
 import com.ib.web.service.AuthUserClient;
 import jakarta.servlet.http.HttpSession;
@@ -7,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class UserWebController {
     // SAVE USER
     // ===============================
     @PostMapping("/add")
-    public String saveUser(UserDto user, HttpSession session) {
+    public String saveUser(HttpSession session, UserDto user) {
         String token = (String) session.getAttribute("JWT");
         authUserClient.createUser(user, token);
         return "redirect:/users";
@@ -136,8 +138,7 @@ public class UserWebController {
     }
 
     @PostMapping("/me/edit")
-    public String updateMyProfile(HttpSession session,
-                                  @ModelAttribute UserDto user) {
+    public String updateMyProfile(HttpSession session, @ModelAttribute UserDto user) {
 
         String token = (String) session.getAttribute("JWT");
         Long userId = user.getId();
@@ -147,15 +148,51 @@ public class UserWebController {
         return "redirect:/users/me";
     }
 
-    @GetMapping("/admin/users/{id}/password")
+    @GetMapping("/me/password")
+    public String changeMyPasswordForm(HttpSession session, Model model) {
+        String token = (String) session.getAttribute("JWT");
+        UserDto me = authUserClient.getMe(token);
+
+        model.addAttribute("password", new ChangePasswordDto());
+        model.addAttribute("mode", "SELF");
+        model.addAttribute("id", me.getId());
+        return "admin/change_password";
+    }
+
+    @PostMapping("/me/password")
+    public String changeMyPassword(HttpSession session,
+            @ModelAttribute("password") ChangePasswordDto dto,
+            RedirectAttributes redirect
+    ) {
+        String token = (String) session.getAttribute("JWT");
+
+        authUserClient.changePasswordSelf(dto, token);
+        redirect.addFlashAttribute("success", "Password berhasil diubah");
+        return "redirect:/users/me";
+    }
+
+    @GetMapping("/{id}/password")
     @PreAuthorize("hasRole('ADMIN')")
     public String adminChangePasswordForm(
             @PathVariable Long id,
             Model model
     ) {
-        User user = userService.findById(id);
-        model.addAttribute("user", user);
-        model.addAttribute("passwordForm", new AdminChangePasswordDTO());
-        return "admin/users/change_password";
+        model.addAttribute("password", new ChangePasswordDto());
+        model.addAttribute("id", id);
+        model.addAttribute("mode", "ADMIN");
+        return "admin/change_password";
+    }
+
+    @PostMapping("/{id}/password")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String adminChangePassword(HttpSession session,
+            @PathVariable Long id,
+            @ModelAttribute("password") ChangePasswordDto dto,
+            RedirectAttributes redirect
+    ) {
+        String token = (String) session.getAttribute("JWT");
+        authUserClient.changePasswordAdmin(id, token);
+        redirect.addFlashAttribute("success", "Password user berhasil diubah");
+        return "redirect:/users";
     }
 }

@@ -1,5 +1,6 @@
 package com.ib.web.service;
 
+import com.ib.web.dto.ChangePasswordDto;
 import com.ib.web.dto.UserDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -74,6 +75,26 @@ public class AuthUserClient {
                 HttpMethod.GET,
                 entity,
                 UserDto.class
+        ).getBody();
+    }
+    public ChangePasswordDto changePasswordSelf(ChangePasswordDto dto, String token) {
+        HttpEntity<ChangePasswordDto> entity =
+                new HttpEntity<>(dto, headers(token));
+        return restTemplate.exchange(
+                baseUrl + "/api/users/me/password",
+                HttpMethod.GET,
+                entity,
+                ChangePasswordDto.class
+        ).getBody();
+    }
+    public ChangePasswordDto changePasswordAdmin(Long id, String token) {
+        HttpEntity<?> entity = new HttpEntity<>(headers(token));
+
+        return restTemplate.exchange(
+                baseUrl + "/api/users/" + id + "/password",
+                HttpMethod.GET,
+                entity,
+                ChangePasswordDto.class
         ).getBody();
     }
 }
