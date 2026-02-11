@@ -191,7 +191,7 @@ public class UserWebController {
             RedirectAttributes redirect
     ) {
         String token = (String) session.getAttribute("JWT");
-        authUserClient.changePasswordAdmin(id, token);
+        authUserClient.changePasswordAdmin(id, dto, token);
         redirect.addFlashAttribute("success", "Password user berhasil diubah");
         return "redirect:/users";
     }

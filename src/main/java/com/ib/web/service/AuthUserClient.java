@@ -82,17 +82,18 @@ public class AuthUserClient {
                 new HttpEntity<>(dto, headers(token));
         return restTemplate.exchange(
                 baseUrl + "/api/users/me/password",
-                HttpMethod.GET,
+                HttpMethod.PUT,
                 entity,
                 ChangePasswordDto.class
         ).getBody();
     }
-    public ChangePasswordDto changePasswordAdmin(Long id, String token) {
-        HttpEntity<?> entity = new HttpEntity<>(headers(token));
+    public ChangePasswordDto changePasswordAdmin(Long id, ChangePasswordDto dto, String token) {
+        HttpEntity<ChangePasswordDto> entity =
+                new HttpEntity<>(dto, headers(token));
 
         return restTemplate.exchange(
                 baseUrl + "/api/users/" + id + "/password",
-                HttpMethod.GET,
+                HttpMethod.PUT,
                 entity,
                 ChangePasswordDto.class
         ).getBody();
