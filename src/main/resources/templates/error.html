@@ -23,7 +23,13 @@
 
     <p th:text="${errorMessage}"></p>
 
-    <a href="/" class="btn btn-primary mt-3">
+    <!-- BUTTON 403 -->
+    <a th:if="${statusCode == 403}" th:href="@{/login}" class="btn btn-primary mt-3">
+        To Login Page
+    </a>
+
+    <!-- BUTTON OTHER ERROR -->
+    <a th:if="${statusCode != 403}" th:href="@{/}" class="btn btn-primary mt-3">
         Back to Home
     </a>
 </div>

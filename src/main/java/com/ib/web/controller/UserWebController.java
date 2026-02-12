@@ -29,9 +29,10 @@ public class UserWebController {
     @GetMapping("/add")
     public String addForm(Model model) {
         model.addAttribute("user", new UserDto());
-        return "admin/users/add";
+        model.addAttribute("mode", "add");
+        model.addAttribute("self", false);
+        return "admin/user_form";
     }
-
     // ===============================
     // SAVE USER
     // ===============================
