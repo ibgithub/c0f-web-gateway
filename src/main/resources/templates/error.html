@@ -14,22 +14,17 @@
 <div class="col-lg-4 container mt-5 text-center">
     <h1 th:text="${statusCode}"></h1>
 
-    <h3 th:text="${statusCode == 403 ?
-               '403 - Access Denied' :
-               (statusCode == 404 ?
-                   '404 - Page Not Found' :
-                   'Error')}">
-    </h3>
+    <h3 th:text="|${statusCode} - ${errorMessage}|"></h3>
 
     <p th:text="${errorMessage}"></p>
 
-    <!-- BUTTON 403 -->
-    <a th:if="${statusCode == 403}" th:href="@{/login}" class="btn btn-primary mt-3">
+    <!-- BUTTON 401,403 -->
+    <a th:if="${#lists.contains({401,403}, statusCode)}" th:href="@{/login}" class="btn btn-primary mt-3">
         To Login Page
     </a>
 
     <!-- BUTTON OTHER ERROR -->
-    <a th:if="${statusCode != 403}" th:href="@{/}" class="btn btn-primary mt-3">
+    <a th:if="${!#lists.contains({401,403}, statusCode)}" th:href="@{/}" class="btn btn-primary mt-3">
         Back to Home
     </a>
 </div>

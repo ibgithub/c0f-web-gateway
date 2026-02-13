@@ -47,19 +47,25 @@
                         </a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="/umkm">
-                    <span>
-                        <i class="fa fa-ambulance"></i>
-                        <span>UMKM</span>
-                    </span>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-store me-1"></i>
+                            <span>UMKM</span>
                         </a>
+                        <div class="dropdown-menu" >
+                            <a class="dropdown-item"
+                               th:href="@{/merchants}">
+                                <i class="fa fa-shop"></i>
+                                Daftar Merchant
+                            </a>
+                        </div>
                     </li>
                 </th:block>
 
                 <th:block sec:authorize="isAuthenticated() and hasRole('ADMIN') ">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-tools me-1"></i>
                             <span>Admin</span>
                         </a>
                         <div class="dropdown-menu" >
@@ -77,6 +83,7 @@
                 <th:block sec:authorize="isAuthenticated()">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-user-shield me-1"></i>
                             Hello <span sec:authentication="name"></span>
                         </a>
                         <div class="dropdown-menu" >

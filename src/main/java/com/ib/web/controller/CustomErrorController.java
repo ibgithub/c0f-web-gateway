@@ -23,10 +23,12 @@ public class CustomErrorController implements ErrorController {
 
         model.addAttribute("statusCode", statusCode);
 
-        if (statusCode == 404) {
-            model.addAttribute("errorMessage", "Page Not Found");
+        if (statusCode == 401) {
+            model.addAttribute("errorMessage", "Unauthorized");
         } else if (statusCode == 403) {
-            model.addAttribute("errorMessage", "Access Denied");
+            model.addAttribute("errorMessage", "Forbidden (Access Denied)");
+        } else if (statusCode == 404) {
+            model.addAttribute("errorMessage", "Page Not Found");
         } else {
             model.addAttribute("errorMessage", "Unexpected Error");
         }

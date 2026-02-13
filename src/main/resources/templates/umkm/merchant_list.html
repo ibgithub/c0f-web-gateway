@@ -9,24 +9,22 @@
 <section layout:fragment="content">
     <div class="card shadow-sm mt-3">
         <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">Daftar Anggota C0F</h4>
+            <h4 class="mb-0">Daftar Merchant UMKM</h4>
         </div>
 
         <div class="card-body">
             <table class="table table-striped table-hover align-middle">
                 <thead class="table-dark">
                 <tr>
-                    <th>NRP</th>
-                    <th>Nama</th>
-                    <th>Phone Number</th>
+                    <th>Pemilik</th>
+                    <th>Nama Merchant</th>
                 </tr>
                 </thead>
 
                 <tbody>
-                <tr th:each="m : ${members}">
-                    <td th:text="${m.nrp}"></td>
-                    <td th:text="${m.fullName}"></td>
-                    <td th:text="${m.phoneNumber}"></td>
+                <tr th:each="m : ${merchants}">
+                    <td th:text="${m.ownerName}"></td>
+                    <td th:text="${m.name}"></td>
                 </tr>
                 </tbody>
             </table>

@@ -1,6 +1,6 @@
-package com.ib.web.service;
+package com.ib.web.service.umkm;
 
-import com.ib.web.dto.MemberDto;
+import com.ib.web.dto.umkm.MerchantDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,30 +12,30 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Service
-public class MemberClientService {
+public class MerchantClientService {
 
     private final RestTemplate restTemplate;
 
-    @Value("${member.service.url}")
+    @Value("${umkm.service.url}")
     private String baseUrl;
 
-    public MemberClientService(RestTemplate restTemplate) {
+    public MerchantClientService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    public List<MemberDto> getMembers(String jwt) {
+    public List<MerchantDto> getMerchants(String jwt) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setBearerAuth(jwt);
 
             HttpEntity<Void> entity = new HttpEntity<>(headers);
 
-            ResponseEntity<MemberDto[]> res =
+            ResponseEntity<MerchantDto[]> res =
                     restTemplate.exchange(
-                            baseUrl + "/api/members",
+                            baseUrl + "/api/merchants",
                             HttpMethod.GET,
                             entity,
-                            MemberDto[].class
+                            MerchantDto[].class
                     );
 
             return List.of(res.getBody());
