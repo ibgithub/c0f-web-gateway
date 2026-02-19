@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="id"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base_layout}">
+
+<head>
+    <title>Merchant Detail</title>
+</head>
+
+<body>
+<section layout:fragment="content">
+
+    <div class="container mt-4">
+
+        <h3 th:text="
+            (${mode == 'view'} ? 'Merchant Detail' :
+            (${mode == 'update'} ? 'Edit Merchant' :
+            'Create Merchant'))">
+        </h3>
+        <div th:if="${success}"
+             class="alert alert-success alert-dismissible fade show"
+             role="alert">
+            <span th:text="${success}"></span>
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"></button>
+        </div>
+
+        <p class="text-muted">User information</p>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form th:action="
+                    ${mode == 'add'} ?
+                        @{/merchants/add} :
+                        @{/merchants/{id}/edit(id=${merchant.id})}"
+                      th:object="${merchant}"
+                      method="post">
+
+                    <div class="mb-3">
+                        <label class="form-label">Merchant Name</label>
+                        <input class="form-control"
+                               th:field="*{name}"
+                               th:readonly="${mode == 'view' || mode == 'edit'}" />
+                    </div>
+
+                    <!-- BUTTONS -->
+                    <div th:if="${mode == 'view'}" class="d-flex justify-content-between">
+                        <!-- ADMIN VIEW -->
+                        <a th:if="${role == 'ADMIN'}"
+                           th:href="@{/merchants/{id}/edit(id=${merchant.id})}"
+                           class="btn btn-primary">
+                            Edit
+                        </a>
+                        <a th:href="/merchants"
+                           class="btn btn-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                    <div th:if="${mode == 'edit' || mode == 'add'}">
+
+                        <button type="submit" class="btn btn-success">
+                            Save
+                        </button>
+
+                        <a th:href="${mode == 'add'} ? '/merchants' :
+                                ('/merchants/' + ${merchant.id})"
+                           class="btn btn-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</section>
+</body>
+</html>

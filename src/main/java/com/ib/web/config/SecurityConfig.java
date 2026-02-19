@@ -26,6 +26,7 @@ public class SecurityConfig {
                                 "/images/**"
                         ).permitAll()
                         .requestMatchers("/users/**").authenticated()
+                        .requestMatchers("/merchants/**").authenticated()
                         .anyRequest().permitAll()   // 👈 INI PENTING
                 )
                 .formLogin(form -> form.disable())

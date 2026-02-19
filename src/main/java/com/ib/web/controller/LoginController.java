@@ -32,7 +32,7 @@ public class LoginController {
     @GetMapping("/")
     public String home(HttpSession session) {
         if (session.getAttribute("JWT") != null) {
-            return "redirect:/alumni";
+            return "redirect:/index";
         }
         return "redirect:/index";
     }
@@ -45,7 +45,7 @@ public class LoginController {
     @GetMapping("/login")
     public String loginPage(Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
-            return "redirect:/alumnies";
+            return "redirect:/index";
         }
         return "login";
     }
@@ -83,7 +83,7 @@ public class LoginController {
                 );
 
         request.getSession().setAttribute("JWT", jwt);
-        return "redirect:/alumni";
+        return "redirect:/index";
     }
 
     @GetMapping("/logout")
@@ -91,30 +91,4 @@ public class LoginController {
         session.invalidate();
         return "redirect:/login";
     }
-
-//    @GetMapping({"/error"})
-//    public String accessDenied(
-//                               HttpServletRequest request, Model model) {
-//
-//        Object statusObj = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-//
-//        int statusCode = 500;
-//
-//        if (statusObj != null) {
-//            statusCode = Integer.parseInt(statusObj.toString());
-//        }
-//
-//        model.addAttribute("statusCode", statusCode);
-//
-//        if (statusCode == 404) {
-//            model.addAttribute("errorMessage", "Page Not Found");
-//        } else if (statusCode == 403) {
-//            model.addAttribute("errorMessage", "Access Denied");
-//        } else {
-//            model.addAttribute("errorMessage", "Unexpected Error");
-//        }
-//
-//        return "error";
-//    }
-
 }
