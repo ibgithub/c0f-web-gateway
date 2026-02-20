@@ -4,6 +4,7 @@ public class MerchantDto {
     private Long id;
     private String name;
     private Integer status;
+    private Long ownerId;
     private String ownerName;
 
     public Long getId() {
@@ -28,6 +29,14 @@ public class MerchantDto {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 
     public String getOwnerName() {

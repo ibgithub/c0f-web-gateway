@@ -41,6 +41,18 @@ public class AuthUserClient {
         return Arrays.asList(res.getBody());
     }
 
+    public List<UserDto> getUsersByRole(String token, String role) {
+        HttpEntity<?> entity = new HttpEntity<>(headers(token));
+        ResponseEntity<UserDto[]> res =
+                restTemplate.exchange(
+                        baseUrl + "/api/users/byRole/" + role,
+                        HttpMethod.GET,
+                        entity,
+                        UserDto[].class
+                );
+        return Arrays.asList(res.getBody());
+    }
+
     public UserDto getMe(String token) {
         HttpEntity<?> entity = new HttpEntity<>(headers(token));
         return restTemplate.exchange(

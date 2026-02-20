@@ -1,6 +1,8 @@
 package com.ib.web.controller.umkm;
 
+import com.ib.web.dto.UserDto;
 import com.ib.web.dto.umkm.MerchantDto;
+import com.ib.web.service.AuthUserClient;
 import com.ib.web.service.JwtService;
 import com.ib.web.service.umkm.MerchantClientService;
 import io.jsonwebtoken.Claims;
@@ -17,10 +19,12 @@ import java.util.List;
 public class MerchantWebController {
 
     private final MerchantClientService merchantClientService;
+    private final AuthUserClient authUserClient;
     private final JwtService jwtService;
 
-    public MerchantWebController(MerchantClientService merchantClientService, JwtService jwtService) {
+    public MerchantWebController(MerchantClientService merchantClientService, AuthUserClient authUserClient, JwtService jwtService) {
         this.merchantClientService = merchantClientService;
+        this.authUserClient = authUserClient;
         this.jwtService = jwtService;
     }
 
@@ -49,7 +53,11 @@ public class MerchantWebController {
     // ADD MERCHANT FORM
     // ===============================
     @GetMapping("/add")
-    public String addForm(Model model) {
+    public String addForm(Model model, Authentication authentication) {
+        String jwt = (String) authentication.getCredentials();
+        List<UserDto> users = authUserClient.getUsersByRole(jwt, "USER");
+
+        model.addAttribute("users", users);
         model.addAttribute("merchant", new MerchantDto());
         model.addAttribute("mode", "add");
         model.addAttribute("self", false);
@@ -79,6 +87,9 @@ public class MerchantWebController {
         }
         String token = (String) session.getAttribute("JWT");
         MerchantDto merchant = merchantClientService.getById(id, token);
+        List<UserDto> users = authUserClient.getUsersByRole(token, "USER");
+
+        model.addAttribute("users", users);
         model.addAttribute("merchant", merchant);
         model.addAttribute("mode", "view");
         model.addAttribute("self", false);
@@ -98,6 +109,9 @@ public class MerchantWebController {
         }
         String token = (String) session.getAttribute("JWT");
         MerchantDto merchant = merchantClientService.getById(id, token);
+        List<UserDto> users = authUserClient.getUsersByRole(token, "USER");
+
+        model.addAttribute("users", users);
         model.addAttribute("merchant", merchant);
         model.addAttribute("mode", "edit");
         model.addAttribute("self", false);

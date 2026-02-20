@@ -39,6 +39,19 @@
                       method="post">
 
                     <div class="mb-3">
+                        <label class="form-label">Merchant Owner</label>
+                        <select class="form-select"
+                                th:field="*{ownerId}"
+                                th:disabled="${mode == 'view'}">
+                            <option value="">-- Select Owner --</option>
+                            <option th:each="u : ${users}"
+                                    th:value="${u.id}"
+                                    th:text="${u.username}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
                         <label class="form-label">Merchant Name</label>
                         <input class="form-control"
                                th:field="*{name}"
@@ -53,7 +66,7 @@
                            class="btn btn-primary">
                             Edit
                         </a>
-                        <a th:href="/merchants"
+                        <a th:href="@{/merchants}"
                            class="btn btn-secondary">
                             Cancel
                         </a>
