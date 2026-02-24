@@ -3,6 +3,7 @@ package com.ib.web.controller;
 import com.ib.web.dto.ChangePasswordDto;
 import com.ib.web.dto.UserDto;
 import com.ib.web.service.AuthUserClient;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,10 @@ public class UserWebController {
     public UserWebController(AuthUserClient authUserClient) {
         this.authUserClient = authUserClient;
     }
-
+    @ModelAttribute("currentUri")
+    public String currentUri(HttpServletRequest request) {
+        return request.getRequestURI();
+    }
     // ===============================
     // ADD USER FORM
     // ===============================

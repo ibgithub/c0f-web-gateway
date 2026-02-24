@@ -5,6 +5,7 @@ import com.ib.web.service.JwtService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -28,7 +30,10 @@ public class LoginController {
         this.authClientService = authClientService;
         this.jwtService = jwtService;
     }
-
+    @ModelAttribute("currentUri")
+    public String currentUri(HttpServletRequest request) {
+        return request.getRequestURI();
+    }
     @GetMapping("/")
     public String home(HttpSession session) {
         if (session.getAttribute("JWT") != null) {
@@ -39,6 +44,7 @@ public class LoginController {
 
     @GetMapping({"/index"})
     public String login() {
+        System.out.println("Current Locale = " + LocaleContextHolder.getLocale());
         return "index";
     }
 

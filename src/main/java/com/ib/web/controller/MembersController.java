@@ -3,10 +3,12 @@ package com.ib.web.controller;
 import com.ib.web.dto.MemberDto;
 import com.ib.web.security.JwtUtil;
 import com.ib.web.service.MemberClientService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
 
@@ -21,7 +23,10 @@ public class MembersController {
         this.memberClientService = memberClientService;
         this.jwtUtil = jwtUtil;
     }
-
+    @ModelAttribute("currentUri")
+    public String currentUri(HttpServletRequest request) {
+        return request.getRequestURI();
+    }
     @GetMapping("/alumni")
     public String alumnies(Model model, Authentication authentication) {
 

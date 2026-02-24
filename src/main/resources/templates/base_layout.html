@@ -1,13 +1,10 @@
 <!doctype html>
-<html lang="en"
-      xmlns:th="http://thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org"
+<html lang="id" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tanggap Sosial</title>
-    <!--<title layout:title-pattern="$CONTENT_TITLE"></title>-->
+    <title th:text="#{app.title}"></title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/styles.css}" />
@@ -16,119 +13,181 @@
     <link rel="icon" href="https://alumniits.com/wp-content/uploads/2016/07/cropped-logo-trans-192x192.png" sizes="192x192">
 </head>
 <body>
-<!--div class="container"-->
-<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+<nav class="navbar navbar-expand-lg navbar-premium">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/index">
+
+        <!-- BRAND -->
+        <a class="navbar-brand d-flex align-items-center gap-2" href="/index">
             <span class="logo-img"></span>
-            <!--img th:src="@{images/log-jhipster.png}" alt="tanggapsosial"-->
-            Koperasi C0F
+            <span th:text="#{app.title}"></span>
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <!-- TOGGLER -->
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarColor01">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="d-flex" id="navbarColor01"><!--collapse navbar-collapse -->
+
+        <!-- COLLAPSE AREA -->
+        <div class="collapse navbar-collapse" id="navbarColor01">
+
+            <!-- ================= LEFT MENU ================= -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" href="/index">
-                        <span>
-                            <i class="fa fa-home"></i>
-                            <span>Beranda</span>
-                        </span>
+
+                <!-- HOME -->
+                <li class="nav-item" th:classappend="${currentUri != null and
+                     (currentUri == '/'
+                      or currentUri.startsWith('/index'))} ? 'active'">
+                    <a class="nav-link" href="/index">
+                        <i class="fa fa-home me-1"></i>
+                        <span th:text="#{nav.home}"></span>
                     </a>
                 </li>
-                <th:block sec:authorize="isAuthenticated()">
-                    <!--<li class="nav-item">
-                        <a class="nav-link" href="/alumni">
-                        <span>
-                            <i class="fa fa-users"></i>
-                            <span>Daftar Alumni</span>
-                        </span>
-                        </a>
-                    </li>-->
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                <!-- UMKM -->
+                <th:block sec:authorize="isAuthenticated()">
+                    <li class="nav-item dropdown" th:classappend="${currentUri != null and
+    (currentUri.startsWith('/merchants')
+     or currentUri.startsWith('/categories')
+     or currentUri.startsWith('/products'))} ? 'active'" >
+                        <a class="nav-link dropdown-toggle"
+                           data-bs-toggle="dropdown"
+                           href="#">
                             <i class="fa fa-store me-1"></i>
-                            <span>UMKM</span>
+                            <span th:text="#{nav.umkm}"></span>
                         </a>
-                        <div class="dropdown-menu" >
-                            <a class="dropdown-item"
-                               th:href="@{/merchants}">
-                                <i class="fa fa-shop"></i>
-                                Daftar Merchant
-                            </a>
-                            <a class="dropdown-item"
-                               th:href="@{/categories}">
-                                <i class="fa fa-tags"></i>
-                                Daftar Kategori Produk
-                            </a>
-                            <a class="dropdown-item"
-                               th:href="@{/products}">
-                                <i class="fa fa-box"></i>
-                                Daftar Produk
-                            </a>
-                        </div>
+
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" th:href="@{/merchants}">
+                                    <i class="fa fa-shop me-2"></i>
+                                    <span th:text="#{nav.merchant.list}"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" th:href="@{/categories}">
+                                    <i class="fa fa-tags me-2"></i>
+                                    <span th:text="#{nav.category.list}"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" th:href="@{/products}">
+                                    <i class="fa fa-box me-2"></i>
+                                    <span th:text="#{nav.product.list}"></span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </th:block>
 
-                <th:block sec:authorize="isAuthenticated() and hasRole('ADMIN') ">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                <!-- ADMIN -->
+                <th:block sec:authorize="hasRole('ADMIN')">
+                    <li class="nav-item dropdown" th:classappend="${currentUri != null and currentUri.startsWith('/users')} ? 'active'">
+                        <a class="nav-link dropdown-toggle"
+                           data-bs-toggle="dropdown"
+                           href="#">
                             <i class="fa fa-tools me-1"></i>
-                            <span>Admin</span>
+                            <span th:text="#{nav.admin}"></span>
                         </a>
-                        <div class="dropdown-menu" >
-                            <!-- USER MANAGEMENT (ADMIN ONLY) -->
-                            <a class="dropdown-item"
-                               sec:authorize="hasRole('ADMIN')"
-                               th:href="@{/users}">
-                                <i class="fa fa-users-cog"></i>
-                                User Management
-                            </a>
-                        </div>
+
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" th:href="@{/users}">
+                                    <i class="fa fa-users-cog me-2"></i>
+                                    <span th:text="#{nav.user.management}"></span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </th:block>
 
-                <th:block sec:authorize="isAuthenticated()">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-user-shield me-1"></i>
-                            Hello <span sec:authentication="name"></span>
-                        </a>
-                        <div class="dropdown-menu" >
-                            <a class="dropdown-item" th:href="@{/users/me}">
-                                <span>
-                                    <i class="fa fa-id-card"></i>
-                                    <span>My Profile</span>
-                                </span>
-                            </a>
-                            <a class="dropdown-item" th:href="@{/users/me/password}">
-                                <i class="fa fa-key"></i> Change Password
-                            </a>
-
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/logout">
-                            <span>
-                                <i class="fa fa-sign-out"></i>
-                                <span>Logout</span>
-                            </span>
-                            </a>
-                        </div>
-                    </li>
-                </th:block>
-
-                <th:block sec:authorize="!isAuthenticated()">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">
-                        <span>
-                            <i class="fa fa-user-circle"></i>
-                            <span>Login</span>
-                        </span>
-                        </a>
-                    </li>
-                </th:block>
             </ul>
+
+            <!-- ================= RIGHT MENU ================= -->
+            <ul class="navbar-nav ms-auto align-items-center">
+
+                <!-- LOGIN -->
+                <th:block sec:authorize="!isAuthenticated()">
+                    <li class="nav-item" th:classappend="${currentUri != null and
+                     currentUri.startsWith('/login')} ? 'active'">
+                        <a class="nav-link" href="/login">
+                            <i class="fa fa-user-circle me-1"></i>
+                            <span th:text="#{nav.login}"></span>
+                        </a>
+                    </li>
+                </th:block>
+
+                <!-- USER DROPDOWN -->
+                <th:block sec:authorize="isAuthenticated()">
+                    <li class="nav-item dropdown" th:classappend="${currentUri != null and
+                     currentUri.startsWith('/users/me')} ? 'active'">
+                        <a class="nav-link dropdown-toggle"
+                           data-bs-toggle="dropdown"
+                           href="#">
+                            <i class="fa fa-user-shield me-1"></i>
+                            <span th:text="#{nav.hello}"></span>
+                            <span sec:authentication="name"></span>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" th:href="@{/users/me}">
+                                    <i class="fa fa-id-card me-2"></i>
+                                    <span th:text="#{nav.profile}"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" th:href="@{/users/me/password}">
+                                    <span th:text="#{nav.change.password}"></span>
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="/logout">
+                                    <i class="fa fa-sign-out me-2"></i>
+                                    <span th:text="#{nav.logout}"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </th:block>
+
+                <!-- LANGUAGE DROPDOWN -->
+                <li class="nav-item dropdown ms-3">
+                    <a class="nav-link d-flex align-items-center"
+                       data-bs-toggle="dropdown"
+                       href="#">
+
+                        <i class="fa fa-globe me-2"></i>
+                        <img th:src="@{${#locale.language == 'id'} ? '/images/flag/id.png' : '/images/flag/us.png'}"
+                             width="20">
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center"
+                               th:href="@{''(lang='id')}">
+                                <img th:src="@{/images/flag/id.png}"
+                                     width="20"
+                                     class="me-2">
+                                Indonesia
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center"
+                               th:href="@{''(lang='en')}">
+                                <img th:src="@{/images/flag/us.png}"
+                                     width="20"
+                                     class="me-2">
+                                English
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+
         </div>
     </div>
 </nav>
@@ -139,53 +198,14 @@
         </section>
     </div>
 </div>
-<!--/div-->
 
 <footer th:replace="~{footer::footer}"></footer><!--/fragments/-->
 
-<!--script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script-->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" th:src="@{/js/chart_design.js}"></script>
-<!--<script type="text/javascript" th:src="@{/js/layout.js}"></script>-->
-<script>
-    //console.log("test logger");
-    document.addEventListener('DOMContentLoaded', function() {
-        const currentLocation = window.location.href;
-        console.log("currentLocation=" + currentLocation);
 
-        /*
-        const windowPathname = window.location.pathname;
-        console.log("windowPathname=" + windowPathname);
-
-        document.querySelectorAll('.nav-link').forEach(link => {
-            const linkPathname = new URL(link.href).pathname;
-            console.log("linkPathname=" + linkPathname);
-            if ((windowPathname === linkPathname) ||
-                //(windowPathname === "/") ||
-                (windowPathname === "index.html" && linkPathname === "/")
-            ) {
-                link.classList.add('active');
-            } else {
-                link.classList.remove('active');
-            }
-        });
-        */
-
-        //let x = false;
-        document.querySelectorAll('.nav-link').forEach(link => {
-            //console.log("link.href=" + link.href);
-            //console.log("currentLocation.indexOf(link.href)" + currentLocation.indexOf(link.href));
-            if (currentLocation.indexOf(link.href) === 0) {
-                link.classList.add('active');
-            } else {
-                link.classList.remove('active');
-            }
-        });
-
-    });
-</script>
 </body>
 </html>

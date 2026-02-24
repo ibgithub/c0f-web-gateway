@@ -15,3 +15,8 @@ jwt:
 logging:
   level:
     org.springframework.web.servlet.mvc.method.annotation: DEBUG
+spring:
+  messages:
+    basename: messages
+    encoding: UTF-8
+    fallback-to-system-locale: false

@@ -6,6 +6,7 @@ import com.ib.web.service.JwtService;
 import com.ib.web.service.umkm.MerchantClientService;
 import com.ib.web.service.umkm.ProductClientService;
 import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
@@ -29,6 +30,11 @@ public class ProductWebController {
         this.productClientService = productClientService;
         this.merchantClientService = merchantClientService;
         this.jwtService = jwtService;
+    }
+
+    @ModelAttribute("currentUri")
+    public String currentUri(HttpServletRequest request) {
+        return request.getRequestURI();
     }
 
     @GetMapping

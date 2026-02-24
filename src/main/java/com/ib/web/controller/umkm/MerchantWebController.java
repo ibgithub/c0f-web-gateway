@@ -6,6 +6,7 @@ import com.ib.web.service.AuthUserClient;
 import com.ib.web.service.JwtService;
 import com.ib.web.service.umkm.MerchantClientService;
 import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
@@ -28,6 +29,11 @@ public class MerchantWebController {
         this.merchantClientService = merchantClientService;
         this.authUserClient = authUserClient;
         this.jwtService = jwtService;
+    }
+
+    @ModelAttribute("currentUri")
+    public String currentUri(HttpServletRequest request) {
+        return request.getRequestURI();
     }
 
     @ModelAttribute("users")
