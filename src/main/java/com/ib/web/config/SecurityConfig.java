@@ -27,6 +27,7 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers("/users/**").authenticated()
                         .requestMatchers("/merchants/**").authenticated()
+                        .requestMatchers("/categories/**").authenticated()
                         .requestMatchers("/products/**").authenticated()
                         .anyRequest().permitAll()   // 👈 INI PENTING
                 )

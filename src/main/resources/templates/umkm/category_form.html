@@ -5,7 +5,7 @@
       layout:decorate="~{base_layout}">
 
 <head>
-    <title>Merchant Detail</title>
+    <title>Category Detail</title>
 </head>
 
 <body>
@@ -14,9 +14,9 @@
     <div class="container mt-4">
 
         <h3 th:text="
-            (${mode == 'view'} ? 'Merchant Detail' :
-            (${mode == 'update'} ? 'Edit Merchant' :
-            'Create Merchant'))">
+            (${mode == 'view'} ? 'Category Detail' :
+            (${mode == 'update'} ? 'Edit Category' :
+            'Create Category'))">
         </h3>
         <div th:if="${success}"
              class="alert alert-success alert-dismissible fade show"
@@ -27,48 +27,53 @@
                     data-bs-dismiss="alert"></button>
         </div>
 
-        <p class="text-muted">Merchant information</p>
+        <p class="text-muted">Category Information</p>
 
         <div class="card shadow-sm">
             <div class="card-body">
                 <form th:action="
                     ${mode == 'add'} ?
-                        @{/merchants/add} :
-                        @{/merchants/{id}/edit(id=${merchant.id})}"
-                      th:object="${merchant}"
+                        @{/categories/add} :
+                        @{/categories/{id}/edit(id=${category.id})}"
+                      th:object="${category}"
                       method="post">
 
                     <div class="mb-3">
-                        <label class="form-label">Merchant Owner</label>
+                        <label class="form-label">Merchant</label>
                         <select class="form-select"
-                                th:field="*{ownerId}"
+                                th:field="*{merchantId}"
                                 th:disabled="${mode == 'view'}">
-                            <option value="">-- Select Owner --</option>
-                            <option th:each="u : ${users}"
-                                    th:value="${u.id}"
-                                    th:text="${u.username}">
+                            <option value="">-- Select Merchant --</option>
+                            <option th:each="m : ${merchants}"
+                                    th:value="${m.id}"
+                                    th:text="${m.name}">
                             </option>
                         </select>
-                        <div th:if="${#fields.hasErrors('ownerId')}" th:errors="*{ownerId}" style="color:red"></div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Merchant Name</label>
+                        <label class="form-label">Category Name</label>
                         <input class="form-control"
                                th:field="*{name}"
                                th:readonly="${mode == 'view'}" />
-                        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <input class="form-control"
+                               th:field="*{description}"
+                               th:readonly="${mode == 'view'}" />
                     </div>
 
                     <!-- BUTTONS -->
                     <div th:if="${mode == 'view'}" class="d-flex justify-content-between">
                         <!-- ADMIN VIEW -->
                         <a th:if="${role == 'ADMIN'}"
-                           th:href="@{/merchants/{id}/edit(id=${merchant.id})}"
+                           th:href="@{/categories/{id}/edit(id=${category.id})}"
                            class="btn btn-primary">
                             Edit
                         </a>
-                        <a th:href="@{/merchants}"
+                        <a th:href="@{/categories}"
                            class="btn btn-secondary">
                             Cancel
                         </a>
@@ -79,8 +84,8 @@
                             Save
                         </button>
 
-                        <a th:href="${mode == 'add'} ? '/merchants' :
-                                ('/merchants/' + ${merchant.id})"
+                        <a th:href="${mode == 'add'} ? '/categories' :
+                                ('/categories/' + ${category.id})"
                            class="btn btn-secondary">
                             Cancel
                         </a>

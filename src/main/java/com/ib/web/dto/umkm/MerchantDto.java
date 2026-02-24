@@ -1,9 +1,16 @@
 package com.ib.web.dto.umkm;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+
 public class MerchantDto {
     private Long id;
+
+    @NotBlank(message = "Nama merchant wajib diisi")
     private String name;
     private Integer status;
+
+    @NotNull(message = "Owner wajib dipilih")
     private Long ownerId;
     private String ownerName;
 

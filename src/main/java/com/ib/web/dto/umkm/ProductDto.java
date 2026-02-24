@@ -1,18 +1,29 @@
 package com.ib.web.dto.umkm;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class ProductDto {
     private Long id;
     private String sku;
+    private Long ownerId;
+    private String OwnerName;
+
+    @NotNull(message = "Merchant wajib dipilih")
+    private Long merchantId;
+    private String merchantName;
+
+    @NotNull(message = "Kategori wajib dipilih")
+    private Long categoryId;
+    private String categoryName;
+
+    @NotBlank(message = "Nama Produk wajib diisi")
     private String name;
     private BigDecimal costPrice;
     private BigDecimal sellingPrice;
-    private Long merchantId;
-    private String merchantName;
-    private Long ownerId;
-    private String OwnerName;
 
     private String createdBy;
     private LocalDateTime createdDate;
@@ -89,6 +100,22 @@ public class ProductDto {
 
     public void setOwnerName(String ownerName) {
         OwnerName = ownerName;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public String getCreatedBy() {

@@ -7,6 +7,7 @@ import com.ib.web.service.umkm.MerchantClientService;
 import com.ib.web.service.umkm.ProductClientService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,8 +19,8 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductWebController {
 
-    private final ProductClientService productClientService;
     private final MerchantClientService merchantClientService;
+    private final ProductClientService productClientService;
     private final JwtService jwtService;
 
     public ProductWebController(MerchantClientService merchantClientService,
@@ -64,7 +65,7 @@ public class ProductWebController {
     }
 
     @PostMapping("/add")
-    public String saveUser(HttpSession session, ProductDto product) {
+    public String saveUser(HttpSession session, @Valid @ModelAttribute("product") ProductDto product) {
         String token = (String) session.getAttribute("JWT");
         productClientService.createProduct(product, token);
         return "redirect:/products";
@@ -111,7 +112,7 @@ public class ProductWebController {
     @PostMapping("/{id}/edit")
     public String updateProduct(HttpSession session,
                              @PathVariable Long id,
-                             @ModelAttribute ProductDto product
+                                @Valid @ModelAttribute("product") ProductDto product
     ) {
         String token = (String) session.getAttribute("JWT");
 
