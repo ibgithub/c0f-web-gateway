@@ -74,4 +74,11 @@ public class MerchantClientService {
                 MerchantDto.class
         ).getBody();
     }
+
+    // DELETE merchant  ← BARU
+    public void deleteMerchant(Long id, String token) {
+//        String url = baseUrl + "/merchants/" + id;
+//        HttpEntity<Void> entity = new HttpEntity<>(bearerHeaders(token));
+//        restTemplate.exchange(url, HttpMethod.DELETE, entity, Void.class);
+    }
 }

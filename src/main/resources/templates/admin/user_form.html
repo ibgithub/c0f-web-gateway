@@ -79,13 +79,13 @@
                         <!-- MY PROFILE -->
                         <a th:if="${self}"
                            th:href="@{/users/me/edit}"
-                           class="btn btn-primary">
+                           class="btn btn-premium">
                             Edit Profile
                         </a>
                         <!-- ADMIN VIEW -->
                         <a th:if="${!self}"
                            th:href="@{/users/{id}/edit(id=${user.id})}"
-                           class="btn btn-primary">
+                           class="btn btn-premium">
                             Edit
                         </a>
                         <a th:href="${self} ? '/' : '/users'"
