@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/merchants")
@@ -50,53 +49,15 @@ public class MerchantWebController {
         return merchantClientService.getMerchants(jwt);
     }
 
-    // ===============================
-    // LIST MERCHANT (Search + Pagination)
-    // ===============================
     @GetMapping
-    public String merchants(
-            Model model,
-            Authentication authentication,
-            @RequestParam(defaultValue = "") String search,
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size
-    ) {
+    public String merchants(Model model, Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return "redirect:/login";
         }
-
         String jwt = (String) authentication.getCredentials();
         Claims claims = jwtService.validateToken(jwt);
-        String role = claims.get("role", String.class);
-
-        // Ambil semua merchant lalu filter & paginate di sisi web-gateway
-        // (Ganti dengan server-side API call jika backend sudah support pagination)
-        List<MerchantDto> allMerchants = merchantClientService.getMerchants(jwt);
-
-        // Filter by search keyword (case-insensitive)
-        List<MerchantDto> filtered = allMerchants.stream()
-                .filter(m -> search.isBlank() ||
-                        m.getName().toLowerCase().contains(search.toLowerCase()))
-                .collect(Collectors.toList());
-
-        // Hitung total
-        long total    = filtered.size();
-
-        // Pagination manual
-        int totalPages  = (int) Math.max(1, Math.ceil((double) total / size));
-        int safePage    = Math.max(1, Math.min(page, totalPages));
-        int fromIndex   = (safePage - 1) * size;
-        int toIndex     = Math.min(fromIndex + size, (int) total);
-        List<MerchantDto> paged = filtered.subList(fromIndex, toIndex);
-
-        model.addAttribute("role",          role);
-        model.addAttribute("merchants",     paged);
-        model.addAttribute("search",        search);
-        model.addAttribute("size",          size);
-        model.addAttribute("currentPage",   safePage);
-        model.addAttribute("totalPages",    totalPages);
-        model.addAttribute("totalElements", total);
-
+        String role = claims.get("role", String.class); // ADMIN / USER
+        model.addAttribute("role", role);
         return "umkm/merchant_list";
     }
 
