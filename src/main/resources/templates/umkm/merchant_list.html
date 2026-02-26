@@ -3,54 +3,130 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{base_layout}">
 <head>
-    <title th:text="#{merchant.title}"></title>
+    <title class="fw-semibold" th:text="#{merchant.title}"></title>
 </head>
 <body>
 <section layout:fragment="content">
     <div class="container mt-4">
-        <div class="row mb-3">
-            <div class="col">
-                <h3 th:text="#{merchant.title}"></h3>
-                <p class="text-muted" th:text="#{merchant.subtitle}"></p>
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-start mb-4">
+            <div>
+                <h3 class="mb-1 fw-bold" th:text="#{merchant.title}"></h3>
+                <p class="text-muted mb-0 small" th:text="#{merchant.subtitle}"></p>
             </div>
-            <div th:if="${role == 'ADMIN'}" class="col text-end">
-                <a th:href="@{/merchants/add}" class="btn btn-success">
+
+            <div th:if="${role == 'ADMIN'}">
+                <a th:href="@{/merchants/add}"
+                   class="btn btn-brand shadow-sm">
                     <i class="fa fa-plus me-1"></i>
                     <span th:text="#{merchant.add}"></span>
                 </a>
             </div>
         </div>
-        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
-            <span th:text="${success}"></span>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    </div>
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <table class="table table-striped table-hover align-middle">
-                <thead class="table-dark">
-                <tr>
-                    <th th:text="#{merchant.owner}"></th>
-                    <th th:text="#{merchant.name}"></th>
-                    <th class="text-end" th:text="#{action}"></th>
-                </tr>
-                </thead>
 
-                <tbody>
-                <tr th:each="m : ${merchants}">
-                    <td th:text="${m.ownerName}"></td>
-                    <td th:text="${m.name}"></td>
-                    <td class="text-end">
-                        <a th:href="@{/merchants/{id}(id=${m.id})}"
-                           class="btn btn-sm btn-outline-secondary" th:text="#{view}">
-                        </a>
-                        <a th:if="${role == 'ADMIN'}" th:href="@{/merchants/{id}/edit(id=${m.id})}"
-                           class="btn btn-sm btn-outline-primary" th:text="#{edit}">
-                        </a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        <!-- Alert -->
+        <div th:if="${success}"
+             class="alert alert-success alert-dismissible fade show shadow-sm"
+             role="alert">
+            <span th:text="${success}"></span>
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"></button>
+        </div>
+        <!-- Card -->
+        <div class="card shadow-sm border-0">
+            <div class="card-body rounded-3">
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <input type="text"
+                               class="form-control"
+                               th:placeholder="#{merchant.search.placeholder}" >
+                    </div>
+                </div>
+
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                    <tr>
+                        <th class="fw-semibold text-secondary" th:text="#{merchant.owner}"></th>
+                        <th class="fw-semibold text-secondary" th:text="#{merchant.name}"></th>
+                        <th class="text-end fw-semibold text-secondary" th:text="#{action}"></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="m : ${merchants}">
+                        <td th:text="${m.ownerName}"></td>
+                        <td th:text="${m.name}"></td>
+                        <td class="text-end">
+                            <a th:href="@{/merchants/{id}(id=${m.id})}"
+                               class="btn btn-sm btn-outline-secondary me-1" th:text="#{view}">
+                            </a>
+                            <a th:if="${role == 'ADMIN'}" th:href="@{/merchants/{id}/edit(id=${m.id})}"
+                               class="btn btn-sm btn-outline-primary me-1" th:text="#{edit}">
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="d-flex align-items-center gap-3 mt-4 flex-wrap">
+
+                    <!-- Pagination -->
+                    <nav>
+                        <ul class="pagination mb-0 custom-pagination">
+
+                            <!-- Previous -->
+                            <li class="page-item">
+                                <a class="page-link" href="#">
+                                    <i class="fa fa-chevron-left"></i>
+                                </a>
+                            </li>
+
+                            <!-- Page Numbers -->
+                            <li class="page-item active">
+                                <span class="page-link">1</span>
+                            </li>
+
+                            <li class="page-item">
+                                <a class="page-link" href="#">2</a>
+                            </li>
+
+                            <li class="page-item">
+                                <a class="page-link" href="#">3</a>
+                            </li>
+
+                            <li class="page-item">
+                                <a class="page-link" href="#">4</a>
+                            </li>
+
+                            <!-- Next -->
+                            <li class="page-item">
+                                <a class="page-link" href="#">
+                                    <i class="fa fa-chevron-right"></i>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </nav>
+
+                    <!-- Records Per Page -->
+                    <select class="form-select form-select-sm"
+                            style="width: 110px;"
+                            name="size">
+                        <option value="5">5 / page</option>
+                        <option value="10">10 / page</option>
+                        <option value="25" selected>25 / page</option>
+                        <option value="50">50 / page</option>
+                    </select>
+
+                    <!-- Total Data -->
+                    <div class="text-muted small">
+                        Total 80 Data
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 </section>

@@ -229,3 +229,87 @@ body {
 .btn-premium:hover {
     transform: translateY(-2px) scale(1.02);
 }
+
+/* ===== Brand Colors ===== */
+:root {
+    --brand-primary: #2f4f88;   /* sesuaikan dengan warna navbar */
+    --brand-primary-dark: #243e6e;
+}
+
+/* Custom brand button */
+.btn-brand {
+    background-color: var(--brand-primary);
+    border-color: var(--brand-primary);
+    color: #fff;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 0.6rem;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 6px rgba(47,79,136,0.25);
+}
+
+.btn-brand:hover {
+    background-color: var(--brand-primary-dark);
+    border-color: var(--brand-primary-dark);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.card {
+    border-radius: 1rem;
+}
+
+.content-wrapper {
+    background-color: #f8f9fb;
+    border-radius: 1.5rem;
+    padding: 2rem;
+}
+/* ===== Custom Pagination ===== */
+.pagination {
+    font-size: 0.9rem;
+}
+.custom-pagination .page-link {
+    border: none;
+    color: var(--brand-primary);
+    font-weight: 500;
+    margin: 0 4px;
+    border-radius: 0.6rem;
+    padding: 6px 12px;
+    transition: all 0.2s ease;
+}
+
+.custom-pagination .page-link:hover {
+    background-color: rgba(47,79,136,0.08);
+    color: var(--brand-primary-dark);
+}
+
+.custom-pagination .page-item.active .page-link {
+    background-color: var(--brand-primary);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(47,79,136,0.25);
+}
+
+.custom-pagination .page-item.disabled .page-link {
+    background: none;
+    color: #999;
+    cursor: default;
+}
+
+.custom-pagination .page-link {
+    padding: 6px 12px;
+}
+
+.form-select-sm {
+    height: 32px;
+    border-radius: 0.6rem;
+}
+
+.pagination-wrapper {
+    gap: 1rem;
+}
+
+.total-text {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
