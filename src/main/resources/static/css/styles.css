@@ -179,6 +179,72 @@ body {
     transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
+/* ===== FORM ACTION BUTTONS ===== */
+
+.btn-form-primary {
+    background-color: var(--brand-primary);
+    border-color: var(--brand-primary);
+    color: #fff;
+    font-weight: 500;
+    padding: 6px 18px;
+    border-radius: 0.6rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 10px rgba(47,79,136,0.25);
+}
+
+.btn-form-primary:hover {
+    background-color: var(--brand-primary-dark);
+    border-color: var(--brand-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+}
+
+.btn-form-outline {
+    background: transparent;
+    border: 1px solid var(--brand-primary);
+    color: var(--brand-primary);
+    font-weight: 500;
+    padding: 6px 16px;
+    border-radius: 0.6rem;
+    transition: all 0.2s ease;
+}
+
+.btn-form-outline:hover {
+    background-color: rgba(47,79,136,0.08);
+}
+
+.btn-form-cancel {
+    background-color: #f1f3f5;
+    border: 1px solid #dee2e6;
+    color: #6c757d;
+    font-weight: 500;
+    padding: 6px 16px;
+    border-radius: 0.6rem;
+    transition: all 0.2s ease;
+}
+
+.btn-form-cancel:hover {
+    background-color: #e9ecef;
+    color: #495057;
+}
+/* ===== DELETE BUTTON ===== */
+
+.btn-form-danger {
+    background-color: #fff;
+    border: 1px solid #dc3545;
+    color: #dc3545;
+    font-weight: 500;
+    padding: 6px 16px;
+    border-radius: 0.6rem;
+    transition: all 0.2s ease;
+}
+
+.btn-form-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(220,53,69,0.25);
+}
 
 /* Premium Link */
 .link-premium {

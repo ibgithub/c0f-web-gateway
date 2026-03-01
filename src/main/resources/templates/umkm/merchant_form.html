@@ -11,83 +11,130 @@
 <body>
 <section layout:fragment="content">
 
-    <div class="container mt-4">
+    <div class="container py-4">
 
-        <h3 th:text="
-            (${mode == 'view'} ? 'Merchant Detail' :
-            (${mode == 'edit'} ? 'Edit Merchant' :
-            'Create Merchant'))">
-        </h3>
-        <div th:if="${success}"
-             class="alert alert-success alert-dismissible fade show"
-             role="alert">
-            <span th:text="${success}"></span>
-            <button type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert"></button>
-        </div>
+        <!-- TITLE -->
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
 
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <form th:action="
-                    ${mode == 'add'} ?
-                        @{/merchants/add} :
-                        @{/merchants/{id}/edit(id=${merchant.id})}"
-                      th:object="${merchant}"
-                      method="post">
+                <h4 class="fw-semibold mb-3"
+                    th:text="(${mode == 'view'} ? #{merchant.detail} :
+                             (${mode == 'edit'} ? #{merchant.edit} :
+                              #{merchant.add}))">
+                </h4>
 
-                    <div class="mb-3">
-                        <label class="form-label">Merchant Owner</label>
-                        <select class="form-select"
-                                th:field="*{ownerId}"
-                                th:disabled="${mode == 'view'}">
-                            <option value="">-- Select Owner --</option>
-                            <option th:each="u : ${users}"
-                                    th:value="${u.id}"
-                                    th:text="${u.username}">
-                            </option>
-                        </select>
-                        <div th:if="${#fields.hasErrors('ownerId')}" th:errors="*{ownerId}" style="color:red"></div>
+                <!-- ALERT -->
+                <div th:if="${success}"
+                     class="alert alert-success alert-dismissible fade show shadow-sm"
+                     role="alert">
+                    <span th:text="${success}"></span>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"></button>
+                </div>
+
+                <!-- CARD -->
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4">
+
+                        <form th:action="
+                                ${mode == 'add'} ?
+                                    @{/merchants/add} :
+                                    @{/merchants/{id}/edit(id=${merchant.id})}"
+                              th:object="${merchant}"
+                              method="post">
+
+                            <!-- OWNER -->
+                            <div class="mb-3">
+                                <label class="form-label fw-medium text-secondary"
+                                       th:text="#{merchant.owner}"></label>
+
+                                <select class="form-select"
+                                        th:field="*{ownerId}"
+                                        th:disabled="${mode == 'view'}">
+
+                                    <option value=""
+                                            th:text="#{select.owner}">
+                                    </option>
+
+                                    <option th:each="u : ${users}"
+                                            th:value="${u.id}"
+                                            th:text="${u.username}">
+                                    </option>
+                                </select>
+
+                                <div th:if="${#fields.hasErrors('ownerId')}"
+                                     th:errors="*{ownerId}"
+                                     class="text-danger small mt-1">
+                                </div>
+                            </div>
+
+                            <!-- NAME -->
+                            <div class="mb-4">
+                                <label class="form-label fw-medium text-secondary"
+                                       th:text="#{merchant.name}"></label>
+
+                                <input class="form-control"
+                                       th:field="*{name}"
+                                       th:readonly="${mode == 'view'}"/>
+
+                                <div th:if="${#fields.hasErrors('name')}"
+                                     th:errors="*{name}"
+                                     class="text-danger small mt-1">
+                                </div>
+                            </div>
+
+                            <!-- BUTTONS -->
+                            <div class="d-flex justify-content-end border-top pt-3 mt-4">
+
+                                <div class="d-flex gap-2">
+
+                                    <!-- SAVE -->
+                                    <button th:if="${mode == 'edit' || mode == 'add'}"
+                                            type="submit"
+                                            class="btn btn-form-primary btn-sm">
+                                        <i class="fa fa-save me-1"></i>
+                                        <span th:text="#{save}"></span>
+                                    </button>
+
+                                    <!-- EDIT (VIEW MODE) -->
+                                    <a th:if="${mode == 'view' && role == 'ADMIN'}"
+                                       th:href="@{/merchants/{id}/edit(id=${merchant.id})}"
+                                       class="btn btn-form-outline btn-sm">
+                                        <i class="fa fa-pen me-1"></i>
+                                        <span th:text="#{edit}"></span>
+                                    </a>
+
+                                    <!-- DELETE -->
+                                    <form th:if="${mode == 'view' && role == 'ADMIN'}"
+                                          th:action="@{/merchants/{id}/delete(id=${merchant.id})}"
+                                          method="post"
+                                          th:onsubmit="|return confirm('#{delete.confirm}');|">
+
+                                        <button type="submit"
+                                                class="btn btn-form-danger btn-sm">
+                                            <i class="fa fa-trash me-1"></i>
+                                            <span th:text="#{delete}"></span>
+                                        </button>
+                                    </form>
+
+                                    <!-- CANCEL -->
+                                    <a th:href="@{/merchants}"
+                                       class="btn btn-form-cancel btn-sm">
+                                        <span th:text="#{cancel}"></span>
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </form>
                     </div>
+                </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Merchant Name</label>
-                        <input class="form-control"
-                               th:field="*{name}"
-                               th:readonly="${mode == 'view'}" />
-                        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></div>
-                    </div>
-
-                    <!-- BUTTONS -->
-                    <div th:if="${mode == 'view'}" class="d-flex justify-content-between">
-                        <!-- ADMIN VIEW -->
-                        <a th:if="${role == 'ADMIN'}"
-                           th:href="@{/merchants/{id}/edit(id=${merchant.id})}"
-                           class="btn btn-premium">
-                            Edit
-                        </a>
-                        <a th:href="@{/merchants}"
-                           class="btn btn-secondary">
-                            Cancel
-                        </a>
-                    </div>
-                    <div th:if="${mode == 'edit' || mode == 'add'}">
-
-                        <button type="submit" class="btn btn-success">
-                            Save
-                        </button>
-
-                        <a th:href="${mode == 'add'} ? '/merchants' :
-                                ('/merchants/' + ${merchant.id})"
-                           class="btn btn-secondary">
-                            Cancel
-                        </a>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
-
 </section>
 </body>
 </html>

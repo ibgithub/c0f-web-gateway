@@ -44,6 +44,13 @@ public class MerchantWebController {
         return authUserClient.getUsersByRole(jwt, "USER");
     }
 
+    @ModelAttribute("role")
+    public String getRole(Authentication authentication) {
+        String jwt = (String) authentication.getCredentials();
+        Claims claims = jwtService.validateToken(jwt);
+        return claims.get("role", String.class); // ADMIN / USER
+    }
+
 //    @ModelAttribute("merchants")
 //    public List<MerchantDto> populateMerchants(Authentication authentication) {
 //        String jwt = (String) authentication.getCredentials();
@@ -63,15 +70,10 @@ public class MerchantWebController {
 
         String jwt = (String) authentication.getCredentials();
 
-        Claims claims = jwtService.validateToken(jwt);
-
-        String role = claims.get("role", String.class); // ADMIN / USER
-
         PageResult<MerchantDto> result =
                 merchantClientService.getMerchants(jwt, page, size, keyword);
 
         model.addAttribute("merchants", result.getContent());
-        model.addAttribute("role", role);
         model.addAttribute("currentPage", result.getPage());
         model.addAttribute("totalPages", result.getTotalPages());
         model.addAttribute("pageSize", result.getSize());
@@ -111,15 +113,16 @@ public class MerchantWebController {
        VIEW MERCHANT (READ ONLY)
        ====================== */
     @GetMapping("/{id}")
-    public String viewMerchant(HttpSession session,
+    public String viewMerchant(
                            @PathVariable Long id,
-                           Model model
+                           Model model,
+                           Authentication authentication
     ) {
-        if (session.getAttribute("JWT") == null) {
+        if (authentication == null || !authentication.isAuthenticated()) {
             return "redirect:/login";
         }
-        String token = (String) session.getAttribute("JWT");
-        MerchantDto merchant = merchantClientService.getById(id, token);
+        String jwt = (String) authentication.getCredentials();
+        MerchantDto merchant = merchantClientService.getById(id, jwt);
 
         model.addAttribute("merchant", merchant);
         model.addAttribute("mode", "view");
@@ -131,15 +134,16 @@ public class MerchantWebController {
        EDIT MERCHANT (FORM)
        ====================== */
     @GetMapping("/{id}/edit")
-    public String editMerchant(HttpSession session,
+    public String editMerchant(
                            @PathVariable Long id,
-                           Model model
+                           Model model,
+                           Authentication authentication
     ) {
-        if (session.getAttribute("JWT") == null) {
+        if (authentication == null || !authentication.isAuthenticated()) {
             return "redirect:/login";
         }
-        String token = (String) session.getAttribute("JWT");
-        MerchantDto merchant = merchantClientService.getById(id, token);
+        String jwt = (String) authentication.getCredentials();
+        MerchantDto merchant = merchantClientService.getById(id, jwt);
 
         model.addAttribute("merchant", merchant);
         model.addAttribute("mode", "edit");
@@ -151,30 +155,34 @@ public class MerchantWebController {
        SAVE MERCHANT
        ====================== */
     @PostMapping("/{id}/edit")
-    public String updateMerchant(HttpSession session,
+    public String updateMerchant(
          @PathVariable Long id, Model model,
-         @Valid @ModelAttribute("merchant") MerchantDto merchant, BindingResult result
+         @Valid @ModelAttribute("merchant") MerchantDto merchant, BindingResult result,
+         Authentication authentication
     ) {
         if (result.hasErrors()) {
             model.addAttribute("mode", "edit");
             model.addAttribute("self", false);
             return "umkm/merchant_form";
         }
-        String token = (String) session.getAttribute("JWT");
+        String jwt = (String) authentication.getCredentials();
         merchant.setId(id);
-        merchantClientService.updateMerchant(id, merchant, token);
+        merchantClientService.updateMerchant(id, merchant, jwt);
         return "redirect:/merchants";
     }
     // ===============================
     // DELETE MERCHANT
     // ===============================
     @PostMapping("/{id}/delete")
-    public String deleteMerchant(HttpSession session,
+    public String deleteMerchant(
                                  @PathVariable Long id,
-                                 RedirectAttributes redirectAttributes) {
-        if (session.getAttribute("JWT") == null) return "redirect:/login";
-        String token = (String) session.getAttribute("JWT");
-        merchantClientService.deleteMerchant(id, token);
+                                 RedirectAttributes redirectAttributes,
+                                 Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "redirect:/login";
+        }
+        String jwt = (String) authentication.getCredentials();
+        merchantClientService.deleteMerchant(id, jwt);
         redirectAttributes.addFlashAttribute("success", "Pedagang berhasil dihapus.");
         return "redirect:/merchants";
     }
