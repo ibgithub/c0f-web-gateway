@@ -54,7 +54,7 @@ public class MerchantWebController {
     public String merchants(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            HttpSession session,
+            @RequestParam(required = false) String keyword,
             Model model, Authentication authentication) {
 
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -68,7 +68,7 @@ public class MerchantWebController {
         String role = claims.get("role", String.class); // ADMIN / USER
 
         PageResult<MerchantDto> result =
-                merchantClientService.getMerchants(jwt, page, size);
+                merchantClientService.getMerchants(jwt, page, size, keyword);
 
         model.addAttribute("merchants", result.getContent());
         model.addAttribute("role", role);
@@ -76,6 +76,7 @@ public class MerchantWebController {
         model.addAttribute("totalPages", result.getTotalPages());
         model.addAttribute("pageSize", result.getSize());
         model.addAttribute("totalElements", result.getTotalElements());
+        model.addAttribute("keyword", keyword == null ? "" : keyword);
         return "umkm/merchant_list";
     }
 

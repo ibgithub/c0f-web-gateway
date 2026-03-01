@@ -12,6 +12,7 @@ totalElements   -> total data
 showAddButton   -> true/false
 addUrl          -> '/merchants/add'
 addLabel        -> label tombol add
+keyword         -> searching
 -->
 
 <div th:fragment="listToolbar(
@@ -22,7 +23,8 @@ addLabel        -> label tombol add
         totalElements,
         showAddButton,
         addUrl,
-        addLabel
+        addLabel,
+        keyword
     )"
      class="d-flex justify-content-between align-items-center mt-3 flex-wrap">
 
@@ -37,7 +39,9 @@ addLabel        -> label tombol add
                 <li class="page-item"
                     th:classappend="${currentPage == 0} ? 'disabled'">
                     <a class="page-link"
-                       th:href="@{${baseUrl}(page=${currentPage - 1}, size=${pageSize})}">
+                       th:href="@{${baseUrl}(page=${currentPage - 1},
+                       size=${pageSize},
+                       keyword=${keyword})}">
                         &laquo;
                     </a>
                 </li>
@@ -53,7 +57,9 @@ addLabel        -> label tombol add
                     <a th:if="${i != currentPage}"
                        class="page-link"
                        th:text="${i + 1}"
-                       th:href="@{${baseUrl}(page=${i}, size=${pageSize})}">
+                       th:href="@{${baseUrl}(page=${i},
+                        size=${pageSize},
+                       keyword=${keyword})}">
                     </a>
 
                     <span th:if="${i == currentPage}"
@@ -66,7 +72,8 @@ addLabel        -> label tombol add
                 <li class="page-item"
                     th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
                     <a class="page-link"
-                       th:href="@{${baseUrl}(page=${currentPage + 1}, size=${pageSize})}">
+                       th:href="@{${baseUrl}(page=${currentPage + 1},
+                       size=${pageSize}, keyword=${keyword})}">
                         &raquo;
                     </a>
                 </li>
@@ -77,6 +84,7 @@ addLabel        -> label tombol add
         <!-- ================= PAGE SIZE ================= -->
         <form method="get" th:action="@{${baseUrl}}" class="mb-0">
             <input type="hidden" name="page" value="0"/>
+            <input type="hidden" name="keyword" th:value="${keyword}"/>
 
             <select class="form-select form-select-sm"
                     style="width: 110px;"

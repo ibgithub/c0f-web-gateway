@@ -14,10 +14,12 @@
             <h5 class="fw-semibold mb-0" th:text="#{merchant.title}"></h5>
 
             <form th:action="@{/merchants}" method="get" class="d-flex">
+                <input type="hidden" name="page" value="0"/>
+                <input type="hidden" name="size" th:value="${pageSize}"/>
                 <div class="input-group input-group-sm" style="width: 260px;">
                     <input type="text"
                            name="keyword"
-                           th:value="${param.keyword}"
+                           th:value="${keyword}"
                            class="form-control"
                            th:placeholder="#{search.placeholder}">
 
@@ -92,7 +94,7 @@
                     </tbody>
                 </table>
 
-                <div th:replace="fragments/list-toolbar :: listToolbar(
+                <div th:replace="~{fragments/list-toolbar :: listToolbar(
                     '/merchants',
                     ${currentPage},
                     ${totalPages},
@@ -100,8 +102,9 @@
                     ${totalElements},
                     ${role == 'ADMIN'},
                     '/merchants/add',
-                    #{merchant.add}
-                    )">
+                    #{merchant.add},
+                    ${keyword}
+                    )}">
                 </div>
             </div>
         </div>

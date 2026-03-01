@@ -55,7 +55,7 @@ public class MerchantClientService {
         }
     }
 
-    public PageResult<MerchantDto> getMerchants(String jwt, int page, int size) {
+    public PageResult<MerchantDto> getMerchants(String jwt, int page, int size, String keyword) {
 
         ApiResponse<PageResult<MerchantDto>> response =
                 webClient.get()
@@ -63,6 +63,7 @@ public class MerchantClientService {
                                 .path("/api/merchants")
                                 .queryParam("page", page)
                                 .queryParam("size", size)
+                                .queryParam("keyword", keyword)
                                 .build())
                         .headers(headers -> headers.setBearerAuth(jwt))
                         .retrieve()
