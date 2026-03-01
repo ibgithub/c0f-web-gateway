@@ -1,10 +1,15 @@
 package com.ib.web.service.umkm;
 
+import com.ib.web.common.ApiResponse;
+import com.ib.web.common.PageResult;
 import com.ib.web.dto.umkm.MerchantDto;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
@@ -12,12 +17,14 @@ import java.util.List;
 public class MerchantClientService {
 
     private final RestTemplate restTemplate;
+    private final WebClient webClient;
 
     @Value("${umkm.service.url}")
     private String baseUrl;
 
-    public MerchantClientService(RestTemplate restTemplate) {
+    public MerchantClientService(RestTemplate restTemplate, @Qualifier("umkmWebClient") WebClient webClient) {
         this.restTemplate = restTemplate;
+        this.webClient = webClient;
     }
 
     private HttpHeaders headers(String token) {
@@ -44,8 +51,29 @@ public class MerchantClientService {
 
             return List.of(res.getBody());
         } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch members", e);
+            throw new RuntimeException("Failed to fetch merchants", e);
         }
+    }
+
+    public PageResult<MerchantDto> getMerchants(String jwt, int page, int size) {
+
+        ApiResponse<PageResult<MerchantDto>> response =
+                webClient.get()
+                        .uri(uriBuilder -> uriBuilder
+                                .path("/api/merchants")
+                                .queryParam("page", page)
+                                .queryParam("size", size)
+                                .build())
+                        .headers(headers -> headers.setBearerAuth(jwt))
+                        .retrieve()
+                        .bodyToMono(new ParameterizedTypeReference<ApiResponse<PageResult<MerchantDto>>>() {})
+                        .block(); // karena Thymeleaf tetap blocking
+
+        if (response == null || !response.isSuccess()) {
+            throw new RuntimeException("Failed to fetch merchants");
+        }
+
+        return response.getData();
     }
 
     public void createMerchant(MerchantDto dto, String token) {
@@ -81,4 +109,5 @@ public class MerchantClientService {
 //        HttpEntity<Void> entity = new HttpEntity<>(bearerHeaders(token));
 //        restTemplate.exchange(url, HttpMethod.DELETE, entity, Void.class);
     }
+
 }

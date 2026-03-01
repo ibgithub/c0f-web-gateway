@@ -1,5 +1,6 @@
 package com.ib.web.controller.umkm;
 
+import com.ib.web.common.PageResult;
 import com.ib.web.dto.UserDto;
 import com.ib.web.dto.umkm.MerchantDto;
 import com.ib.web.service.AuthUserClient;
@@ -43,21 +44,38 @@ public class MerchantWebController {
         return authUserClient.getUsersByRole(jwt, "USER");
     }
 
-    @ModelAttribute("merchants")
-    public List<MerchantDto> populateMerchants(Authentication authentication) {
-        String jwt = (String) authentication.getCredentials();
-        return merchantClientService.getMerchants(jwt);
-    }
+//    @ModelAttribute("merchants")
+//    public List<MerchantDto> populateMerchants(Authentication authentication) {
+//        String jwt = (String) authentication.getCredentials();
+//        return merchantClientService.getMerchants(jwt);
+//    }
 
     @GetMapping
-    public String merchants(Model model, Authentication authentication) {
+    public String merchants(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            HttpSession session,
+            Model model, Authentication authentication) {
+
         if (authentication == null || !authentication.isAuthenticated()) {
             return "redirect:/login";
         }
+
         String jwt = (String) authentication.getCredentials();
+
         Claims claims = jwtService.validateToken(jwt);
+
         String role = claims.get("role", String.class); // ADMIN / USER
+
+        PageResult<MerchantDto> result =
+                merchantClientService.getMerchants(jwt, page, size);
+
+        model.addAttribute("merchants", result.getContent());
         model.addAttribute("role", role);
+        model.addAttribute("currentPage", result.getPage());
+        model.addAttribute("totalPages", result.getTotalPages());
+        model.addAttribute("pageSize", result.getSize());
+        model.addAttribute("totalElements", result.getTotalElements());
         return "umkm/merchant_list";
     }
 

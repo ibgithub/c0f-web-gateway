@@ -27,12 +27,7 @@
     background: url('/images/c0f-25th.png') no-repeat center top;
     background-size: contain;
 }
-.jh-card {
-    padding: 1.5%;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    border: none;
-}
+
 .center {
     text-align: center;
 }
@@ -40,8 +35,8 @@
 /* ===== PREMIUM NAVBAR ===== */
 .navbar-premium {
     background: linear-gradient(135deg, #1e3c72, #2a5298);
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
+    padding-top: 0.35rem;
+    padding-bottom: 0.35rem;
 }
 
 .navbar-premium .nav-link {
@@ -206,8 +201,10 @@
     border: none;
     border-radius: 18px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-    padding: 40px;
+    padding: 10px;
     animation: fadeInUp 0.6s ease;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 @keyframes fadeInUp {
     from {
@@ -312,4 +309,42 @@ body {
 .total-text {
     font-size: 0.9rem;
     color: #6c757d;
+}
+
+.table th,
+.table td {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.table thead th {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table tbody td {
+    font-size: 0.92rem;
+}
+.card-body {
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
+}
+
+.input-group-text {
+    border-radius: 0.6rem 0 0 0.6rem;
+}
+
+.form-control {
+    border-radius: 0 0.6rem 0.6rem 0;
+}
+
+.table th,
+.table td {
+    padding-top: 0.55rem;
+    padding-bottom: 0.55rem;
+}
+
+body {
+    background-color: #ffffff;
 }

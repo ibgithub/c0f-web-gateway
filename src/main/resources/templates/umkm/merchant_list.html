@@ -7,21 +7,21 @@
 </head>
 <body>
 <section layout:fragment="content">
-    <div class="container mt-4">
+    <div class="container pt-1">
         <!-- Header -->
-        <div class="d-flex justify-content-between align-items-start mb-4">
-            <div>
-                <h3 class="mb-1 fw-bold" th:text="#{merchant.title}"></h3>
-                <p class="text-muted mb-0 small" th:text="#{merchant.subtitle}"></p>
+        <div class="d-flex justify-content-between align-items-center mb-1">
+
+            <h5 class="fw-semibold mb-0" th:text="#{merchant.title}"></h5>
+
+            <div class="input-group input-group-sm" style="width: 260px;">
+                <input type="text"
+                       class="form-control border-start-0"
+                       th:placeholder="#{search.placeholder}">
+                <span class="input-group-text bg-white border-end-0">
+                    <i class="fa fa-search text-muted"></i>
+                </span>
             </div>
 
-            <div th:if="${role == 'ADMIN'}">
-                <a th:href="@{/merchants/add}"
-                   class="btn btn-brand shadow-sm">
-                    <i class="fa fa-plus me-1"></i>
-                    <span th:text="#{merchant.add}"></span>
-                </a>
-            </div>
         </div>
 
         <!-- Alert -->
@@ -35,15 +35,7 @@
         </div>
         <!-- Card -->
         <div class="card shadow-sm border-0">
-            <div class="card-body rounded-3">
-
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <input type="text"
-                               class="form-control"
-                               th:placeholder="#{merchant.search.placeholder}" >
-                    </div>
-                </div>
+            <div class="card-body rounded-3 pt-2 pb-3">
 
                 <table class="table table-hover align-middle mb-0">
                     <thead class="table-light">
@@ -70,64 +62,117 @@
                     </tbody>
                 </table>
 
-                <div class="d-flex align-items-center gap-3 mt-4 flex-wrap">
+                <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap">
+                    <!-- LEFT SIDE -->
+                    <div class="d-flex align-items-center gap-4">
+                        <!-- Pagination -->
+                        <nav th:if="${totalPages > 1}">
+                            <ul class="pagination custom-pagination mb-0">
 
-                    <!-- Pagination -->
-                    <nav>
-                        <ul class="pagination mb-0 custom-pagination">
+                                <!-- Previous -->
+                                <li class="page-item"
+                                    th:classappend="${currentPage == 0} ? 'disabled'">
+                                    <a class="page-link"
+                                       th:href="@{/merchants(page=${currentPage - 1}, size=${pageSize})}">
+                                        &laquo;
+                                    </a>
+                                </li>
 
-                            <li class="page-item">
-                                <a class="page-link" href="#">
-                                    <i class="fa fa-chevron-left"></i>
-                                </a>
-                            </li>
+                                <!-- First -->
+                                <li class="page-item"
+                                    th:if="${currentPage > 2}">
+                                    <a class="page-link"
+                                       th:href="@{/merchants(page=0, size=${pageSize})}">
+                                        1
+                                    </a>
+                                </li>
 
-                            <li class="page-item active">
-                                <span class="page-link">1</span>
-                            </li>
+                                <li class="page-item disabled"
+                                    th:if="${currentPage > 3}">
+                                    <span class="page-link">...</span>
+                                </li>
 
-                            <li class="page-item">
-                                <a class="page-link" href="#">2</a>
-                            </li>
+                                <!-- Middle -->
+                                <li class="page-item"
+                                    th:each="i : ${#numbers.sequence(
+                        T(java.lang.Math).max(0, currentPage - 2),
+                        T(java.lang.Math).min(totalPages - 1, currentPage + 2)
+                    )}"
+                                    th:classappend="${i == currentPage} ? 'active'">
 
-                            <li class="page-item">
-                                <a class="page-link" href="#">3</a>
-                            </li>
+                                    <a th:if="${i != currentPage}"
+                                       class="page-link"
+                                       th:text="${i + 1}"
+                                       th:href="@{/merchants(page=${i}, size=${pageSize})}">
+                                    </a>
 
-                            <li class="page-item">
-                                <a class="page-link" href="#">4</a>
-                            </li>
+                                    <span th:if="${i == currentPage}"
+                                          class="page-link"
+                                          th:text="${i + 1}">
+                    </span>
+                                </li>
 
-                            <!-- Next -->
-                            <li class="page-item">
-                                <a class="page-link" href="#">
-                                    <i class="fa fa-chevron-right"></i>
-                                </a>
-                            </li>
+                                <li class="page-item disabled"
+                                    th:if="${currentPage < totalPages - 4}">
+                                    <span class="page-link">...</span>
+                                </li>
 
-                        </ul>
-                    </nav>
+                                <!-- Last -->
+                                <li class="page-item"
+                                    th:if="${currentPage < totalPages - 3}">
+                                    <a class="page-link"
+                                       th:href="@{/merchants(page=${totalPages - 1}, size=${pageSize})}"
+                                       th:text="${totalPages}">
+                                    </a>
+                                </li>
 
-                    <!-- Records Per Page -->
-                    <select class="form-select form-select-sm"
-                            style="width: 110px;"
-                            name="size">
-                        <option value="5">5 / page</option>
-                        <option value="10">10 / page</option>
-                        <option value="25" selected>25 / page</option>
-                        <option value="50">50 / page</option>
-                    </select>
+                                <!-- Next -->
+                                <li class="page-item"
+                                    th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                                    <a class="page-link"
+                                       th:href="@{/merchants(page=${currentPage + 1}, size=${pageSize})}">
+                                        &raquo;
+                                    </a>
+                                </li>
 
-                    <!-- Total Data -->
-                    <div class="text-muted small">
-                        Total 80 Data
+                            </ul>
+                        </nav>
+                        <!-- Page Size -->
+                        <form method="get" th:action="@{/merchants}" class="mb-0">
+                            <input type="hidden" name="page" value="0"/>
+
+                            <select class="form-select form-select-sm"
+                                    style="width: 110px;"
+                                    name="size"
+                                    onchange="this.form.submit()">
+
+                                <option value="5"  th:selected="${pageSize == 5}">5 / page</option>
+                                <option value="10" th:selected="${pageSize == 10}">10 / page</option>
+                                <option value="25" th:selected="${pageSize == 25}">25 / page</option>
+                                <option value="50" th:selected="${pageSize == 50}">50 / page</option>
+
+                            </select>
+                        </form>
+
+                        <!-- Total -->
+                        <div class="total-text mb-0">
+                            Total <span th:text="${totalElements}"> Data</span>
+                        </div>
                     </div>
 
+                    <!-- Add Button -->
+                    <div th:if="${role == 'ADMIN'}">
+                        <a th:href="@{/merchants/add}"
+                           class="btn btn-brand btn-sm">
+                            <i class="fa fa-plus me-1"></i>
+                            <span th:text="#{merchant.add}"></span>
+                        </a>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
 </section>
-
 </body>
 </html>
