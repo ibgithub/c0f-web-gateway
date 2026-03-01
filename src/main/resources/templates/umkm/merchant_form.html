@@ -15,7 +15,7 @@
 
         <h3 th:text="
             (${mode == 'view'} ? 'Merchant Detail' :
-            (${mode == 'update'} ? 'Edit Merchant' :
+            (${mode == 'edit'} ? 'Edit Merchant' :
             'Create Merchant'))">
         </h3>
         <div th:if="${success}"
@@ -26,8 +26,6 @@
                     class="btn-close"
                     data-bs-dismiss="alert"></button>
         </div>
-
-        <p class="text-muted">Merchant information</p>
 
         <div class="card shadow-sm">
             <div class="card-body">
