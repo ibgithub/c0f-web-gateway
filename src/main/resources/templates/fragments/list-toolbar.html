@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!--
+PARAMETER:
+baseUrl         -> '/merchants'
+currentPage     -> current page (0-based)
+totalPages      -> total halaman
+pageSize        -> size saat ini
+totalElements   -> total data
+showAddButton   -> true/false
+addUrl          -> '/merchants/add'
+addLabel        -> label tombol add
+-->
+
+<div th:fragment="listToolbar(
+        baseUrl,
+        currentPage,
+        totalPages,
+        pageSize,
+        totalElements,
+        showAddButton,
+        addUrl,
+        addLabel
+    )"
+     class="d-flex justify-content-between align-items-center mt-3 flex-wrap">
+
+    <!-- LEFT SIDE -->
+    <div class="d-flex align-items-center gap-4">
+
+        <!-- ================= PAGINATION ================= -->
+        <nav th:if="${totalPages > 1}">
+            <ul class="pagination custom-pagination mb-0">
+
+                <!-- Previous -->
+                <li class="page-item"
+                    th:classappend="${currentPage == 0} ? 'disabled'">
+                    <a class="page-link"
+                       th:href="@{${baseUrl}(page=${currentPage - 1}, size=${pageSize})}">
+                        &laquo;
+                    </a>
+                </li>
+
+                <!-- Middle Pages -->
+                <li class="page-item"
+                    th:each="i : ${#numbers.sequence(
+                        T(java.lang.Math).max(0, currentPage - 2),
+                        T(java.lang.Math).min(totalPages - 1, currentPage + 2)
+                    )}"
+                    th:classappend="${i == currentPage} ? 'active'">
+
+                    <a th:if="${i != currentPage}"
+                       class="page-link"
+                       th:text="${i + 1}"
+                       th:href="@{${baseUrl}(page=${i}, size=${pageSize})}">
+                    </a>
+
+                    <span th:if="${i == currentPage}"
+                          class="page-link"
+                          th:text="${i + 1}">
+                    </span>
+                </li>
+
+                <!-- Next -->
+                <li class="page-item"
+                    th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                    <a class="page-link"
+                       th:href="@{${baseUrl}(page=${currentPage + 1}, size=${pageSize})}">
+                        &raquo;
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
+        <!-- ================= PAGE SIZE ================= -->
+        <form method="get" th:action="@{${baseUrl}}" class="mb-0">
+            <input type="hidden" name="page" value="0"/>
+
+            <select class="form-select form-select-sm"
+                    style="width: 110px;"
+                    name="size"
+                    onchange="this.form.submit()">
+
+                <option value="5"  th:selected="${pageSize == 5}">5 / page</option>
+                <option value="10" th:selected="${pageSize == 10}">10 / page</option>
+                <option value="25" th:selected="${pageSize == 25}">25 / page</option>
+                <option value="50" th:selected="${pageSize == 50}">50 / page</option>
+
+            </select>
+        </form>
+
+        <!-- ================= TOTAL ================= -->
+        <div class="total-text mb-0">
+            Total <span th:text="${totalElements}">0</span> Data
+        </div>
+    </div>
+
+    <!-- ================= ADD BUTTON ================= -->
+    <div th:if="${showAddButton}" class="me-2">
+        <a th:href="@{${addUrl}}"
+           class="btn btn-brand btn-sm">
+            <i class="fa fa-plus me-1"></i>
+            <span th:text="${addLabel}"></span>
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>
