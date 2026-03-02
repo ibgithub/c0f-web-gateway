@@ -4,66 +4,112 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{base_layout}">
 <head>
-    <title>Daftar Kategori Produk</title>
+    <title class="fw-semibold" th:text="#{category.title}"></title>
 </head>
 <body>
 <section layout:fragment="content">
-    <div class="container mt-4">
-        <div class="row mb-3">
-            <div class="col">
-                <h3>Kategori Produk </h3>
-                <p class="text-muted">Daftar Kategori Produk</p>
-            </div>
-            <div th:if="${role == 'ADMIN'}" class="col text-end">
-                <a th:href="@{/categories/add}"
-                   class="btn btn-success">
-                    <i class="fa fa-plus me-1"></i>
-                    Add Category
-                </a>
-            </div>
+    <div class="container pt-1">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+
+            <h5 class="fw-semibold mb-0" th:text="#{category.title}"></h5>
+
+            <form th:action="@{/categories}" method="get" class="d-flex">
+                <input type="hidden" name="page" value="0"/>
+                <input type="hidden" name="size" th:value="${pageSize}"/>
+                <div class="input-group input-group-sm" style="width: 260px;">
+                    <input type="text"
+                           name="keyword"
+                           th:value="${keyword}"
+                           class="form-control"
+                           th:placeholder="#{search.placeholder}">
+
+                    <button type="submit"
+                            class="input-group-text bg-white"
+                            style="cursor:pointer;">
+                        <i class="fa fa-search text-muted"></i>
+                    </button>
+                </div>
+            </form>
+
         </div>
+
+        <!-- Alert -->
         <div th:if="${success}"
-             class="alert alert-success alert-dismissible fade show"
+             class="alert alert-success alert-dismissible fade show shadow-sm"
              role="alert">
             <span th:text="${success}"></span>
             <button type="button"
                     class="btn-close"
                     data-bs-dismiss="alert"></button>
         </div>
-    </div>
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <table class="table table-striped table-hover align-middle">
-                <thead class="table-dark">
-                <tr>
-                    <th>Nama Merchant</th>
-                    <th>Nama Kategori Produk</th>
-                    <th>Deskripsi</th>
-                    <th class="text-end">Action</th>
-                </tr>
-                </thead>
+        <!-- Card -->
+        <div class="card shadow-sm border-0">
+            <div class="card-body rounded-3 pt-2 pb-3">
 
-                <tbody>
-                <tr th:each="c : ${categories}">
-                    <td th:text="${c.merchantName}"></td>
-                    <td th:text="${c.name}"></td>
-                    <td th:text="${c.description}"></td>
-                    <td class="text-end">
-                        <a th:href="@{/categories/{id}(id=${c.id})}"
-                           class="btn btn-sm btn-outline-secondary">
-                            View
-                        </a>
-                        <a th:if="${role == 'ADMIN'}" th:href="@{/categories/{id}/edit(id=${c.id})}"
-                           class="btn btn-sm btn-outline-primary">
-                            Edit
-                        </a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                    <tr>
+                        <th class="fw-semibold text-secondary" th:text="#{category.merchantName}"></th>
+                        <th class="fw-semibold text-secondary" th:text="#{category.name}"></th>
+                        <th class="fw-semibold text-secondary" th:text="#{category.description}"></th>
+                        <th class="text-end fw-semibold text-secondary" th:text="#{action}"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="category : ${categories}">
+                        <td th:text="${category.merchantName}"></td>
+                        <td th:text="${category.name}"></td>
+                        <td th:text="${category.description}"></td>
+                        <td class="text-end">
+                            <!-- LIHAT -->
+                            <a th:href="@{/categories/{id}(id=${category.id})}"
+                               class="btn btn-sm btn-outline-secondary btn-table-action me-1"
+                               data-bs-toggle="tooltip"
+                               data-bs-placement="top"
+                               th:title="#{view}">
+                                <i class="fa fa-eye"></i>
+                            </a>
+
+                            <!-- UBAH -->
+                            <a th:if="${role == 'ADMIN'}"
+                               th:href="@{/categories/{id}/edit(id=${category.id})}"
+                               class="btn btn-sm btn-outline-primary btn-table-action me-1"
+                               data-bs-toggle="tooltip"
+                               data-bs-placement="top"
+                               th:title="#{edit}">
+                                <i class="fa fa-pen"></i>
+                            </a>
+
+                            <!-- HAPUS -->
+                            <a th:if="${role == 'ADMIN'}"
+                               th:href="@{/categories/{id}/delete(id=${cateogry.id})}"
+                               class="btn btn-sm btn-outline-danger btn-table-action"
+                               data-bs-toggle="tooltip"
+                               data-bs-placement="top"
+                               th:title="#{delete}"
+                               onclick="return confirm('Yakin ingin menghapus data ini?');">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div th:replace="~{fragments/list-toolbar :: listToolbar(
+                    '/categories',
+                    ${currentPage},
+                    ${totalPages},
+                    ${pageSize},
+                    ${totalElements},
+                    ${role == 'ADMIN'},
+                    '/categories/add',
+                    #{category.add},
+                    ${keyword}
+                    )}">
+                </div>
+            </div>
         </div>
     </div>
 </section>
-
 </body>
 </html>

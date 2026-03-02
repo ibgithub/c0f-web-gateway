@@ -1,10 +1,15 @@
 package com.ib.web.service.umkm;
 
+import com.ib.web.common.ApiResponse;
+import com.ib.web.common.PageResult;
 import com.ib.web.dto.umkm.CategoryDto;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
@@ -12,12 +17,14 @@ import java.util.List;
 public class CategoryClientService {
 
     private final RestTemplate restTemplate;
+    private final WebClient webClient;
 
     @Value("${umkm.service.url}")
     private String baseUrl;
 
-    public CategoryClientService(RestTemplate restTemplate) {
+    public CategoryClientService(RestTemplate restTemplate, @Qualifier("umkmWebClient") WebClient webClient) {
         this.restTemplate = restTemplate;
+        this.webClient = webClient;
     }
 
     private HttpHeaders headers(String token) {
@@ -46,6 +53,26 @@ public class CategoryClientService {
         } catch (Exception e) {
             throw new RuntimeException("Failed to fetch categories", e);
         }
+    }
+
+    public PageResult<CategoryDto> getCategories(String token, int page, int size, String keyword) {
+        ApiResponse<PageResult<CategoryDto>> response =
+                webClient.get()
+                        .uri(uriBuilder -> uriBuilder
+                                .path("/api/categories")
+                                .queryParam("page", page)
+                                .queryParam("size", size)
+                                .queryParam("keyword", keyword)
+                                .build())
+                        .headers(headers -> headers.setBearerAuth(token))
+                        .retrieve()
+                        .bodyToMono(new ParameterizedTypeReference<ApiResponse<PageResult<CategoryDto>>>() {})
+                        .block(); // karena Thymeleaf tetap blocking
+
+        if (response == null || !response.isSuccess()) {
+            throw new RuntimeException("Failed to fetch categories");
+        }
+        return response.getData();
     }
 
     public void createCategory(CategoryDto dto, String token) {

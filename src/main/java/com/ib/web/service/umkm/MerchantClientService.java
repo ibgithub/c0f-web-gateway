@@ -56,7 +56,6 @@ public class MerchantClientService {
     }
 
     public PageResult<MerchantDto> getMerchants(String jwt, int page, int size, String keyword) {
-
         ApiResponse<PageResult<MerchantDto>> response =
                 webClient.get()
                         .uri(uriBuilder -> uriBuilder

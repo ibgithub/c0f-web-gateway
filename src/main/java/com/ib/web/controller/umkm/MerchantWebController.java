@@ -51,12 +51,6 @@ public class MerchantWebController {
         return claims.get("role", String.class); // ADMIN / USER
     }
 
-//    @ModelAttribute("merchants")
-//    public List<MerchantDto> populateMerchants(Authentication authentication) {
-//        String jwt = (String) authentication.getCredentials();
-//        return merchantClientService.getMerchants(jwt);
-//    }
-
     @GetMapping
     public String merchants(
             @RequestParam(defaultValue = "0") int page,

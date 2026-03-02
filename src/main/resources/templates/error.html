@@ -14,9 +14,7 @@
 <div class="col-lg-6 container mt-5 text-center">
     <h1 th:text="${statusCode}"></h1>
 
-    <h3 th:text="|${statusCode} - ${errorMessage}|"></h3>
-
-    <p th:text="${errorMessage}"></p>
+    <h3 th:text="|${errorMessage}|"></h3>
 
     <!-- BUTTON 401,403 -->
     <a th:if="${#lists.contains({401,403}, statusCode)}" th:href="@{/login}" class="btn btn-premium mt-3">
