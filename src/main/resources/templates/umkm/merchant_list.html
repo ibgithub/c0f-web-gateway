@@ -59,38 +59,40 @@
                             <td th:text="${m.ownerName}"></td>
                             <td th:text="${m.name}"></td>
                             <td class="text-end">
-                                <!-- LIHAT -->
-                                <a th:href="@{/merchants/{id}(id=${m.id})}"
-                                   class="btn btn-sm btn-outline-secondary btn-table-action me-1"
-                                   data-bs-toggle="tooltip"
-                                   data-bs-placement="top"
-                                   th:title="#{view}">
-                                    <i class="fa fa-eye"></i>
-                                </a>
+                                <div class="d-inline-flex align-items-center gap-1">
+                                    <!-- LIHAT -->
+                                    <a th:href="@{/merchants/{id}(id=${m.id})}"
+                                       class="btn btn-sm btn-outline-secondary btn-table-action"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-placement="top"
+                                       th:title="#{view}">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
 
-                                <!-- UBAH -->
-                                <a th:if="${role == 'ADMIN'}"
-                                   th:href="@{/merchants/{id}/edit(id=${m.id})}"
-                                   class="btn btn-sm btn-outline-primary btn-table-action me-1"
-                                   data-bs-toggle="tooltip"
-                                   data-bs-placement="top"
-                                   th:title="#{edit}">
-                                    <i class="fa fa-pen"></i>
-                                </a>
+                                    <!-- UBAH -->
+                                    <a th:if="${role == 'ADMIN'}"
+                                       th:href="@{/merchants/{id}/edit(id=${m.id})}"
+                                       class="btn btn-sm btn-outline-primary btn-table-action"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-placement="top"
+                                       th:title="#{edit}">
+                                        <i class="fa fa-pen"></i>
+                                    </a>
 
-                                <!-- HAPUS -->
-                                <form th:if="${role == 'ADMIN'}"
-                                      th:action="@{/merchants/{id}/delete(id=${m.id})}"
-                                      method="post"
-                                      th:onsubmit="|return confirm('#{delete.confirm}');|">
+                                    <!-- HAPUS -->
+                                    <form th:if="${role == 'ADMIN'}"
+                                          th:action="@{/merchants/{id}/delete(id=${m.id})}"
+                                          method="post"
+                                          th:onsubmit="|return confirm('#{delete.confirm}');|">
 
-                                    <button type="submit"
-                                            class="btn btn-sm btn-outline-primary btn-table-action me-1"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="top">
-                                        <i class="fa fa-trash me-1"></i>
-                                    </button>
-                                </form>
+                                        <button type="submit"
+                                                class="btn btn-sm btn-outline-danger btn-table-action"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="top">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         </tbody>
