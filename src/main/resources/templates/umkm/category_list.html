@@ -82,15 +82,17 @@
                                 </a>
 
                                 <!-- HAPUS -->
-                                <a th:if="${role == 'ADMIN'}"
-                                   th:href="@{/categories/{id}/delete(id=${cateogry.id})}"
-                                   class="btn btn-sm btn-outline-danger btn-table-action"
-                                   data-bs-toggle="tooltip"
-                                   data-bs-placement="top"
-                                   th:title="#{delete}"
-                                   onclick="return confirm('Yakin ingin menghapus data ini?');">
-                                    <i class="fa fa-trash"></i>
-                                </a>
+                                <form th:if="${role == 'ADMIN'}"
+                                      th:action="@{/categories/{id}/delete(id=${category.id})}"
+                                      method="post"
+                                      th:onsubmit="|return confirm('#{delete.confirm}');|">
+
+                                    <button type="submit"
+                                            class="btn btn-form-danger btn-sm">
+                                        <i class="fa fa-trash me-1"></i>
+                                        <span th:text="#{delete}"></span>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         </tbody>
