@@ -15,7 +15,7 @@
             <form th:action="@{/merchants}" method="get" class="d-flex">
                 <input type="hidden" name="page" value="0"/>
                 <input type="hidden" name="size" th:value="${pageSize}"/>
-                <div class="input-group input-group-sm" style="width: 260px;">
+                <div class="input-group input-group-sm" style="width: 320px;">
                     <input type="text"
                            name="keyword"
                            th:value="${keyword}"
@@ -44,55 +44,55 @@
         <!-- Card -->
         <div class="card shadow-sm border-0">
             <div class="card-body rounded-3 pt-2 pb-3">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                        <tr>
+                            <th class="fw-semibold text-secondary" th:text="#{merchant.owner}"></th>
+                            <th class="fw-semibold text-secondary" th:text="#{merchant.name}"></th>
+                            <th class="text-end fw-semibold text-secondary" th:text="#{action}"></th>
+                        </tr>
+                        </thead>
 
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                    <tr>
-                        <th class="fw-semibold text-secondary" th:text="#{merchant.owner}"></th>
-                        <th class="fw-semibold text-secondary" th:text="#{merchant.name}"></th>
-                        <th class="text-end fw-semibold text-secondary" th:text="#{action}"></th>
-                    </tr>
-                    </thead>
+                        <tbody>
+                        <tr th:each="m : ${merchants}">
+                            <td th:text="${m.ownerName}"></td>
+                            <td th:text="${m.name}"></td>
+                            <td class="text-end">
+                                <!-- LIHAT -->
+                                <a th:href="@{/merchants/{id}(id=${m.id})}"
+                                   class="btn btn-sm btn-outline-secondary btn-table-action me-1"
+                                   data-bs-toggle="tooltip"
+                                   data-bs-placement="top"
+                                   th:title="#{view}">
+                                    <i class="fa fa-eye"></i>
+                                </a>
 
-                    <tbody>
-                    <tr th:each="m : ${merchants}">
-                        <td th:text="${m.ownerName}"></td>
-                        <td th:text="${m.name}"></td>
-                        <td class="text-end">
-                            <!-- LIHAT -->
-                            <a th:href="@{/merchants/{id}(id=${m.id})}"
-                               class="btn btn-sm btn-outline-secondary btn-table-action me-1"
-                               data-bs-toggle="tooltip"
-                               data-bs-placement="top"
-                               th:title="#{view}">
-                                <i class="fa fa-eye"></i>
-                            </a>
+                                <!-- UBAH -->
+                                <a th:if="${role == 'ADMIN'}"
+                                   th:href="@{/merchants/{id}/edit(id=${m.id})}"
+                                   class="btn btn-sm btn-outline-primary btn-table-action me-1"
+                                   data-bs-toggle="tooltip"
+                                   data-bs-placement="top"
+                                   th:title="#{edit}">
+                                    <i class="fa fa-pen"></i>
+                                </a>
 
-                            <!-- UBAH -->
-                            <a th:if="${role == 'ADMIN'}"
-                               th:href="@{/merchants/{id}/edit(id=${m.id})}"
-                               class="btn btn-sm btn-outline-primary btn-table-action me-1"
-                               data-bs-toggle="tooltip"
-                               data-bs-placement="top"
-                               th:title="#{edit}">
-                                <i class="fa fa-pen"></i>
-                            </a>
-
-                            <!-- HAPUS -->
-                            <a th:if="${role == 'ADMIN'}"
-                               th:href="@{/merchants/{id}/delete(id=${m.id})}"
-                               class="btn btn-sm btn-outline-danger btn-table-action"
-                               data-bs-toggle="tooltip"
-                               data-bs-placement="top"
-                               th:title="#{delete}"
-                               onclick="return confirm('Yakin ingin menghapus data ini?');">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-
+                                <!-- HAPUS -->
+                                <a th:if="${role == 'ADMIN'}"
+                                   th:href="@{/merchants/{id}/delete(id=${m.id})}"
+                                   class="btn btn-sm btn-outline-danger btn-table-action"
+                                   data-bs-toggle="tooltip"
+                                   data-bs-placement="top"
+                                   th:title="#{delete}"
+                                   onclick="return confirm('Yakin ingin menghapus data ini?');">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <div th:replace="~{fragments/list-toolbar :: listToolbar(
                     '/merchants',
                     ${currentPage},
