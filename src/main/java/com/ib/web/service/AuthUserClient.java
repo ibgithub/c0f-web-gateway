@@ -63,7 +63,7 @@ public class AuthUserClient {
                         .block(); // karena Thymeleaf tetap blocking
 
         if (response == null || !response.isSuccess()) {
-            throw new RuntimeException("Failed to fetch merchants");
+            throw new RuntimeException("Failed to fetch users");
         }
 
         return response.getData();

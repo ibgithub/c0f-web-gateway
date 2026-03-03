@@ -4,6 +4,8 @@ import com.ib.web.common.PageResult;
 import com.ib.web.dto.ChangePasswordDto;
 import com.ib.web.dto.UserDto;
 import com.ib.web.service.AuthUserClient;
+import com.ib.web.service.JwtService;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,14 +21,24 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class UserWebController {
 
     private final AuthUserClient authUserClient;
+    private final JwtService jwtService;
 
-    public UserWebController(AuthUserClient authUserClient) {
+    public UserWebController(AuthUserClient authUserClient, JwtService jwtService) {
         this.authUserClient = authUserClient;
+        this.jwtService = jwtService;
     }
     @ModelAttribute("currentUri")
     public String currentUri(HttpServletRequest request) {
         return request.getRequestURI();
     }
+
+    @ModelAttribute("role")
+    public String getRole(Authentication authentication) {
+        String jwt = (String) authentication.getCredentials();
+        Claims claims = jwtService.validateToken(jwt);
+        return claims.get("role", String.class); // ADMIN / USER
+    }
+
     // ===============================
     // ADD USER FORM
     // ===============================
