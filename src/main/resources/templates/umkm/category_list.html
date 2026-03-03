@@ -17,7 +17,7 @@
             <form th:action="@{/categories}" method="get" class="d-flex">
                 <input type="hidden" name="page" value="0"/>
                 <input type="hidden" name="size" th:value="${pageSize}"/>
-                <div class="input-group input-group-sm" style="width: 320px;">
+                <div class="input-group input-group-sm search-box" style="width: 320px;">
                     <input type="text"
                            name="keyword"
                            th:value="${keyword}"

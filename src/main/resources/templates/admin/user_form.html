@@ -9,108 +9,172 @@
 </head>
 
 <body>
+
 <section layout:fragment="content">
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <h4 class="fw-semibold mb-3"
+                th:text="(${mode == 'view'} ? #{user.detail} :
+                         (${mode == 'edit'} ? #{user.edit} :
+                          #{user.add}))">
+            </h4>
 
-    <div class="container mt-4">
-
-        <h3 th:text="
-            ${self} ? 'My Profile' :
-            (${mode == 'view'} ? 'User Detail' :
-            (${mode == 'update'} ? 'Edit User' :
-            'Create User'))">
-        </h3>
-        <div th:if="${success}"
-             class="alert alert-success alert-dismissible fade show"
-             role="alert">
-            <span th:text="${success}"></span>
-            <button type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert"></button>
-        </div>
-
-        <p class="text-muted">User information</p>
-
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <form th:action="
-                    ${mode == 'add'} ?
-                        @{/users/add} :
-                        @{/users/{id}/edit(id=${user.id})}"
-                      th:object="${user}"
-                      method="post">
-
-                    <!-- USERNAME -->
-                    <div class="mb-3">
-                        <label class="form-label">Username</label>
-                        <input class="form-control"
-                               th:field="*{username}"
-                               th:readonly="${mode == 'view' || mode == 'edit'}" />
-                    </div>
-
-                    <!-- EMAIL -->
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input class="form-control"
-                               th:field="*{email}"
-                               th:readonly="${mode == 'view'}" />
-                    </div>
-
-                    <!-- PASSWORD (ONLY CREATE) -->
-                    <div class="mb-3" th:if="${mode == 'add'}">
-                        <label class="form-label">Password</label>
-                        <input type="password"
-                               class="form-control"
-                               th:field="*{password}" />
-                    </div>
-
-                    <!-- ROLE (ADMIN ONLY) -->
-                    <div class="mb-3" th:if="${!self}">
-                        <label class="form-label">Role</label>
-                        <select class="form-select"
-                                th:field="*{role}"
-                                th:disabled="${mode == 'view'}">
-                            <option value="USER">USER</option>
-                            <option value="ADMIN">ADMIN</option>
-                        </select>
-                    </div>
-
-                    <!-- BUTTONS -->
-                    <div th:if="${mode == 'view'}" class="d-flex justify-content-between">
-                        <!-- MY PROFILE -->
-                        <a th:if="${self}"
-                           th:href="@{/users/me/edit}"
-                           class="btn btn-premium">
-                            Edit Profile
-                        </a>
-                        <!-- ADMIN VIEW -->
-                        <a th:if="${!self}"
-                           th:href="@{/users/{id}/edit(id=${user.id})}"
-                           class="btn btn-premium">
-                            Edit
-                        </a>
-                        <a th:href="${self} ? '/' : '/users'"
-                           class="btn btn-secondary">
-                            Cancel
-                        </a>
-                    </div>
-                    <div th:if="${mode == 'edit' || mode == 'add'}">
-
-                        <button type="submit" class="btn btn-success">
-                            Save
-                        </button>
-
-                        <a th:href="${mode == 'add'} ? '/users' :
-                                (${self} ? '/users/me' :
-                                '/users/' + ${user.id})"
-                           class="btn btn-secondary">
-                            Cancel
-                        </a>
-                    </div>
-                </form>
+            <!-- ALERT -->
+            <div th:if="${success}"
+                 class="alert alert-success alert-dismissible fade show shadow-sm"
+                 role="alert">
+                <span th:text="${success}"></span>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"></button>
             </div>
+            <!-- CARD -->
+            <form th:action="
+                            ${mode == 'add'} ?
+                                @{/users/add} :
+                                @{/users/{id}/edit(id=${user.id})}"
+                  th:object="${user}"
+                  method="post">
+                <div class="card shadow-sm border-0 detail-card">
+                    <div class="row g-4">
+                        <!-- ================= LEFT COLUMN ================= -->
+                        <div class="col-md-6">
+
+                            <!-- USERNAME -->
+                            <div class="mb-3">
+                                <label class="form-label" th:text="#{user.username}"></label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{username}"/>
+                            </div>
+
+                            <!-- PASSWORD (hide saat view) -->
+                            <div class="mb-3" th:if="${mode == 'add'}">
+                                <label class="form-label" th:text="#{user.password}"></label>
+                                <input type="password"
+                                       class="form-control"
+                                       th:field="*{password}"
+                                       />
+                            </div>
+
+                            <!-- FIRST NAME -->
+                            <div class="mb-3">
+                                <label class="form-label" th:text="#{user.firstName}"></label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{firstName}"
+                                       th:readonly="${mode == 'view'}"/>
+                            </div>
+
+                            <!-- LAST NAME -->
+                            <div class="mb-3">
+                                <label class="form-label" th:text="#{user.lastName}"></label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{lastName}"
+                                       th:readonly="${mode == 'view'}"/>
+                            </div>
+
+                            <!-- EMAIL -->
+                            <div class="mb-3">
+                                <label class="form-label" th:text="#{user.email}"></label>
+                                <input type="email"
+                                       class="form-control"
+                                       th:field="*{email}"
+                                       th:readonly="${mode == 'view'}"/>
+                            </div>
+
+                        </div>
+
+                        <!-- ================= RIGHT COLUMN ================= -->
+                        <div class="col-md-6">
+
+                            <!-- PHONE NUMBER -->
+                            <div class="mb-3">
+                                <label class="form-label" th:text="#{user.phoneNumber}"></label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{phoneNumber}"
+                                       th:readonly="${mode == 'view'}"/>
+                            </div>
+
+                            <!-- ROLE -->
+                            <div class="mb-3">
+                                <label class="form-label" th:text="#{user.role}"></label>
+                                <select class="form-select"
+                                        th:field="*{role}"
+                                        th:disabled="${mode == 'view'}">
+
+                                    <option value=""
+                                            th:text="#{select.role}">
+                                    </option>
+                                    <option value="ADMIN">ADMIN</option>
+                                    <option value="USER">USER</option>
+                                    <option value="MERCHANT_OWNER">MERCHANT_OWNER</option>
+                                    <option value="MERCHANT_CASHIER">MERCHANT_CASHIER</option>
+
+                                </select>
+                            </div>
+
+                            <!-- APP LANGUAGE -->
+                            <div class="mb-3">
+                                <label class="form-label" th:text="#{user.appLang}"></label>
+                                <select class="form-select"
+                                        th:field="*{appLang}"
+                                        th:disabled="${mode == 'view'}">
+
+                                    <option value=""
+                                            th:text="#{select.appLang}">
+                                    </option>
+                                    <option value="id">Indonesia</option>
+                                    <option value="en">English</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BUTTONS -->
+                <div class="d-flex justify-content-end border-top pt-3 mt-4">
+                    <div class="d-flex gap-2">
+                        <!-- SAVE -->
+                        <button th:if="${mode == 'edit' || mode == 'add'}"
+                                type="submit"
+                                class="btn btn-form-primary btn-sm">
+                            <i class="fa fa-save me-1"></i>
+                            <span th:text="#{save}"></span>
+                        </button>
+                        <!-- EDIT (VIEW MODE) -->
+                        <a th:if="${mode == 'view' && role == 'ADMIN'}"
+                           th:href="@{/users/{id}/edit(id=${user.id})}"
+                           class="btn btn-form-outline btn-sm">
+                            <i class="fa fa-pen me-1"></i>
+                            <span th:text="#{edit}"></span>
+                        </a>
+                        <!-- DELETE -->
+                        <form th:if="${mode == 'view' && role == 'ADMIN'}"
+                              th:action="@{/users/{id}/delete(id=${user.id})}"
+                              method="post"
+                              th:onsubmit="|return confirm('#{delete.confirm}');|">
+
+                            <button type="submit"
+                                    class="btn btn-form-danger btn-sm">
+                                <i class="fa fa-trash me-1"></i>
+                                <span th:text="#{delete}"></span>
+                            </button>
+                        </form>
+                        <!-- CANCEL -->
+                        <a th:href="@{/users}"
+                           class="btn btn-form-cancel btn-sm">
+                            <span th:text="#{cancel}"></span>
+                        </a>
+                    </div>
+                </div>
+
+            </form>
         </div>
     </div>
-
 </section>
+
 </body>
 </html>

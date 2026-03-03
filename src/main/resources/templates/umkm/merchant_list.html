@@ -15,7 +15,7 @@
             <form th:action="@{/merchants}" method="get" class="d-flex">
                 <input type="hidden" name="page" value="0"/>
                 <input type="hidden" name="size" th:value="${pageSize}"/>
-                <div class="input-group input-group-sm" style="width: 320px;">
+                <div class="input-group input-group-sm search-box" style="width: 320px;">
                     <input type="text"
                            name="keyword"
                            th:value="${keyword}"
@@ -85,9 +85,10 @@
                                       th:onsubmit="|return confirm('#{delete.confirm}');|">
 
                                     <button type="submit"
-                                            class="btn btn-form-danger btn-sm">
+                                            class="btn btn-sm btn-outline-primary btn-table-action me-1"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top">
                                         <i class="fa fa-trash me-1"></i>
-                                        <span th:text="#{delete}"></span>
                                     </button>
                                 </form>
                             </td>

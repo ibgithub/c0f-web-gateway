@@ -5,14 +5,15 @@
       layout:decorate="~{base_layout}">
 
 <head>
-    <title>Merchant Detail</title>
+    <title class="fw-semibold" th:text="(${mode == 'view'} ? #{merchant.detail} :
+                             (${mode == 'edit'} ? #{merchant.edit} :
+                              #{merchant.add}))"></title>
 </head>
 
 <body>
+
 <section layout:fragment="content">
-
     <div class="container py-4">
-
         <!-- TITLE -->
         <div class="row justify-content-center">
             <div class="col-lg-6 col-md-8">
@@ -33,16 +34,16 @@
                             data-bs-dismiss="alert"></button>
                 </div>
 
-                <!-- CARD -->
-                <div class="card shadow-sm border-0">
-                    <div class="card-body p-4">
-
-                        <form th:action="
+                <form th:action="
                                 ${mode == 'add'} ?
                                     @{/merchants/add} :
                                     @{/merchants/{id}/edit(id=${merchant.id})}"
-                              th:object="${merchant}"
-                              method="post">
+                      th:object="${merchant}"
+                      method="post">
+
+                    <!-- CARD -->
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body p-4">
 
                             <!-- OWNER -->
                             <div class="mb-3">
@@ -86,9 +87,7 @@
 
                             <!-- BUTTONS -->
                             <div class="d-flex justify-content-end border-top pt-3 mt-4">
-
                                 <div class="d-flex gap-2">
-
                                     <!-- SAVE -->
                                     <button th:if="${mode == 'edit' || mode == 'add'}"
                                             type="submit"
@@ -96,7 +95,6 @@
                                         <i class="fa fa-save me-1"></i>
                                         <span th:text="#{save}"></span>
                                     </button>
-
                                     <!-- EDIT (VIEW MODE) -->
                                     <a th:if="${mode == 'view' && role == 'ADMIN'}"
                                        th:href="@{/merchants/{id}/edit(id=${merchant.id})}"
@@ -104,7 +102,6 @@
                                         <i class="fa fa-pen me-1"></i>
                                         <span th:text="#{edit}"></span>
                                     </a>
-
                                     <!-- DELETE -->
                                     <form th:if="${mode == 'view' && role == 'ADMIN'}"
                                           th:action="@{/merchants/{id}/delete(id=${merchant.id})}"
@@ -117,21 +114,17 @@
                                             <span th:text="#{delete}"></span>
                                         </button>
                                     </form>
-
                                     <!-- CANCEL -->
                                     <a th:href="@{/merchants}"
                                        class="btn btn-form-cancel btn-sm">
                                         <span th:text="#{cancel}"></span>
                                     </a>
-
                                 </div>
-
                             </div>
 
-                        </form>
+                        </div>
                     </div>
-                </div>
-
+                </form>
             </div>
         </div>
     </div>

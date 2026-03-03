@@ -17,7 +17,7 @@
             <form th:action="@{/users}" method="get" class="d-flex">
                 <input type="hidden" name="page" value="0"/>
                 <input type="hidden" name="size" th:value="${pageSize}"/>
-                <div class="input-group input-group-sm" style="width: 320px;">
+                <div class="input-group input-group-sm search-box" style="width: 320px;">
                     <input type="text"
                            name="keyword"
                            th:value="${keyword}"
@@ -71,52 +71,58 @@
                             <td th:text="${user.phoneNumber}"></td>
                             <td th:text="${user.email}"></td>
                             <td class="text-end">
-                                <!-- LIHAT -->
-                                <a th:href="@{/users/{id}(id=${user.id})}"
-                                   class="btn btn-sm btn-outline-secondary btn-table-action me-1"
-                                   data-bs-toggle="tooltip"
-                                   data-bs-placement="top"
-                                   th:title="#{view}">
-                                    <i class="fa fa-eye"></i>
-                                </a>
+                                <div class="d-inline-flex align-items-center gap-1">
+                                    <!-- LIHAT -->
+                                    <a th:href="@{/users/{id}(id=${user.id})}"
+                                       class="btn btn-sm btn-outline-secondary btn-table-action"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-placement="top"
+                                       th:title="#{view}">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
 
-                                <!-- UBAH th:if="${role == 'ADMIN'}" -->
-                                <a
-                                   th:href="@{/users/{id}/edit(id=${user.id})}"
-                                   class="btn btn-sm btn-outline-primary btn-table-action me-1"
-                                   data-bs-toggle="tooltip"
-                                   data-bs-placement="top"
-                                   th:title="#{edit}">
-                                    <i class="fa fa-pen"></i>
-                                </a>
+                                    <!-- UBAH th:if="${role == 'ADMIN'}" -->
+                                    <a
+                                       th:href="@{/users/{id}/edit(id=${user.id})}"
+                                       class="btn btn-sm btn-outline-primary btn-table-action"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-placement="top"
+                                       th:title="#{edit}">
+                                        <i class="fa fa-pen"></i>
+                                    </a>
 
-                                <a th:href="@{/users/{id}/password(id=${user.id})}"
-                                   class="btn btn-sm btn-outline-danger btn-table-action me-1"
-                                   data-bs-toggle="tooltip"
-                                   data-bs-placement="top"
-                                   th:title="#{nav.change.password}">
-                                    <i class="fa fa-key"></i>
-                                </a>
+                                    <a th:href="@{/users/{id}/password(id=${user.id})}"
+                                       class="btn btn-sm btn-outline-warning btn-table-action"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-placement="top"
+                                       th:title="#{nav.change.password}">
+                                        <i class="fa fa-key"></i>
+                                    </a>
 
-                                <!-- HAPUS th:if="${role == 'ADMIN'}"-->
-                                <form th:if="${role == 'ADMIN'}"
-                                      th:action="@{/users/{id}/delete(id=${user.id})}"
-                                      method="post"
-                                      th:onsubmit="|return confirm('#{delete.confirm}');|">
+                                    <!-- HAPUS th:if="${role == 'ADMIN'}"-->
+                                    <form th:if="${role == 'ADMIN'}"
+                                          th:action="@{/users/{id}/delete(id=${user.id})}"
+                                          method="post"
+                                          th:onsubmit="|return confirm('#{delete.confirm}');|">
 
-                                    <button type="submit"
-                                            class="btn btn-form-danger btn-sm">
-                                        <i class="fa fa-trash me-1"></i>
-                                        <span th:text="#{delete}"></span>
-                                    </button>
-                                </form>
+                                        <button type="submit"
+                                                class="btn btn-sm btn-outline-danger btn-table-action"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="top"
+                                                th:title="#{delete}">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
 
-                <div th:replace="~{fragments/list-toolbar :: listToolbar(
+        <div th:replace="~{fragments/list-toolbar :: listToolbar(
                     '/users',
                     ${currentPage},
                     ${totalPages},
@@ -127,8 +133,6 @@
                     #{user.add},
                     ${keyword}
                     )}">
-                </div>
-            </div>
         </div>
     </div>
 </section>

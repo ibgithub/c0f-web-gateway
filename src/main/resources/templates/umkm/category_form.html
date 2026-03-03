@@ -5,18 +5,20 @@
       layout:decorate="~{base_layout}">
 
 <head>
-    <title>Category Detail</title>
+    <title class="fw-semibold" th:text="(${mode == 'view'} ? #{category.detail} :
+                             (${mode == 'edit'} ? #{category.edit} :
+                              #{category.add}))"></title>
 </head>
 
 <body>
+
 <section layout:fragment="content">
 
     <div class="container mt-4">
 
-        <h3 th:text="
-            (${mode == 'view'} ? 'Category Detail' :
-            (${mode == 'update'} ? 'Edit Category' :
-            'Create Category'))">
+        <h3 th:text="(${mode == 'view'} ? #{category.detail} :
+                             (${mode == 'edit'} ? #{category.edit} :
+                              #{category.add}))">
         </h3>
         <div th:if="${success}"
              class="alert alert-success alert-dismissible fade show"
@@ -96,5 +98,6 @@
     </div>
 
 </section>
+
 </body>
 </html>
