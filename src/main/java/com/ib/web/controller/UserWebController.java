@@ -1,17 +1,17 @@
 package com.ib.web.controller;
 
+import com.ib.web.common.PageResult;
 import com.ib.web.dto.ChangePasswordDto;
 import com.ib.web.dto.UserDto;
 import com.ib.web.service.AuthUserClient;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/users")
@@ -47,19 +47,28 @@ public class UserWebController {
         return "redirect:/users";
     }
 
-    // ===============================
-    // USER LIST (ADMIN)
-    // ===============================
     @GetMapping
-    public String listUsers(HttpSession session, Model model) {
-        if (session.getAttribute("JWT") == null) {
+    public String listUsers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String keyword,
+            Model model, Authentication authentication) {
+
+        if (authentication == null || !authentication.isAuthenticated()) {
             return "redirect:/login";
         }
-        String token = (String) session.getAttribute("JWT");
 
-        List<UserDto> users = authUserClient.getUsers(token);
-        model.addAttribute("users", users);
+        String token = (String) authentication.getCredentials();
 
+        PageResult<UserDto> result =
+                authUserClient.getUsers(token, page, size, keyword);
+
+        model.addAttribute("users", result.getContent());
+        model.addAttribute("currentPage", result.getPage());
+        model.addAttribute("totalPages", result.getTotalPages());
+        model.addAttribute("pageSize", result.getSize());
+        model.addAttribute("totalElements", result.getTotalElements());
+        model.addAttribute("keyword", keyword == null ? "" : keyword);
         return "admin/user_list";
     }
 
