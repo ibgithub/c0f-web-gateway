@@ -17,22 +17,11 @@
         <!-- TITLE -->
         <div class="row justify-content-center">
             <div class="col-lg-6 col-md-8">
-
                 <h4 class="fw-semibold mb-3"
                     th:text="(${mode == 'view'} ? #{merchant.detail} :
                              (${mode == 'edit'} ? #{merchant.edit} :
                               #{merchant.add}))">
                 </h4>
-
-                <!-- ALERT -->
-                <div th:if="${success}"
-                     class="alert alert-success alert-dismissible fade show shadow-sm"
-                     role="alert">
-                    <span th:text="${success}"></span>
-                    <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="alert"></button>
-                </div>
 
                 <form th:action="
                                 ${mode == 'add'} ?
@@ -85,43 +74,14 @@
                                 </div>
                             </div>
 
-                            <!-- BUTTONS -->
-                            <div class="d-flex justify-content-end border-top pt-3 mt-4">
-                                <div class="d-flex gap-2">
-                                    <!-- SAVE -->
-                                    <button th:if="${mode == 'edit' || mode == 'add'}"
-                                            type="submit"
-                                            class="btn btn-form-primary btn-sm">
-                                        <i class="fa fa-save me-1"></i>
-                                        <span th:text="#{save}"></span>
-                                    </button>
-                                    <!-- EDIT (VIEW MODE) -->
-                                    <a th:if="${mode == 'view' && role == 'ADMIN'}"
-                                       th:href="@{/merchants/{id}/edit(id=${merchant.id})}"
-                                       class="btn btn-form-outline btn-sm">
-                                        <i class="fa fa-pen me-1"></i>
-                                        <span th:text="#{edit}"></span>
-                                    </a>
-                                    <!-- DELETE -->
-                                    <form th:if="${mode == 'view' && role == 'ADMIN'}"
-                                          th:action="@{/merchants/{id}/delete(id=${merchant.id})}"
-                                          method="post"
-                                          th:onsubmit="|return confirm('#{delete.confirm}');|">
-
-                                        <button type="submit"
-                                                class="btn btn-form-danger btn-sm">
-                                            <i class="fa fa-trash me-1"></i>
-                                            <span th:text="#{delete}"></span>
-                                        </button>
-                                    </form>
-                                    <!-- CANCEL -->
-                                    <a th:href="@{/merchants}"
-                                       class="btn btn-form-cancel btn-sm">
-                                        <span th:text="#{cancel}"></span>
-                                    </a>
-                                </div>
-                            </div>
-
+                            <div th:replace="~{fragments/form-actions :: formActions(
+                                    ${mode},
+                                    '/merchants/' + ${merchant.id} + '/edit',
+                                    '/merchants/' + ${merchant.id} + '/delete',
+                                    '/merchants',
+                                    ${role == 'ADMIN'},
+                                    ${role == 'ADMIN'}
+                            )}"></div>
                         </div>
                     </div>
                 </form>
@@ -129,5 +89,6 @@
         </div>
     </div>
 </section>
+
 </body>
 </html>

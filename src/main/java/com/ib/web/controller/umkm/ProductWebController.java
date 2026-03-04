@@ -47,6 +47,12 @@ public class ProductWebController {
         return claims.get("role", String.class); // ADMIN / USER
     }
 
+    @ModelAttribute("merchants")
+    public List<MerchantDto> getMerchantsByRole(Authentication authentication) {
+        String jwt = (String) authentication.getCredentials();
+        return merchantClientService.getMerchantsByRole(jwt);
+    }
+
     @GetMapping
     public String products(Model model, Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -69,11 +75,7 @@ public class ProductWebController {
     }
 
     @GetMapping("/add")
-    public String addForm(Model model, Authentication authentication) {
-        String jwt = (String) authentication.getCredentials();
-        List<MerchantDto> merchants = merchantClientService.getMerchants(jwt);
-
-        model.addAttribute("merchants", merchants);
+    public String addForm(Model model) {
         model.addAttribute("product", new ProductDto());
         model.addAttribute("mode", "add");
         model.addAttribute("self", false);
@@ -97,9 +99,6 @@ public class ProductWebController {
         }
         String token = (String) session.getAttribute("JWT");
         ProductDto product = productClientService.getById(id, token);
-        List<MerchantDto> merchants = merchantClientService.getMerchants(token);
-
-        model.addAttribute("merchants", merchants);
         model.addAttribute("product", product);
         model.addAttribute("mode", "view");
         model.addAttribute("self", false);
@@ -116,9 +115,6 @@ public class ProductWebController {
         }
         String token = (String) session.getAttribute("JWT");
         ProductDto product = productClientService.getById(id, token);
-        List<MerchantDto> merchants = merchantClientService.getMerchants(token);
-
-        model.addAttribute("merchants", merchants);
         model.addAttribute("product", product);
         model.addAttribute("mode", "edit");
         model.addAttribute("self", false);

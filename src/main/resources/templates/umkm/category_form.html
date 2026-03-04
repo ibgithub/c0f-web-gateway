@@ -13,90 +13,67 @@
 <body>
 
 <section layout:fragment="content">
-
-    <div class="container mt-4">
-
-        <h3 th:text="(${mode == 'view'} ? #{category.detail} :
+    <div class="container py-4">
+        <!-- TITLE -->
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <h4 class="fw-semibold mb-3"
+                    th:text="(${mode == 'view'} ? #{category.detail} :
                              (${mode == 'edit'} ? #{category.edit} :
                               #{category.add}))">
-        </h3>
-        <div th:if="${success}"
-             class="alert alert-success alert-dismissible fade show"
-             role="alert">
-            <span th:text="${success}"></span>
-            <button type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert"></button>
-        </div>
+                </h4>
 
-        <p class="text-muted">Category Information</p>
-
-        <div class="card shadow-sm">
-            <div class="card-body">
                 <form th:action="
-                    ${mode == 'add'} ?
-                        @{/categories/add} :
-                        @{/categories/{id}/edit(id=${category.id})}"
+                                ${mode == 'add'} ?
+                                    @{/categories/add} :
+                                    @{/categories/{id}/edit(id=${category.id})}"
                       th:object="${category}"
                       method="post">
 
-                    <div class="mb-3">
-                        <label class="form-label">Merchant</label>
-                        <select class="form-select"
-                                th:field="*{merchantId}"
-                                th:disabled="${mode == 'view'}">
-                            <option value="">-- Select Merchant --</option>
-                            <option th:each="m : ${merchants}"
-                                    th:value="${m.id}"
-                                    th:text="${m.name}">
-                            </option>
-                        </select>
-                    </div>
+                    <!-- CARD -->
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body p-4">
+                            <div class="mb-3">
+                                <label class="form-label">Merchant</label>
+                                <select class="form-select"
+                                        th:field="*{merchantId}"
+                                        th:disabled="${mode == 'view'}">
+                                    <option value="">-- Select Merchant --</option>
+                                    <option th:each="m : ${merchants}"
+                                            th:value="${m.id}"
+                                            th:text="${m.name}">
+                                    </option>
+                                </select>
+                            </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Category Name</label>
-                        <input class="form-control"
-                               th:field="*{name}"
-                               th:readonly="${mode == 'view'}" />
-                    </div>
+                            <div class="mb-3">
+                                <label class="form-label">Category Name</label>
+                                <input class="form-control"
+                                       th:field="*{name}"
+                                       th:readonly="${mode == 'view'}" />
+                            </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Description</label>
-                        <input class="form-control"
-                               th:field="*{description}"
-                               th:readonly="${mode == 'view'}" />
-                    </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <input class="form-control"
+                                       th:field="*{description}"
+                                       th:readonly="${mode == 'view'}" />
+                            </div>
 
-                    <!-- BUTTONS -->
-                    <div th:if="${mode == 'view'}" class="d-flex justify-content-between">
-                        <!-- ADMIN VIEW -->
-                        <a th:if="${role == 'ADMIN'}"
-                           th:href="@{/categories/{id}/edit(id=${category.id})}"
-                           class="btn btn-premium">
-                            Edit
-                        </a>
-                        <a th:href="@{/categories}"
-                           class="btn btn-secondary">
-                            Cancel
-                        </a>
-                    </div>
-                    <div th:if="${mode == 'edit' || mode == 'add'}">
-
-                        <button type="submit" class="btn btn-success">
-                            Save
-                        </button>
-
-                        <a th:href="${mode == 'add'} ? '/categories' :
-                                ('/categories/' + ${category.id})"
-                           class="btn btn-secondary">
-                            Cancel
-                        </a>
+                            <div th:replace="~{fragments/form-actions :: formActions(
+                                    ${mode},
+                                    '/categories/' + ${category.id} + '/edit',
+                                    '/categories/' + ${category.id} + '/delete',
+                                    '/categories',
+                                    ${role == 'ADMIN'},
+                                    ${role == 'ADMIN'}
+                            )}"></div>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
 </section>
 
 </body>

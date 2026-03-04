@@ -34,7 +34,7 @@ public class MerchantClientService {
         return h;
     }
 
-    public List<MerchantDto> getMerchants(String jwt) {
+    public List<MerchantDto> getMerchantsByRole(String jwt) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setBearerAuth(jwt);
@@ -43,7 +43,7 @@ public class MerchantClientService {
 
             ResponseEntity<MerchantDto[]> res =
                     restTemplate.exchange(
-                            baseUrl + "/api/merchants",
+                            baseUrl + "/api/merchants/data",
                             HttpMethod.GET,
                             entity,
                             MerchantDto[].class
@@ -55,7 +55,7 @@ public class MerchantClientService {
         }
     }
 
-    public PageResult<MerchantDto> getMerchants(String jwt, int page, int size, String keyword) {
+    public PageResult<MerchantDto> getMerchantsByRole(String jwt, int page, int size, String keyword) {
         ApiResponse<PageResult<MerchantDto>> response =
                 webClient.get()
                         .uri(uriBuilder -> uriBuilder

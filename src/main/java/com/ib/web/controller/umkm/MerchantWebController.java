@@ -68,7 +68,7 @@ public class MerchantWebController {
         String jwt = (String) authentication.getCredentials();
 
         PageResult<MerchantDto> result =
-                merchantClientService.getMerchants(jwt, page, size, keyword);
+                merchantClientService.getMerchantsByRole(jwt, page, size, keyword);
 
         model.addAttribute("merchants", result.getContent());
         model.addAttribute("currentPage", result.getPage());

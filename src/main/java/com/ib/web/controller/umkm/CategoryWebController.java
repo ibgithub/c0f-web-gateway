@@ -2,6 +2,7 @@ package com.ib.web.controller.umkm;
 
 import com.ib.web.common.PageResult;
 import com.ib.web.dto.umkm.CategoryDto;
+import com.ib.web.dto.umkm.MerchantDto;
 import com.ib.web.service.JwtService;
 import com.ib.web.service.umkm.CategoryClientService;
 import com.ib.web.service.umkm.MerchantClientService;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/categories")
@@ -43,6 +46,12 @@ public class CategoryWebController {
         String jwt = (String) authentication.getCredentials();
         Claims claims = jwtService.validateToken(jwt);
         return claims.get("role", String.class); // ADMIN / USER
+    }
+
+    @ModelAttribute("merchants")
+    public List<MerchantDto> getMerchantsByRole(Authentication authentication) {
+        String jwt = (String) authentication.getCredentials();
+        return merchantClientService.getMerchantsByRole(jwt);
     }
 
 //    @ModelAttribute("categories")
