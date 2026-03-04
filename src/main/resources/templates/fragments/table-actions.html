@@ -1,0 +1,38 @@
+<div th:fragment="tableActions(viewUrl, editUrl, deleteUrl, showEdit, showDelete)"
+     class="d-inline-flex align-items-center gap-1">
+
+    <!-- VIEW -->
+    <a th:href="@{${viewUrl}}"
+       class="btn btn-sm btn-outline-secondary btn-table-action"
+       data-bs-toggle="tooltip"
+       data-bs-placement="top"
+       th:title="#{view}">
+        <i class="fa fa-eye"></i>
+    </a>
+
+    <!-- EDIT -->
+    <a th:if="${showEdit}"
+       th:href="@{${editUrl}}"
+       class="btn btn-sm btn-outline-primary btn-table-action"
+       data-bs-toggle="tooltip"
+       data-bs-placement="top"
+       th:title="#{edit}">
+        <i class="fa fa-pen"></i>
+    </a>
+
+    <!-- DELETE -->
+    <form th:if="${showDelete}"
+          th:action="@{${deleteUrl}}"
+          method="post"
+          th:onsubmit="|return confirm('#{delete.confirm}');|">
+
+        <button type="submit"
+                class="btn btn-sm btn-outline-danger btn-table-action"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                th:title="#{delete}">
+            <i class="fa fa-trash"></i>
+        </button>
+    </form>
+
+</div>

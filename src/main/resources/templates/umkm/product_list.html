@@ -55,14 +55,14 @@
                     <td th:text="${p.costPrice}"></td>
                     <td th:text="${p.sellingPrice}"></td>
                     <td class="text-end">
-                        <a th:href="@{/products/{id}(id=${p.id})}"
-                           class="btn btn-sm btn-outline-secondary">
-                            View
-                        </a>
-                        <a th:if="${role == 'ADMIN'}" th:href="@{/products/{id}/edit(id=${p.id})}"
-                           class="btn btn-sm btn-outline-primary">
-                            Edit
-                        </a>
+                        <div th:replace="~{fragments/table-actions :: tableActions(
+                                    '/products/' + ${p.id},
+                                    '/products/' + ${p.id} + '/edit',
+                                    '/products/' + ${p.id} + '/delete',
+                                    ${role == 'ADMIN' or role == 'MERCHANT_OWNER'},
+                                    ${role == 'ADMIN' or role == 'MERCHANT_OWNER'}
+                                    )}">
+                        </div>
                     </td>
                 </tr>
                 </tbody>

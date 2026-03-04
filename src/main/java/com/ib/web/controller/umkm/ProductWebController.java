@@ -40,6 +40,13 @@ public class ProductWebController {
         return request.getRequestURI();
     }
 
+    @ModelAttribute("role")
+    public String getRole(Authentication authentication) {
+        String jwt = (String) authentication.getCredentials();
+        Claims claims = jwtService.validateToken(jwt);
+        return claims.get("role", String.class); // ADMIN / USER
+    }
+
     @GetMapping
     public String products(Model model, Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {

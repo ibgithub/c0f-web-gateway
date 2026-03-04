@@ -6,6 +6,7 @@ import com.ib.web.service.JwtService;
 import com.ib.web.service.umkm.CategoryClientService;
 import com.ib.web.service.umkm.MerchantClientService;
 import com.ib.web.util.MessageUtil;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -35,6 +36,13 @@ public class CategoryWebController {
     @ModelAttribute("currentUri")
     public String currentUri(HttpServletRequest request) {
         return request.getRequestURI();
+    }
+
+    @ModelAttribute("role")
+    public String getRole(Authentication authentication) {
+        String jwt = (String) authentication.getCredentials();
+        Claims claims = jwtService.validateToken(jwt);
+        return claims.get("role", String.class); // ADMIN / USER
     }
 
 //    @ModelAttribute("categories")
