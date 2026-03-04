@@ -52,7 +52,6 @@
                         <tr>
                             <th class="fw-semibold text-secondary" th:text="#{category.merchantName}"></th>
                             <th class="fw-semibold text-secondary" th:text="#{category.name}"></th>
-                            <th class="fw-semibold text-secondary" th:text="#{category.description}"></th>
                             <th class="text-end fw-semibold text-secondary" th:text="#{action}"></th>
                         </tr>
                         </thead>
@@ -60,7 +59,6 @@
                         <tr th:each="category : ${categories}">
                             <td th:text="${category.merchantName}"></td>
                             <td th:text="${category.name}"></td>
-                            <td th:text="${category.description}"></td>
                             <td class="text-end">
                                 <!-- LIHAT -->
                                 <a th:href="@{/categories/{id}(id=${category.id})}"

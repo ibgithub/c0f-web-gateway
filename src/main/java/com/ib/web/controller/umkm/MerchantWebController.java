@@ -6,6 +6,8 @@ import com.ib.web.dto.umkm.MerchantDto;
 import com.ib.web.service.AuthUserClient;
 import com.ib.web.service.JwtService;
 import com.ib.web.service.umkm.MerchantClientService;
+import com.ib.web.util.Constants;
+import com.ib.web.util.MessageUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -22,15 +24,16 @@ import java.util.List;
 @Controller
 @RequestMapping("/merchants")
 public class MerchantWebController {
-
     private final MerchantClientService merchantClientService;
     private final AuthUserClient authUserClient;
     private final JwtService jwtService;
+    private final MessageUtil messageUtil;
 
-    public MerchantWebController(MerchantClientService merchantClientService, AuthUserClient authUserClient, JwtService jwtService) {
+    public MerchantWebController(MerchantClientService merchantClientService, AuthUserClient authUserClient, JwtService jwtService, MessageUtil messageUtil) {
         this.merchantClientService = merchantClientService;
         this.authUserClient = authUserClient;
         this.jwtService = jwtService;
+        this.messageUtil = messageUtil;
     }
 
     @ModelAttribute("currentUri")
@@ -38,10 +41,10 @@ public class MerchantWebController {
         return request.getRequestURI();
     }
 
-    @ModelAttribute("users")
-    public List<UserDto> populateUsers(Authentication authentication) {
+    @ModelAttribute("merchantOwners")
+    public List<UserDto> populateMerchantOwners(Authentication authentication) {
         String jwt = (String) authentication.getCredentials();
-        return authUserClient.getUsersByRole(jwt, "USER");
+        return authUserClient.getUsersByRole(jwt, Constants.MERCHANT_OWNER);
     }
 
     @ModelAttribute("role")
@@ -92,7 +95,8 @@ public class MerchantWebController {
     // ===============================
     @PostMapping("/add")
     public String saveMerchant(HttpSession session, Model model,
-                           @Valid @ModelAttribute("merchant") MerchantDto merchant, BindingResult result) {
+                           @Valid @ModelAttribute("merchant") MerchantDto merchant,
+                               BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             model.addAttribute("mode", "add");
             model.addAttribute("self", false);
@@ -100,6 +104,10 @@ public class MerchantWebController {
         }
         String token = (String) session.getAttribute("JWT");
         merchantClientService.createMerchant(merchant, token);
+        redirectAttributes.addFlashAttribute(
+                "success",
+                messageUtil.get("merchant.add.success")
+        );
         return "redirect:/merchants";
     }
 
@@ -152,7 +160,7 @@ public class MerchantWebController {
     public String updateMerchant(
          @PathVariable Long id, Model model,
          @Valid @ModelAttribute("merchant") MerchantDto merchant, BindingResult result,
-         Authentication authentication
+         Authentication authentication, RedirectAttributes redirectAttributes
     ) {
         if (result.hasErrors()) {
             model.addAttribute("mode", "edit");
@@ -162,6 +170,10 @@ public class MerchantWebController {
         String jwt = (String) authentication.getCredentials();
         merchant.setId(id);
         merchantClientService.updateMerchant(id, merchant, jwt);
+        redirectAttributes.addFlashAttribute(
+                "success",
+                messageUtil.get("merchant.edit.success")
+        );
         return "redirect:/merchants";
     }
     // ===============================
@@ -177,7 +189,10 @@ public class MerchantWebController {
         }
         String jwt = (String) authentication.getCredentials();
         merchantClientService.deleteMerchant(id, jwt);
-        redirectAttributes.addFlashAttribute("success", "Pedagang berhasil dihapus.");
+        redirectAttributes.addFlashAttribute(
+                "success",
+                messageUtil.get("merchant.delete.success")
+        );
         return "redirect:/merchants";
     }
 }

@@ -5,6 +5,7 @@ import com.ib.web.dto.umkm.CategoryDto;
 import com.ib.web.service.JwtService;
 import com.ib.web.service.umkm.CategoryClientService;
 import com.ib.web.service.umkm.MerchantClientService;
+import com.ib.web.util.MessageUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/categories")
@@ -19,13 +21,15 @@ public class CategoryWebController {
     private final MerchantClientService merchantClientService;
     private final CategoryClientService categoryClientService;
     private final JwtService jwtService;
+    private final MessageUtil messageUtil;
 
     public CategoryWebController(MerchantClientService merchantClientService,
                                  CategoryClientService categoryClientService,
-                                 JwtService jwtService) {
+                                 JwtService jwtService, MessageUtil messageUtil) {
         this.merchantClientService = merchantClientService;
         this.categoryClientService = categoryClientService;
         this.jwtService = jwtService;
+        this.messageUtil = messageUtil;
     }
 
     @ModelAttribute("currentUri")
@@ -73,9 +77,14 @@ public class CategoryWebController {
     }
 
     @PostMapping("/add")
-    public String saveCategory(HttpSession session, @Valid @ModelAttribute("category") CategoryDto category) {
+    public String saveCategory(HttpSession session, @Valid @ModelAttribute("category") CategoryDto category,
+                               RedirectAttributes redirectAttributes) {
         String token = (String) session.getAttribute("JWT");
         categoryClientService.createCategory(category, token);
+        redirectAttributes.addFlashAttribute(
+                "success",
+                messageUtil.get("category.add.success")
+        );
         return "redirect:/categories";
     }
 
@@ -114,11 +123,15 @@ public class CategoryWebController {
     @PostMapping("/{id}/edit")
     public String updateCategory(HttpSession session,
                              @PathVariable Long id,
-                             @Valid @ModelAttribute("category") CategoryDto category
+                             @Valid @ModelAttribute("category") CategoryDto category, RedirectAttributes redirectAttributes
     ) {
         String token = (String) session.getAttribute("JWT");
         category.setId(id);
         categoryClientService.updateCategory(id, category, token);
+        redirectAttributes.addFlashAttribute(
+                "success",
+                messageUtil.get("category.edit.success")
+        );
         return "redirect:/categories";
     }
 }

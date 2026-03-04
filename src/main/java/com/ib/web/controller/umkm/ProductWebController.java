@@ -5,6 +5,7 @@ import com.ib.web.dto.umkm.ProductDto;
 import com.ib.web.service.JwtService;
 import com.ib.web.service.umkm.MerchantClientService;
 import com.ib.web.service.umkm.ProductClientService;
+import com.ib.web.util.MessageUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -23,13 +24,15 @@ public class ProductWebController {
     private final MerchantClientService merchantClientService;
     private final ProductClientService productClientService;
     private final JwtService jwtService;
+    private final MessageUtil messageUtil;
 
     public ProductWebController(MerchantClientService merchantClientService,
                                 ProductClientService productClientService,
-                                JwtService jwtService) {
+                                JwtService jwtService, MessageUtil messageUtil) {
         this.productClientService = productClientService;
         this.merchantClientService = merchantClientService;
         this.jwtService = jwtService;
+        this.messageUtil = messageUtil;
     }
 
     @ModelAttribute("currentUri")
