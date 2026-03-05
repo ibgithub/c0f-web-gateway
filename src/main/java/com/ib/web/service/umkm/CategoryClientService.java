@@ -106,12 +106,12 @@ public class CategoryClientService {
     }
 
     public void createCategory(CategoryDto dto, String token) {
-        HttpEntity<?> entity = new HttpEntity<>(headers(token));
+        HttpEntity<?> entity = new HttpEntity<>(dto, headers(token));
         restTemplate.postForEntity(baseUrl + "/api/categories", entity, Void.class);
     }
 
     public void updateCategory(Long id, CategoryDto dto, String token) {
-        HttpEntity<?> entity = new HttpEntity<>(headers(token));
+        HttpEntity<?> entity = new HttpEntity<>(dto, headers(token));
         restTemplate.exchange(
                 baseUrl + "/api/categories/" + id,
                 HttpMethod.PUT,

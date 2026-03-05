@@ -62,7 +62,7 @@
                     ${totalPages},
                     ${pageSize},
                     ${totalElements},
-                    ${role == 'ADMIN'},
+                    ${role == 'ADMIN' or role == 'MERCHANT_OWNER'},
                     '/products/add',
                     #{product.add},
                     ${keyword}

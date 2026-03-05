@@ -56,7 +56,7 @@
                     ${totalPages},
                     ${pageSize},
                     ${totalElements},
-                    ${role == 'ADMIN'},
+                    ${role == 'ADMIN' or role == 'MERCHANT_OWNER'},
                     '/categories/add',
                     #{category.add},
                     ${keyword}
