@@ -24,6 +24,19 @@
                             </small>
                         </div>
 
+                        <div th:if="${error}"
+                             class="alert alert-danger alert-dismissible fade show"
+                             role="alert">
+
+                            <span th:if="${error == 'login_failed'}"
+                                  th:text="#{login.error.invalid}">
+                            </span>
+
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="alert">
+                            </button>
+                        </div>
                         <form th:action="@{/login}" method="post">
 
                             <!-- USERNAME -->

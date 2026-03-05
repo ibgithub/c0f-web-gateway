@@ -39,8 +39,8 @@
                             <td th:text="${product.merchantName}"></td>
                             <td th:text="${product.categoryName}"></td>
                             <td th:text="${product.name}"></td>
-                            <td th:text="${product.costPrice}"></td>
-                            <td th:text="${product.sellingPrice}"></td>
+                            <td class="money-cell" th:insert="~{fragments/money :: money(${product.costPrice})}"></td>
+                            <td class="money-cell" th:insert="~{fragments/money :: money(${product.sellingPrice})}"></td>
                             <td th:text="${product.status}"></td>
                             <td class="text-end">
                                 <div th:replace="~{fragments/table-actions :: tableActions(

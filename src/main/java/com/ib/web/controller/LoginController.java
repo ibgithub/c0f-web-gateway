@@ -60,36 +60,45 @@ public class LoginController {
     public String doLogin(
             @RequestParam String username,
             @RequestParam String password,
-            HttpServletRequest request
+            HttpServletRequest request,
+            org.springframework.ui.Model model
     ) {
-        String jwt = authClientService.login(username, password);
 
-        Claims claims = jwtService.validateToken(jwt);
+        try {
 
-        String user = claims.getSubject();          // username
-        String role = claims.get("role", String.class); // ADMIN / USER
+            String jwt = authClientService.login(username, password);
 
-        List<SimpleGrantedAuthority> authorities =
-                List.of(new SimpleGrantedAuthority("ROLE_" + role));
+            Claims claims = jwtService.validateToken(jwt);
 
-        Authentication auth =
-                new UsernamePasswordAuthenticationToken(
-                        user,
-                        jwt,
-                        authorities
-                );
+            String user = claims.getSubject();
+            String role = claims.get("role", String.class);
 
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        context.setAuthentication(auth);
+            List<SimpleGrantedAuthority> authorities =
+                    List.of(new SimpleGrantedAuthority("ROLE_" + role));
 
-        request.getSession(true)
-                .setAttribute(
-                        HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-                        context
-                );
+            Authentication auth =
+                    new UsernamePasswordAuthenticationToken(
+                            user,
+                            jwt,
+                            authorities
+                    );
 
-        request.getSession().setAttribute("JWT", jwt);
-        return "redirect:/index";
+            SecurityContext context = SecurityContextHolder.createEmptyContext();
+            context.setAuthentication(auth);
+
+            request.getSession(true).setAttribute(
+                    HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+                    context
+            );
+
+            request.getSession().setAttribute("JWT", jwt);
+
+            return "redirect:/index";
+
+        } catch (Exception ex) {
+            model.addAttribute("error", "login_failed");
+            return "login";
+        }
     }
 
     @GetMapping("/logout")

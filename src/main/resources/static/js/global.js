@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // ================= AUTO HIDE ALERT =================
-    const alert = document.querySelector(".alert-success");
+    const alert = document.querySelector(".alert");
 
     if (alert) {
         setTimeout(function () {

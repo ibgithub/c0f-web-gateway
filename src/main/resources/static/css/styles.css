@@ -494,3 +494,7 @@ body {
 body {
     background: linear-gradient(135deg, #f4f6fb, #eef1f7);
 }
+.money-cell {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
