@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 
 public class ProductDto {
     private Long id;
-    private String sku; //Stock Keeping Unit
     private Long ownerId;
     private String OwnerName;
 
@@ -24,6 +23,11 @@ public class ProductDto {
     private String name;
     private BigDecimal costPrice;
     private BigDecimal sellingPrice;
+
+    private String status;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     private String createdBy;
     private LocalDateTime createdDate;
@@ -44,14 +48,6 @@ public class ProductDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getSku() {
-        return sku;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
     }
 
     public BigDecimal getCostPrice() {
@@ -116,6 +112,14 @@ public class ProductDto {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getCreatedBy() {

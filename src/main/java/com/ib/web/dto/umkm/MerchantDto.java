@@ -8,7 +8,7 @@ public class MerchantDto {
 
     @NotBlank(message = "Nama merchant wajib diisi")
     private String name;
-    private Integer status;
+    private String status;
 
     @NotNull(message = "Owner wajib dipilih")
     private Long ownerId;
@@ -30,11 +30,11 @@ public class MerchantDto {
         this.name = name;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

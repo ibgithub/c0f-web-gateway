@@ -16,7 +16,9 @@ import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -99,9 +101,21 @@ public class ProductWebController {
     }
 
     @PostMapping("/add")
-    public String saveUser(HttpSession session, @Valid @ModelAttribute("product") ProductDto product) {
+    public String saveProduct(HttpSession session,
+          @Valid @ModelAttribute("product") ProductDto product,
+          BindingResult result,
+          Model model, RedirectAttributes redirectAttributes
+       ) {
+        if (result.hasErrors()) {
+            model.addAttribute("mode", "add");
+            return "umkm/product_form";
+        }
         String token = (String) session.getAttribute("JWT");
         productClientService.createProduct(product, token);
+        redirectAttributes.addFlashAttribute(
+                "success",
+                messageUtil.get("product.add.success")
+        );
         return "redirect:/products";
     }
 
@@ -139,13 +153,23 @@ public class ProductWebController {
 
     @PostMapping("/{id}/edit")
     public String updateProduct(HttpSession session,
-                             @PathVariable Long id,
-                                @Valid @ModelAttribute("product") ProductDto product
+        @PathVariable Long id,
+        @Valid @ModelAttribute("product") ProductDto product,
+        BindingResult result,
+        Model model, RedirectAttributes redirectAttributes
     ) {
+        if (result.hasErrors()) {
+            model.addAttribute("mode", "edit");
+            return "umkm/product_form";
+        }
         String token = (String) session.getAttribute("JWT");
 
         product.setId(id);
         productClientService.updateProduct(id, product, token);
+        redirectAttributes.addFlashAttribute(
+                "success",
+                messageUtil.get("product.edit.success")
+        );
         return "redirect:/products";
     }
 }

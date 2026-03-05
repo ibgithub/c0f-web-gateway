@@ -25,6 +25,7 @@
                         <tr>
                             <th class="fw-semibold text-secondary" th:text="#{merchant.owner}"></th>
                             <th class="fw-semibold text-secondary" th:text="#{merchant.name}"></th>
+                            <th class="fw-semibold text-secondary" th:text="#{status}"></th>
                             <th class="text-end fw-semibold text-secondary" th:text="#{action}"></th>
                         </tr>
                         </thead>
@@ -32,6 +33,7 @@
                         <tr th:each="m : ${merchants}">
                             <td th:text="${m.ownerName}"></td>
                             <td th:text="${m.name}"></td>
+                            <td th:text="${m.status}"></td>
                             <td class="text-end">
                                 <div th:replace="~{fragments/table-actions :: tableActions(
                                     '/merchants/' + ${m.id},

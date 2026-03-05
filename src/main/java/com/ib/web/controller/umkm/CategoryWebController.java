@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -95,8 +96,13 @@ public class CategoryWebController {
     }
 
     @PostMapping("/add")
-    public String saveCategory(HttpSession session, @Valid @ModelAttribute("category") CategoryDto category,
-                               RedirectAttributes redirectAttributes) {
+    public String saveCategory(HttpSession session,
+           @Valid @ModelAttribute("category") CategoryDto category,
+           BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            model.addAttribute("mode", "add");
+            return "umkm/category_form";
+        }
         String token = (String) session.getAttribute("JWT");
         categoryClientService.createCategory(category, token);
         redirectAttributes.addFlashAttribute(
@@ -140,9 +146,15 @@ public class CategoryWebController {
 
     @PostMapping("/{id}/edit")
     public String updateCategory(HttpSession session,
-                             @PathVariable Long id,
-                             @Valid @ModelAttribute("category") CategoryDto category, RedirectAttributes redirectAttributes
+         @PathVariable Long id,
+         @Valid @ModelAttribute("category") CategoryDto category,
+         BindingResult result, Model model,
+         RedirectAttributes redirectAttributes
     ) {
+        if (result.hasErrors()) {
+            model.addAttribute("mode", "edit");
+            return "umkm/category_form";
+        }
         String token = (String) session.getAttribute("JWT");
         category.setId(id);
         categoryClientService.updateCategory(id, category, token);

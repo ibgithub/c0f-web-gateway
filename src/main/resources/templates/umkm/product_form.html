@@ -45,6 +45,10 @@
                                                 th:text="${m.name}">
                                         </option>
                                     </select>
+                                    <div th:if="${#fields.hasErrors('merchantId')}"
+                                         th:errors="*{merchantId}"
+                                         class="text-danger small mt-1">
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" th:text="#{product.category}"></label>
@@ -58,6 +62,10 @@
                                                 th:data-merchant="${c.merchantId}">
                                         </option>
                                     </select>
+                                    <div th:if="${#fields.hasErrors('categoryId')}"
+                                         th:errors="*{categoryId}"
+                                         class="text-danger small mt-1">
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
@@ -65,17 +73,14 @@
                                     <input class="form-control"
                                            th:field="*{name}"
                                            th:readonly="${mode == 'view'}" />
+                                    <div th:if="${#fields.hasErrors('name')}"
+                                         th:errors="*{name}"
+                                         class="text-danger small mt-1">
+                                    </div>
                                 </div>
                             </div>
                             <!-- ================= RIGHT COLUMN ================= -->
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label" th:text="#{product.sku}"></label>
-                                    <input class="form-control"
-                                           th:field="*{sku}"
-                                           th:readonly="${mode == 'view'}" />
-                                </div>
-
                                 <div class="mb-3">
                                     <label class="form-label" th:text="#{product.costPrice}"></label>
                                     <input class="form-control"
@@ -88,6 +93,15 @@
                                     <input class="form-control"
                                            th:field="*{sellingPrice}"
                                            th:readonly="${mode == 'view'}" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" th:text="#{status}"></label>
+                                    <select class="form-select"
+                                            th:field="*{status}"
+                                            th:disabled="${mode == 'view'}">
+                                        <option value="ACTIVE">ACTIVE</option>
+                                        <option value="INACTIVE">INACTIVE</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

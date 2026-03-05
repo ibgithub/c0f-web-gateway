@@ -73,6 +73,15 @@
                                      class="text-danger small mt-1">
                                 </div>
                             </div>
+                            <div class="mb-4">
+                                <label class="form-label" th:text="#{status}"></label>
+                                <select class="form-select"
+                                        th:field="*{status}"
+                                        th:disabled="${mode == 'view'}">
+                                    <option value="ACTIVE">ACTIVE</option>
+                                    <option value="INACTIVE">INACTIVE</option>
+                                </select>
+                            </div>
 
                             <div th:replace="~{fragments/form-actions :: formActions(
                                     ${mode},

@@ -27,6 +27,10 @@
                         <tr>
                             <th class="fw-semibold text-secondary" th:text="#{category.merchantName}"></th>
                             <th class="fw-semibold text-secondary" th:text="#{category.name}"></th>
+                            <th class="fw-semibold text-secondary" th:text="#{product.name}"></th>
+                            <th class="fw-semibold text-secondary" th:text="#{product.costPrice}"></th>
+                            <th class="fw-semibold text-secondary" th:text="#{product.sellingPrice}"></th>
+                            <th class="fw-semibold text-secondary" th:text="#{status}"></th>
                             <th class="text-end fw-semibold text-secondary" th:text="#{action}"></th>
                         </tr>
                         </thead>
@@ -37,6 +41,7 @@
                             <td th:text="${product.name}"></td>
                             <td th:text="${product.costPrice}"></td>
                             <td th:text="${product.sellingPrice}"></td>
+                            <td th:text="${product.status}"></td>
                             <td class="text-end">
                                 <div th:replace="~{fragments/table-actions :: tableActions(
                                     '/products/' + ${product.id},

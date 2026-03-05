@@ -95,12 +95,11 @@ public class MerchantWebController {
     // ADD MERCHANT POST
     // ===============================
     @PostMapping("/add")
-    public String saveMerchant(HttpSession session, Model model,
+    public String saveMerchant(HttpSession session,
                            @Valid @ModelAttribute("merchant") MerchantDto merchant,
-                               BindingResult result, RedirectAttributes redirectAttributes) {
+                           BindingResult result, Model model, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             model.addAttribute("mode", "add");
-            model.addAttribute("self", false);
             return "umkm/merchant_form";
         }
         String token = (String) session.getAttribute("JWT");
@@ -159,13 +158,13 @@ public class MerchantWebController {
        ====================== */
     @PostMapping("/{id}/edit")
     public String updateMerchant(
-         @PathVariable Long id, Model model,
-         @Valid @ModelAttribute("merchant") MerchantDto merchant, BindingResult result,
+         @PathVariable Long id,
+         @Valid @ModelAttribute("merchant") MerchantDto merchant,
+         Model model, BindingResult result,
          Authentication authentication, RedirectAttributes redirectAttributes
     ) {
         if (result.hasErrors()) {
             model.addAttribute("mode", "edit");
-            model.addAttribute("self", false);
             return "umkm/merchant_form";
         }
         String jwt = (String) authentication.getCredentials();
