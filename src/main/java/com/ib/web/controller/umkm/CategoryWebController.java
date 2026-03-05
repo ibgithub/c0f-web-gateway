@@ -76,6 +76,7 @@ public class CategoryWebController {
         PageResult<CategoryDto> result =
                 categoryClientService.getCategories(jwt, page, size, keyword);
 
+        model.addAttribute("activeMenu", "merchants");
         model.addAttribute("categories", result.getContent());
         model.addAttribute("currentPage", result.getPage());
         model.addAttribute("totalPages", result.getTotalPages());

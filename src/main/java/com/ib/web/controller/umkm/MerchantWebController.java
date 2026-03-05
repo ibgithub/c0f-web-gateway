@@ -70,6 +70,7 @@ public class MerchantWebController {
         PageResult<MerchantDto> result =
                 merchantClientService.getMerchantsByRole(jwt, page, size, keyword);
 
+        model.addAttribute("activeMenu", "merchants");
         model.addAttribute("merchants", result.getContent());
         model.addAttribute("currentPage", result.getPage());
         model.addAttribute("totalPages", result.getTotalPages());

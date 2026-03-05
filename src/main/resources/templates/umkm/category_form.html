@@ -34,11 +34,13 @@
                     <div class="card shadow-sm border-0">
                         <div class="card-body p-4">
                             <div class="mb-3">
-                                <label class="form-label">Merchant</label>
+                                <label class="form-label" th:text="#{category.merchantName}"></label>
                                 <select class="form-select"
                                         th:field="*{merchantId}"
                                         th:disabled="${mode == 'view'}">
-                                    <option value="">-- Select Merchant --</option>
+                                    <option value=""
+                                            th:text="#{select.merchant}">
+                                    </option>
                                     <option th:each="m : ${merchants}"
                                             th:value="${m.id}"
                                             th:text="${m.name}">
@@ -47,14 +49,14 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Category Name</label>
+                                <label class="form-label" th:text="#{category.name}"></label>
                                 <input class="form-control"
                                        th:field="*{name}"
                                        th:readonly="${mode == 'view'}" />
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Description</label>
+                                <label class="form-label" th:text="#{category.description}"></label>
                                 <input class="form-control"
                                        th:field="*{description}"
                                        th:readonly="${mode == 'view'}" />

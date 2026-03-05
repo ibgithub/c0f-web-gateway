@@ -1,10 +1,15 @@
 package com.ib.web.service.umkm;
 
+import com.ib.web.common.ApiResponse;
+import com.ib.web.common.PageResult;
 import com.ib.web.dto.umkm.ProductDto;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
@@ -12,12 +17,14 @@ import java.util.List;
 public class ProductClientService {
 
     private final RestTemplate restTemplate;
+    private final WebClient webClient;
 
     @Value("${umkm.service.url}")
     private String baseUrl;
 
-    public ProductClientService(RestTemplate restTemplate) {
+    public ProductClientService(RestTemplate restTemplate, @Qualifier("umkmWebClient") WebClient webClient) {
         this.restTemplate = restTemplate;
+        this.webClient = webClient;
     }
 
     private HttpHeaders headers(String token) {
@@ -46,6 +53,26 @@ public class ProductClientService {
         } catch (Exception e) {
             throw new RuntimeException("Failed to fetch members", e);
         }
+    }
+
+    public PageResult<ProductDto> getProducts(String token, int page, int size, String keyword) {
+        ApiResponse<PageResult<ProductDto>> response =
+                webClient.get()
+                        .uri(uriBuilder -> uriBuilder
+                                .path("/api/products")
+                                .queryParam("page", page)
+                                .queryParam("size", size)
+                                .queryParam("keyword", keyword)
+                                .build())
+                        .headers(headers -> headers.setBearerAuth(token))
+                        .retrieve()
+                        .bodyToMono(new ParameterizedTypeReference<ApiResponse<PageResult<ProductDto>>>() {})
+                        .block(); // karena Thymeleaf tetap blocking
+
+        if (response == null || !response.isSuccess()) {
+            throw new RuntimeException("Failed to fetch categories");
+        }
+        return response.getData();
     }
 
     public void createProduct(ProductDto dto, String token) {

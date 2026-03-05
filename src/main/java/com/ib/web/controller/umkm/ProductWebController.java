@@ -1,8 +1,11 @@
 package com.ib.web.controller.umkm;
 
+import com.ib.web.common.PageResult;
+import com.ib.web.dto.umkm.CategoryDto;
 import com.ib.web.dto.umkm.MerchantDto;
 import com.ib.web.dto.umkm.ProductDto;
 import com.ib.web.service.JwtService;
+import com.ib.web.service.umkm.CategoryClientService;
 import com.ib.web.service.umkm.MerchantClientService;
 import com.ib.web.service.umkm.ProductClientService;
 import com.ib.web.util.MessageUtil;
@@ -22,15 +25,17 @@ import java.util.List;
 public class ProductWebController {
 
     private final MerchantClientService merchantClientService;
+    private final CategoryClientService categoryClientService;
     private final ProductClientService productClientService;
     private final JwtService jwtService;
     private final MessageUtil messageUtil;
 
-    public ProductWebController(MerchantClientService merchantClientService,
+    public ProductWebController(MerchantClientService merchantClientService, CategoryClientService categoryClientService,
                                 ProductClientService productClientService,
                                 JwtService jwtService, MessageUtil messageUtil) {
-        this.productClientService = productClientService;
         this.merchantClientService = merchantClientService;
+        this.categoryClientService = categoryClientService;
+        this.productClientService = productClientService;
         this.jwtService = jwtService;
         this.messageUtil = messageUtil;
     }
@@ -53,24 +58,35 @@ public class ProductWebController {
         return merchantClientService.getMerchantsByRole(jwt);
     }
 
+    @ModelAttribute("categories")
+    public List<CategoryDto> getCategoriesByRole(Authentication authentication) {
+        String jwt = (String) authentication.getCredentials();
+        return categoryClientService.getCategoriesByRole(jwt);
+    }
+
     @GetMapping
-    public String products(Model model, Authentication authentication) {
+    public String products(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String keyword,
+            Model model, Authentication authentication) {
+
         if (authentication == null || !authentication.isAuthenticated()) {
             return "redirect:/login";
         }
 
         String jwt = (String) authentication.getCredentials();
 
-        Claims claims = jwtService.validateToken(jwt);
-
-        String role = claims.get("role", String.class); // ADMIN / USER
+        PageResult<ProductDto> result =
+                productClientService.getProducts(jwt, page, size, keyword);
 
         model.addAttribute("activeMenu", "merchants");
-        model.addAttribute("title", "Merchants");
-        model.addAttribute("role", role);
-        List<ProductDto> products = productClientService.getProducts(jwt);
-        model.addAttribute("products", products);
-
+        model.addAttribute("products", result.getContent());
+        model.addAttribute("currentPage", result.getPage());
+        model.addAttribute("totalPages", result.getTotalPages());
+        model.addAttribute("pageSize", result.getSize());
+        model.addAttribute("totalElements", result.getTotalElements());
+        model.addAttribute("keyword", keyword == null ? "" : keyword);
         return "umkm/product_list";
     }
 

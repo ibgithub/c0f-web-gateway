@@ -34,16 +34,46 @@ public class CategoryClientService {
         return h;
     }
 
-    public List<CategoryDto> getCategories(String jwt) {
+    public List<CategoryDto> getCategories(String token) {
         try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setBearerAuth(jwt);
-
-            HttpEntity<Void> entity = new HttpEntity<>(headers);
-
+            HttpEntity<?> entity = new HttpEntity<>(headers(token));
             ResponseEntity<CategoryDto[]> res =
                     restTemplate.exchange(
                             baseUrl + "/api/categories",
+                            HttpMethod.GET,
+                            entity,
+                            CategoryDto[].class
+                    );
+
+            return List.of(res.getBody());
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to fetch categories", e);
+        }
+    }
+
+    public List<CategoryDto> getCategoriesByRole(String token) {
+        try {
+            HttpEntity<?> entity = new HttpEntity<>(headers(token));
+            ResponseEntity<CategoryDto[]> res =
+                    restTemplate.exchange(
+                            baseUrl + "/api/categories/data",
+                            HttpMethod.GET,
+                            entity,
+                            CategoryDto[].class
+                    );
+
+            return List.of(res.getBody());
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to fetch categories", e);
+        }
+    }
+
+    public List<CategoryDto> getCategoriesByMerchant(Long merchantId, String token) {
+        try {
+            HttpEntity<?> entity = new HttpEntity<>(headers(token));
+            ResponseEntity<CategoryDto[]> res =
+                    restTemplate.exchange(
+                            baseUrl + "/api/categories/data",
                             HttpMethod.GET,
                             entity,
                             CategoryDto[].class
@@ -76,14 +106,12 @@ public class CategoryClientService {
     }
 
     public void createCategory(CategoryDto dto, String token) {
-        HttpEntity<CategoryDto> entity =
-                new HttpEntity<>(dto, headers(token));
+        HttpEntity<?> entity = new HttpEntity<>(headers(token));
         restTemplate.postForEntity(baseUrl + "/api/categories", entity, Void.class);
     }
 
     public void updateCategory(Long id, CategoryDto dto, String token) {
-        HttpEntity<CategoryDto> entity =
-                new HttpEntity<>(dto, headers(token));
+        HttpEntity<?> entity = new HttpEntity<>(headers(token));
         restTemplate.exchange(
                 baseUrl + "/api/categories/" + id,
                 HttpMethod.PUT,
@@ -93,7 +121,6 @@ public class CategoryClientService {
     }
     public CategoryDto getById(Long id, String token) {
         HttpEntity<?> entity = new HttpEntity<>(headers(token));
-
         return restTemplate.exchange(
                 baseUrl + "/api/categories/" + id,
                 HttpMethod.GET,

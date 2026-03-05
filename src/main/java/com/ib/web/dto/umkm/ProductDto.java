@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 public class ProductDto {
     private Long id;
-    private String sku;
+    private String sku; //Stock Keeping Unit
     private Long ownerId;
     private String OwnerName;
 
