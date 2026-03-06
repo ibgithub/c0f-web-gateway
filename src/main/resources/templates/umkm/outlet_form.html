@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="id"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base_layout}">
+
+<head>
+    <title class="fw-semibold" th:text="(${mode == 'view'} ? #{outlet.detail} :
+                             (${mode == 'edit'} ? #{outlet.edit} :
+                              #{outlet.add}))"></title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+    <div class="container py-4">
+        <!-- TITLE -->
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <h4 class="fw-semibold mb-3"
+                    th:text="(${mode == 'view'} ? #{outlet.detail} :
+                             (${mode == 'edit'} ? #{outlet.edit} :
+                              #{outlet.add}))">
+                </h4>
+
+                <form th:action="
+                                ${mode == 'add'} ?
+                                    @{/outlets/add} :
+                                    @{/outlets/{id}/edit(id=${outlet.id})}"
+                      th:object="${outlet}"
+                      method="post">
+
+                    <!-- CARD -->
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body p-4">
+                            <div class="mb-3">
+                                <label class="form-label" th:text="#{outlet.merchantName}"></label>
+                                <select class="form-select"
+                                        th:field="*{merchantId}"
+                                        th:disabled="${mode == 'view'}">
+                                    <option value=""
+                                            th:text="#{select.merchant}">
+                                    </option>
+                                    <option th:each="m : ${merchants}"
+                                            th:value="${m.id}"
+                                            th:text="${m.name}">
+                                    </option>
+                                </select>
+                                <div th:if="${#fields.hasErrors('merchantId')}"
+                                     th:errors="*{merchantId}"
+                                     class="text-danger small mt-1">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label" th:text="#{outlet.name}"></label>
+                                <input class="form-control"
+                                       th:field="*{name}"
+                                       th:readonly="${mode == 'view'}" />
+                                <div th:if="${#fields.hasErrors('name')}"
+                                     th:errors="*{name}"
+                                     class="text-danger small mt-1">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" th:text="#{outlet.address}"></label>
+                                <input class="form-control"
+                                       th:field="*{address}"
+                                       th:readonly="${mode == 'view'}" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" th:text="#{status}"></label>
+                                <select class="form-select"
+                                        th:field="*{status}"
+                                        th:disabled="${mode == 'view'}">
+                                    <option value="ACTIVE">ACTIVE</option>
+                                    <option value="INACTIVE">INACTIVE</option>
+                                </select>
+                            </div>
+
+                            <div th:replace="~{fragments/form-actions :: formActions(
+                                    ${mode},
+                                    '/outlets/' + ${outlet.id} + '/edit',
+                                    '/outlets/' + ${outlet.id} + '/delete',
+                                    '/outlets',
+                                    ${role == 'ADMIN'},
+                                    ${role == 'ADMIN'}
+                            )}"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

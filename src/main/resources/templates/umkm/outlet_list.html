@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="id"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base_layout}">
+<head>
+    <title class="fw-semibold" th:text="#{category.title}"></title>
+</head>
+<body>
+
+<section layout:fragment="content">
+    <div class="container pt-1">
+        <div th:replace="~{fragments/list-header :: listHeader(
+                'outlet.title',
+                '/outlets',
+                ${pageSize},
+                ${keyword},
+                ${success}
+        )}"></div>
+
+        <!-- Card -->
+        <div class="card shadow-sm border-0">
+            <div class="card-body rounded-3 pt-2 pb-3">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                        <tr>
+                            <th class="fw-semibold text-secondary" th:text="#{outlet.merchantName}"></th>
+                            <th class="fw-semibold text-secondary" th:text="#{outlet.name}"></th>
+                            <th class="fw-semibold text-secondary" th:text="#{outlet.address}"></th>
+                            <th class="fw-semibold text-secondary" th:text="#{status}"></th>
+                            <th class="text-end fw-semibold text-secondary" th:text="#{action}"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="outlet : ${outlets}">
+                            <td th:text="${outlet.merchantName}"></td>
+                            <td th:text="${outlet.name}"></td>
+                            <td th:text="${outlet.address}"></td>
+                            <td th:text="${outlet.status}"></td>
+                            <td class="text-end">
+                                <div th:replace="~{fragments/table-actions :: tableActions(
+                                    '/outlets/' + ${outlet.id},
+                                    '/outlets/' + ${outlet.id} + '/edit',
+                                    '/outlets/' + ${outlet.id} + '/delete',
+                                    ${role == 'ADMIN' or role == 'MERCHANT_OWNER'},
+                                    ${role == 'ADMIN' or role == 'MERCHANT_OWNER'}
+                                    )}">
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div th:replace="~{fragments/list-toolbar :: listToolbar(
+                    '/outlets',
+                    ${currentPage},
+                    ${totalPages},
+                    ${pageSize},
+                    ${totalElements},
+                    ${role == 'ADMIN' or role == 'MERCHANT_OWNER'},
+                    '/outlets/add',
+                    #{outlet.add},
+                    ${keyword}
+                    )}">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

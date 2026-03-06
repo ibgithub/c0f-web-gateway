@@ -47,9 +47,8 @@
                 <!-- UMKM -->
                 <th:block sec:authorize="isAuthenticated()">
                     <li class="nav-item dropdown" th:classappend="${currentUri != null and
-    (currentUri.startsWith('/merchants')
-     or currentUri.startsWith('/categories')
-     or currentUri.startsWith('/products'))} ? 'active'" >
+    (currentUri.startsWith('/merchants') or currentUri.startsWith('/categories') or currentUri.startsWith('/products')
+    or currentUri.startsWith('/outlets') )} ? 'active'" >
                         <a class="nav-link dropdown-toggle"
                            data-bs-toggle="dropdown"
                            href="#">
@@ -74,6 +73,12 @@
                                 <a class="dropdown-item" th:href="@{/products}">
                                     <i class="fa fa-box me-2"></i>
                                     <span th:text="#{nav.product.list}"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" th:href="@{/outlets}">
+                                    <i class="fa fa-location-dot me-2"></i>
+                                    <span th:text="#{nav.outlet.list}"></span>
                                 </a>
                             </li>
                         </ul>
