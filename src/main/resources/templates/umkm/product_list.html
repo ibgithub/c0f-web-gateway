@@ -47,8 +47,8 @@
                                     '/products/' + ${product.id},
                                     '/products/' + ${product.id} + '/edit',
                                     '/products/' + ${product.id} + '/delete',
-                                    ${role == 'ADMIN' or role == 'MERCHANT_OWNER'},
-                                    ${role == 'ADMIN' or role == 'MERCHANT_OWNER'}
+                                    ${role == 'ADMIN' or role == 'MERCHANT_USER'},
+                                    ${role == 'ADMIN' or role == 'MERCHANT_USER'}
                                     )}">
                                 </div>
                             </td>
@@ -62,7 +62,7 @@
                     ${totalPages},
                     ${pageSize},
                     ${totalElements},
-                    ${role == 'ADMIN' or role == 'MERCHANT_OWNER'},
+                    ${role == 'ADMIN' or role == 'MERCHANT_USER'},
                     '/products/add',
                     #{product.add},
                     ${keyword}

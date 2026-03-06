@@ -44,7 +44,7 @@ public class MerchantWebController {
     @ModelAttribute("merchantOwners")
     public List<UserDto> populateMerchantOwners(Authentication authentication) {
         String jwt = (String) authentication.getCredentials();
-        return authUserClient.getUsersByRole(jwt, Constants.MERCHANT_OWNER);
+        return authUserClient.getUsersByRole(jwt, Constants.MERCHANT_USER);
     }
 
     @ModelAttribute("role")

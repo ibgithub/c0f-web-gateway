@@ -41,8 +41,8 @@
                                     '/categories/' + ${category.id},
                                     '/categories/' + ${category.id} + '/edit',
                                     '/categories/' + ${category.id} + '/delete',
-                                    ${role == 'ADMIN' or role == 'MERCHANT_OWNER'},
-                                    ${role == 'ADMIN' or role == 'MERCHANT_OWNER'}
+                                    ${role == 'ADMIN' or role == 'MERCHANT_USER'},
+                                    ${role == 'ADMIN' or role == 'MERCHANT_USER'}
                                     )}">
                                 </div>
                             </td>
@@ -56,7 +56,7 @@
                     ${totalPages},
                     ${pageSize},
                     ${totalElements},
-                    ${role == 'ADMIN' or role == 'MERCHANT_OWNER'},
+                    ${role == 'ADMIN' or role == 'MERCHANT_USER'},
                     '/categories/add',
                     #{category.add},
                     ${keyword}

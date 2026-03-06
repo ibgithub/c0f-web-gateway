@@ -43,8 +43,8 @@
                                     '/outlets/' + ${outlet.id},
                                     '/outlets/' + ${outlet.id} + '/edit',
                                     '/outlets/' + ${outlet.id} + '/delete',
-                                    ${role == 'ADMIN' or role == 'MERCHANT_OWNER'},
-                                    ${role == 'ADMIN' or role == 'MERCHANT_OWNER'}
+                                    ${role == 'ADMIN' or role == 'MERCHANT_USER'},
+                                    ${role == 'ADMIN' or role == 'MERCHANT_USER'}
                                     )}">
                                 </div>
                             </td>
@@ -58,7 +58,7 @@
                     ${totalPages},
                     ${pageSize},
                     ${totalElements},
-                    ${role == 'ADMIN' or role == 'MERCHANT_OWNER'},
+                    ${role == 'ADMIN' or role == 'MERCHANT_USER'},
                     '/outlets/add',
                     #{outlet.add},
                     ${keyword}

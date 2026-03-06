@@ -83,8 +83,8 @@
                                     '/outlets/' + ${outlet.id} + '/edit',
                                     '/outlets/' + ${outlet.id} + '/delete',
                                     '/outlets',
-                                    ${role == 'ADMIN'},
-                                    ${role == 'ADMIN'}
+                                    ${role == 'ADMIN' or role == 'MERCHANT_USER'},
+                                    ${role == 'ADMIN' or role == 'MERCHANT_USER'}
                             )}"></div>
                         </div>
                     </div>

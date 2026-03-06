@@ -29,6 +29,8 @@ public class SecurityConfig {
                         .requestMatchers("/merchants/**").authenticated()
                         .requestMatchers("/categories/**").authenticated()
                         .requestMatchers("/products/**").authenticated()
+                        .requestMatchers("/outlets/**").authenticated()
+                        .requestMatchers("/pos/**").authenticated()
                         .anyRequest().permitAll()   // 👈 INI PENTING
                 )
                 .formLogin(form -> form.disable())
