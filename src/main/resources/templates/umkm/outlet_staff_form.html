@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="id"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base_layout}">
+
+<head>
+    <title class="fw-semibold" th:text="(${mode == 'view'} ? #{outletStaff.detail} :
+                             (${mode == 'edit'} ? #{outletStaff.edit} :
+                              #{outletStaff.add}))"></title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+    <div class="container py-4">
+        <!-- TITLE -->
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <h4 class="fw-semibold mb-3"
+                    th:text="(${mode == 'view'} ? #{outletStaff.detail} :
+                             (${mode == 'edit'} ? #{outletStaff.edit} :
+                              #{outletStaff.add}))">
+                </h4>
+
+                <form th:action="
+                                ${mode == 'add'} ?
+                                    @{/outlet-staffs/add} :
+                                    @{/outlet-staffs/{id}/edit(id=${outletStaff.id})}"
+                      th:object="${outletStaff}"
+                      method="post">
+
+                    <!-- CARD -->
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body p-4">
+                            <div class="mb-3">
+                                <label class="form-label" th:text="#{product.merchant}"></label>
+                                <select id="merchantSelect" class="form-select"
+                                        th:field="*{merchantId}"
+                                        th:disabled="${mode == 'view'}">
+                                    <option value="" th:text="#{select.merchant}"></option>
+                                    <option th:each="m : ${merchants}"
+                                            th:value="${m.id}"
+                                            th:text="${m.name}">
+                                    </option>
+                                </select>
+                                <div th:if="${#fields.hasErrors('merchantId')}"
+                                     th:errors="*{merchantId}"
+                                     class="text-danger small mt-1">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" th:text="#{outletStaff.outletName}"></label>
+                                <select id="outletSelect" class="form-select"
+                                        th:field="*{outletId}"
+                                        th:disabled="${mode == 'view'}">
+                                    <option value="" th:text="#{select.outlet}"></option>
+                                    <option th:each="o : ${outlets}"
+                                            th:value="${o.id}"
+                                            th:text="${o.name}"
+                                            th:data-merchant="${o.merchantId}">
+                                    </option>
+                                </select>
+                                <div th:if="${#fields.hasErrors('outletId')}"
+                                     th:errors="*{outletId}"
+                                     class="text-danger small mt-1">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label" th:text="#{outletStaff.fullName}"></label>
+                                <select class="form-select"
+                                        th:field="*{userId}"
+                                        th:disabled="${mode == 'view'}">
+                                    <option value=""
+                                            th:text="#{select.staff}">
+                                    </option>
+                                    <option th:each="u : ${merchantUsers}"
+                                            th:value="${u.id}"
+                                            th:text="${u.fullName}">
+                                    </option>
+                                </select>
+                                <div th:if="${#fields.hasErrors('userId')}"
+                                     th:errors="*{userId}"
+                                     class="text-danger small mt-1">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label" th:text="#{outletStaff.businessRole}"></label>
+                                <select class="form-select"
+                                        th:field="*{businessRole}"
+                                        th:disabled="${mode == 'view'}">
+
+                                    <option value=""
+                                            th:text="#{select.businessRole}">
+                                    </option>
+                                    <option value="CASHIER">CASHIER</option>
+                                    <option value="MANAGER">MANAGER</option>
+                                </select>
+                                <div th:if="${#fields.hasErrors('businessRole')}"
+                                     th:errors="*{businessRole}"
+                                     class="text-danger small mt-1">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" th:text="#{status}"></label>
+                                <select class="form-select"
+                                        th:field="*{status}"
+                                        th:disabled="${mode == 'view'}">
+                                    <option value="ACTIVE">ACTIVE</option>
+                                    <option value="INACTIVE">INACTIVE</option>
+                                </select>
+                            </div>
+
+                            <div th:replace="~{fragments/form-actions :: formActions(
+                                    ${mode},
+                                    '/outletStaffs/' + ${outletStaff.id} + '/edit',
+                                    '/outletStaffs/' + ${outletStaff.id} + '/delete',
+                                    '/outletStaffs',
+                                    ${role == 'ADMIN' or role == 'MERCHANT_USER'},
+                                    ${role == 'ADMIN' or role == 'MERCHANT_USER'}
+                            )}"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

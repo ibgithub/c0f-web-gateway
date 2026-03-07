@@ -27,6 +27,6 @@ public class PosWebController {
 
     @GetMapping
     public String pos(Authentication authentication) {
-        return "pos/pos";
+        return "cashier";
     }
 }

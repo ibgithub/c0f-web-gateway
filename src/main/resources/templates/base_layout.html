@@ -82,16 +82,22 @@
                                     <span th:text="#{nav.outlet.list}"></span>
                                 </a>
                             </li>
+                            <li>
+                                <a class="dropdown-item" th:href="@{/outlet-staffs}">
+                                    <i class="fa fa-user-tie me-2"></i>
+                                    <span th:text="#{nav.outletStaff.list}"></span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </th:block>
                 <th:block sec:authorize="isAuthenticated()">
                     <li class="nav-item" th:classappend="${currentUri != null and
                          (currentUri == '/'
-                          or currentUri.startsWith('/pos'))} ? 'active'">
-                        <a class="nav-link" href="/pos">
+                          or currentUri.startsWith('/cashier'))} ? 'active'">
+                        <a class="nav-link" href="/cashier">
                             <i class="fa fa-cash-register me-1"></i>
-                            <span th:text="#{nav.pos}"></span>
+                            <span th:text="#{nav.cashier}"></span>
                         </a>
                     </li>
                 </th:block>
@@ -226,5 +232,6 @@
 <script src="/js/global.js"></script>
 <script src="/js/login.js"></script>
 <script src="/js/product.js"></script>
+<script src="/js/outlet_staff.js"></script>
 </body>
 </html>
