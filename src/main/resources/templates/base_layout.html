@@ -95,7 +95,7 @@
                     <li class="nav-item" th:classappend="${currentUri != null and
                          (currentUri == '/'
                           or currentUri.startsWith('/cashier'))} ? 'active'">
-                        <a class="nav-link" href="/cashier">
+                        <a class="nav-link" href="#" onclick="openCashierModal()">
                             <i class="fa fa-cash-register me-1"></i>
                             <span th:text="#{nav.cashier}"></span>
                         </a>
@@ -219,8 +219,41 @@
         <section layout:fragment="content">
             <p>This is filled by the content template.</p>
         </section>
+        <div class="modal fade" id="cashierModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Mulai Kasir</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="mb-3">
+                            <label>Merchant</label>
+                            <select id="merchantSelect" class="form-select">
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Outlet</label>
+                            <select id="outletSelect" class="form-select">
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-success" onclick="startCashier()">Masuk Kasir</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
 
 <footer th:replace="~{footer::footer}"></footer><!--/fragments/-->
 

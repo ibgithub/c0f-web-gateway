@@ -158,4 +158,5 @@ public class OutletWebController {
         );
         return "redirect:/outlets";
     }
+
 }

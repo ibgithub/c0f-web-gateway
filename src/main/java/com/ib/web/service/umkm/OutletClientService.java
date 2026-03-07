@@ -68,12 +68,12 @@ public class OutletClientService {
         }
     }
 
-    public List<OutletDto> getOutletsByMerchant(Long merchantId, String token) {
+    public List<OutletDto> getOutletsByMerchantId(Long merchantId, String token) {
         try {
             HttpEntity<?> entity = new HttpEntity<>(headers(token));
             ResponseEntity<OutletDto[]> res =
                     restTemplate.exchange(
-                            baseUrl + "/api/outlets/data",
+                            baseUrl + "/api/outlets/byMerchant/" + merchantId,
                             HttpMethod.GET,
                             entity,
                             OutletDto[].class
@@ -128,4 +128,5 @@ public class OutletClientService {
                 OutletDto.class
         ).getBody();
     }
+
 }

@@ -55,7 +55,7 @@ public class MerchantClientService {
         }
     }
 
-    public PageResult<MerchantDto> getMerchantsByRole(String jwt, int page, int size, String keyword) {
+    public PageResult<MerchantDto> getMerchantsByRolePage(String jwt, int page, int size, String keyword) {
         ApiResponse<PageResult<MerchantDto>> response =
                 webClient.get()
                         .uri(uriBuilder -> uriBuilder

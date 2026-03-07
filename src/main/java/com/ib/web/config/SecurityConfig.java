@@ -23,7 +23,8 @@ public class SecurityConfig {
                                 "/error",
                                 "/css/**",
                                 "/js/**",
-                                "/images/**"
+                                "/images/**",
+                                "/api/merchants/*"
                         ).permitAll()
                         .requestMatchers("/users/**").authenticated()
                         .requestMatchers("/merchants/**").authenticated()

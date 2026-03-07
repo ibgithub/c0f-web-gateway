@@ -68,7 +68,7 @@ public class MerchantWebController {
         String jwt = (String) authentication.getCredentials();
 
         PageResult<MerchantDto> result =
-                merchantClientService.getMerchantsByRole(jwt, page, size, keyword);
+                merchantClientService.getMerchantsByRolePage(jwt, page, size, keyword);
 
         model.addAttribute("activeMenu", "merchants");
         model.addAttribute("merchants", result.getContent());
@@ -195,4 +195,5 @@ public class MerchantWebController {
         );
         return "redirect:/merchants";
     }
+
 }
