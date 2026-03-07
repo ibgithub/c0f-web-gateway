@@ -124,7 +124,7 @@ public class OutletStaffWebController {
                 "success",
                 messageUtil.get("outletStaff.add.success")
         );
-        return "redirect:/outlet_staff_list";
+        return "redirect:/outlet-staffs";
     }
 
     @GetMapping("/{id}")
@@ -177,6 +177,6 @@ public class OutletStaffWebController {
                 "success",
                 messageUtil.get("outletStaff.edit.success")
         );
-        return "redirect:/outlet_staff_list";
+        return "redirect:/outlet-staffs";
     }
 }

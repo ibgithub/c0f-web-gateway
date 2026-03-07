@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/pos")
+@RequestMapping("/cashier")
 public class PosWebController {
 
     private final AuthClientService authClientService;
@@ -26,7 +26,7 @@ public class PosWebController {
     }
 
     @GetMapping
-    public String pos(Authentication authentication) {
-        return "cashier";
+    public String cashier(Authentication authentication) {
+        return "pos/cashier";
     }
 }
