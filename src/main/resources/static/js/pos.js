@@ -129,6 +129,24 @@ document.addEventListener("DOMContentLoaded", function () {
     // SEARCH PRODUCT
     const searchInput = document.getElementById("productSearch");
 
+    searchInput?.addEventListener("keydown", function(e){
+
+        if(e.key === "Enter"){
+
+            e.preventDefault()
+
+            let firstVisibleProduct = document.querySelector(
+                ".product-card:not([style*='display: none'])"
+            )
+
+            if(firstVisibleProduct){
+                firstVisibleProduct.click()
+            }
+
+        }
+
+    })
+
     if(searchInput){
 
         searchInput.addEventListener("keyup", function(){
@@ -202,6 +220,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if(item){
                 item.qty++
                 renderCart()
+
             }
 
         }
