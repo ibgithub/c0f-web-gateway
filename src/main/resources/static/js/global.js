@@ -1,39 +1,52 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    // TOOLTIP
-    var tooltipTriggerList = [].slice.call(
-        document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    );
+    // ================= TOOLTIP =================
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    tooltipTriggerList.forEach(el => new bootstrap.Tooltip(el));
 
-    tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-
-    // AUTO HIDE ALERT
+    // ================= AUTO HIDE ALERT =================
     const alert = document.querySelector(".alert");
 
     if (alert) {
-        setTimeout(function () {
+        setTimeout(() => {
             const bsAlert = new bootstrap.Alert(alert);
             bsAlert.close();
         }, 4000);
     }
 
+    // ================= AUTO OPEN CASHIER MODAL =================
+    if (window.showCashierModal) {
+        openCashierModal();
+    }
+
 });
 
+
+// ================= OPEN CASHIER MODAL =================
 function openCashierModal() {
-    var modal = new bootstrap.Modal(document.getElementById('cashierModal'));
+
+    const modalEl = document.getElementById("cashierModal");
+
+    if (!modalEl) return;
+
+    const modal = new bootstrap.Modal(modalEl);
     modal.show();
+
     loadMerchants();
 }
 
+
+// ================= LOAD MERCHANT =================
 function loadMerchants() {
-    console.log("masuk loadMerchants");
+
     fetch('/api/merchants/mine')
         .then(res => res.json())
         .then(data => {
 
-            let select = document.getElementById("merchantSelect");
+            const select = document.getElementById("merchantSelect");
+
+            if (!select) return;
+
             select.innerHTML = "";
 
             data.forEach(m => {
@@ -44,31 +57,62 @@ function loadMerchants() {
         });
 }
 
+
+// ================= LOAD OUTLET =================
 function loadOutlets() {
-    console.log("masuk loadOutlets");
-    let merchantId = document.getElementById("merchantSelect").value;
-    console.log("merchantId=" + merchantId);
+
+    const merchantSelect = document.getElementById("merchantSelect");
+    const outletSelect = document.getElementById("outletSelect");
+
+    if (!merchantSelect || !outletSelect) return;
+
+    const merchantId = merchantSelect.value;
+
     fetch(`/api/merchants/${merchantId}/outlets`)
         .then(res => res.json())
         .then(data => {
-            let select = document.getElementById("outletSelect");
-            select.innerHTML = "";
+
+            outletSelect.innerHTML = "";
+
             data.forEach(o => {
-                select.innerHTML += `<option value="${o.id}">${o.name}</option>`;
+                outletSelect.innerHTML += `<option value="${o.id}">${o.name}</option>`;
             });
+
         });
 }
 
+
+// ================= START CASHIER =================
 function startCashier() {
 
-    let merchantId = document.getElementById("merchantSelect").value;
-    let outletId = document.getElementById("outletSelect").value;
+    const merchantId = document.getElementById("merchantSelect")?.value;
+    const outletId = document.getElementById("outletSelect")?.value;
 
-    window.location.href = `/cashier?merchantId=${merchantId}&outletId=${outletId}`;
+    if (!merchantId || !outletId) {
+        alert("Merchant dan outlet harus dipilih");
+        return;
+    }
+
+    fetch("/cashier/select-outlet", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        credentials: "same-origin",
+        body: `merchantId=${merchantId}&outletId=${outletId}`
+    })
+        .then(() => {
+            window.location.href = "/cashier";
+        });
+
 }
 
+
+// ================= MERCHANT CHANGE =================
 document.addEventListener("change", function(e){
-    if(e.target.id === "merchantSelect"){
+
+    if (e.target.id === "merchantSelect") {
         loadOutlets();
     }
+
 });

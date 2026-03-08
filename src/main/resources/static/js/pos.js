@@ -34,32 +34,79 @@ document.addEventListener("DOMContentLoaded", function () {
     function formatMoney(val){
         return "Rp "+val.toLocaleString("id-ID")
     }
-    document.querySelectorAll(".category-btn")
-        .forEach(btn => {
 
-            btn.addEventListener("click",function(){
+    // CATEGORY FILTER (lebih stabil)
+    document.addEventListener("click", function(e){
 
-                document.querySelectorAll(".category-btn")
-                    .forEach(b=>b.classList.remove("active"))
+        if(e.target.classList.contains("category-btn")){
 
-                this.classList.add("active")
+            document.querySelectorAll(".category-btn")
+                .forEach(b => b.classList.remove("active"));
 
-                let category=this.dataset.category
+            e.target.classList.add("active");
 
-                document.querySelectorAll(".product-card")
-                    .forEach(card=>{
+            let category = e.target.dataset.category;
+            let keyword = document.getElementById("productSearch").value.toLowerCase();
 
-                        if(category==="all"){
-                            card.style.display="block"
-                        }else if(card.dataset.category===category){
-                            card.style.display="block"
-                        }else{
-                            card.style.display="none"
-                        }
+            filterProducts(keyword, category);
 
-                    })
+        }
 
-            })
+    });
+
+    // SEARCH PRODUCT
+    const searchInput = document.getElementById("productSearch");
+
+    if(searchInput){
+
+        searchInput.addEventListener("keyup", function(){
+
+            let keyword = this.value.toLowerCase()
+            let activeCategory =
+                document.querySelector(".category-btn.active").dataset.category
+
+            document.querySelectorAll(".product-card")
+                .forEach(card=>{
+
+                    let name = card.dataset.name.toLowerCase()
+                    let category = card.dataset.category
+
+                    let matchName = name.includes(keyword)
+                    let matchCategory =
+                        activeCategory === "all" || category == activeCategory
+
+                    if(matchName && matchCategory){
+                        card.style.display="block"
+                    }else{
+                        card.style.display="none"
+                    }
+
+                })
 
         })
+
+    }
+
+    function filterProducts(keyword, category){
+
+        document.querySelectorAll(".product-card")
+            .forEach(card => {
+
+                let name = card.dataset.name.toLowerCase();
+                let productCategory = card.dataset.category;
+
+                let matchName = name.includes(keyword);
+                let matchCategory =
+                    category === "all" || productCategory == category;
+
+                if(matchName && matchCategory){
+                    card.style.display = "block";
+                }else{
+                    card.style.display = "none";
+                }
+
+            });
+
+    }
+    document.getElementById("productSearch")?.focus();
 });

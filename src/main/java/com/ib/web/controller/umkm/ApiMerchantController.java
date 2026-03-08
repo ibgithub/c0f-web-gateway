@@ -4,11 +4,9 @@ import com.ib.web.dto.umkm.MerchantDto;
 import com.ib.web.dto.umkm.OutletDto;
 import com.ib.web.service.umkm.MerchantClientService;
 import com.ib.web.service.umkm.OutletClientService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,5 +32,17 @@ public class ApiMerchantController {
                                         @PathVariable Long merchantId) {
         String jwt = (String) authentication.getCredentials();
         return outletClientService.getOutletsByMerchantId(merchantId, jwt);
+    }
+
+    @PostMapping("/select-outlet")
+    public String selectOutlet(
+            @RequestParam Long merchantId,
+            @RequestParam Long outletId,
+            HttpSession session) {
+
+        session.setAttribute("merchantId", merchantId);
+        session.setAttribute("outletId", outletId);
+
+        return "redirect:/cashier";
     }
 }

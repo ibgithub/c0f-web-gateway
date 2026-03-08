@@ -8,11 +8,11 @@
 <body>
 <section layout:fragment="content">
     <div class="container-fluid pos-container">
-        <div class="row h-100">
+        <div class="row pos-row">
             <!-- LEFT : PRODUCTS -->
             <div class="col-lg-8 product-panel">
                 <div class="pos-search mb-3">
-                    <input class="form-control form-control-lg"
+                    <input id="productSearch" class="form-control form-control-lg"
                            placeholder="Search product...">
                 </div>
                 <div class="category-tabs mb-3">
@@ -32,7 +32,7 @@
                          th:data-id="${p.id}"
                          th:data-name="${p.name}"
                          th:data-price="${p.sellingPrice}"
-                         th:data-category="${p.category}">
+                         th:data-category="${p.categoryId}">
                         <div class="product-name"
                              th:text="${p.name}"></div>
 

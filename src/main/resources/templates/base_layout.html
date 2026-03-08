@@ -95,7 +95,7 @@
                     <li class="nav-item" th:classappend="${currentUri != null and
                          (currentUri == '/'
                           or currentUri.startsWith('/cashier'))} ? 'active'">
-                        <a class="nav-link" href="#" onclick="openCashierModal()">
+                        <a class="nav-link" href="/cashier">
                             <i class="fa fa-cash-register me-1"></i>
                             <span th:text="#{nav.cashier}"></span>
                         </a>
@@ -214,6 +214,7 @@
         </div>
     </div>
 </nav>
+
 <div class="container-fluid">
     <div class="card jh-card">
         <section layout:fragment="content">
@@ -262,9 +263,13 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!--<script type="text/javascript" th:src="@{/js/chart_design.js}"></script>-->
+<script th:inline="javascript">
+    window.showCashierModal = [[${showCashierModal} ?: false]];
+</script>
 <script src="/js/global.js"></script>
 <script src="/js/login.js"></script>
 <script src="/js/product.js"></script>
 <script src="/js/outlet_staff.js"></script>
+<script src="/js/pos.js"></script>
 </body>
 </html>

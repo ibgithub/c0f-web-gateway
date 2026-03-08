@@ -34,7 +34,7 @@ public class ProductClientService {
         return h;
     }
 
-    public List<ProductDto> getProducts(String jwt) {
+    public List<ProductDto> findByMerchantId(String jwt, Long merchantId) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setBearerAuth(jwt);
@@ -43,7 +43,7 @@ public class ProductClientService {
 
             ResponseEntity<ProductDto[]> res =
                     restTemplate.exchange(
-                            baseUrl + "/api/products",
+                            baseUrl + "/api/products/byMerchant/" + merchantId,
                             HttpMethod.GET,
                             entity,
                             ProductDto[].class
@@ -51,7 +51,7 @@ public class ProductClientService {
 
             return List.of(res.getBody());
         } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch members", e);
+            throw new RuntimeException("Failed to fetch products", e);
         }
     }
 

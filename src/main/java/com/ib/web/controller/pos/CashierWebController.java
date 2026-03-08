@@ -5,11 +5,11 @@ import com.ib.web.service.JwtService;
 import com.ib.web.service.umkm.CategoryClientService;
 import com.ib.web.service.umkm.ProductClientService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/cashier")
@@ -33,8 +33,36 @@ public class CashierWebController {
     }
 
     @GetMapping
-    public String cashier(Authentication authentication) {
+    public String cashier(HttpSession session, Model model, Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "redirect:/login";
+        }
+        String jwt = (String) authentication.getCredentials();
+        Long merchantId = (Long) session.getAttribute("merchantId");
+
+        model.addAttribute("showCashierModal", merchantId == null);
+
+        if (merchantId != null) {
+
+            var products = productClientService.findByMerchantId(jwt, merchantId);
+
+            model.addAttribute("products", products);
+
+            var categories = categoryClientService.findByMerchantId(jwt, merchantId);
+
+            model.addAttribute("categories", categories);
+        }
 
         return "pos/cashier";
+    }
+    @PostMapping("/select-outlet")
+    @ResponseBody
+    public void selectOutlet(
+            @RequestParam Long merchantId,
+            @RequestParam Long outletId,
+            HttpSession session) {
+
+        session.setAttribute("merchantId", merchantId);
+        session.setAttribute("outletId", outletId);
     }
 }

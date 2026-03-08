@@ -68,12 +68,12 @@ public class CategoryClientService {
         }
     }
 
-    public List<CategoryDto> getCategoriesByMerchant(Long merchantId, String token) {
+    public List<CategoryDto> findByMerchantId(String token, Long merchantId) {
         try {
             HttpEntity<?> entity = new HttpEntity<>(headers(token));
             ResponseEntity<CategoryDto[]> res =
                     restTemplate.exchange(
-                            baseUrl + "/api/categories/data",
+                            baseUrl + "/api/categories/byMerchant/" + merchantId,
                             HttpMethod.GET,
                             entity,
                             CategoryDto[].class
