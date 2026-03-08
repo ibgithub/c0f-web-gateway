@@ -3,6 +3,11 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".product-card")
         .forEach(card=>{
             card.addEventListener("click",()=>{
+                card.classList.add("product-clicked")
+
+                setTimeout(()=>{
+                    card.classList.remove("product-clicked")
+                },250)
                 let id=card.dataset.id
                 let name=card.dataset.name
                 let price=parseFloat(card.dataset.price)
@@ -15,21 +20,88 @@ document.addEventListener("DOMContentLoaded", function () {
                 renderCart()
             })
         })
+
     function renderCart(){
+
         let html=""
         let total=0
+
         cart.forEach(i=>{
+
             let subtotal=i.qty*i.price
             total+=subtotal
+
             html+=`
-<div class="d-flex justify-content-between mb-2">
-<span>${i.name} x${i.qty}</span>
-<span>${formatMoney(subtotal)}</span>
+<div class="cart-row d-flex justify-content-between align-items-center mb-3"
+     data-id="${i.id}">
+
+    <div>
+
+        <div class="fw-semibold">${i.name}</div>
+
+        <div class="d-flex align-items-center gap-2 mt-1">
+
+            <button class="btn btn-sm btn-outline-secondary qty-minus"
+                    data-id="${i.id}">
+                -
+            </button>
+
+            <span class="fw-semibold">${i.qty}</span>
+
+            <button class="btn btn-sm btn-outline-secondary qty-plus"
+                    data-id="${i.id}">
+                +
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="d-flex align-items-center gap-2">
+
+        <span class="fw-semibold">
+            ${formatMoney(subtotal)}
+        </span>
+
+        <button class="btn btn-sm btn-outline-danger remove-item"
+                data-id="${i.id}">
+            ×
+        </button>
+
+    </div>
+
 </div>
 `
+        scrollCartToBottom();
         })
+
         document.getElementById("cartItems").innerHTML=html
+
+        document.getElementById("subtotal").innerText=formatMoney(total)
         document.getElementById("total").innerText=formatMoney(total)
+
+        highlightLastCartItem()
+
+    }
+
+    document.addEventListener("click", function(e){
+
+        if(e.target.classList.contains("remove-item")){
+
+            let id = e.target.dataset.id
+
+            cart = cart.filter(i => i.id != id)
+
+            renderCart()
+
+        }
+
+    })
+    function scrollCartToBottom(){
+        let cartBox = document.getElementById("cartItems");
+        if(cartBox){
+            cartBox.scrollTop = cartBox.scrollHeight;
+        }
     }
     function formatMoney(val){
         return "Rp "+val.toLocaleString("id-ID")
@@ -108,5 +180,57 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
     }
+    document.getElementById("clearCart")?.addEventListener("click", function(){
+
+        if(confirm("Batalkan semua pesanan?")){
+
+            cart = []
+            renderCart()
+
+        }
+
+    })
+    // tambah qty
+    document.addEventListener("click", function(e){
+
+        if(e.target.classList.contains("qty-plus")){
+
+            let id = e.target.dataset.id
+
+            let item = cart.find(i => i.id == id)
+
+            if(item){
+                item.qty++
+                renderCart()
+            }
+
+        }
+
+    })
+
+// kurangi qty
+    document.addEventListener("click", function(e){
+
+        if(e.target.classList.contains("qty-minus")){
+
+            let id = e.target.dataset.id
+
+            let item = cart.find(i => i.id == id)
+
+            if(item){
+
+                item.qty--
+
+                if(item.qty <= 0){
+                    cart = cart.filter(i => i.id != id)
+                }
+
+                renderCart()
+
+            }
+
+        }
+
+    })
     document.getElementById("productSearch")?.focus();
 });
