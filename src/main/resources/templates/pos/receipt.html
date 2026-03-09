@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Receipt</title>
+
+    <style>
+
+        body{
+            font-family: monospace;
+            width:300px;    /*80mm atau 58mm*/
+            margin:auto;
+        }
+
+        .center{
+            text-align:center;
+        }
+
+        .right{
+            text-align:right;
+        }
+
+        .line{
+            border-top:1px dashed black;
+            margin:6px 0;
+        }
+
+        .item{
+            display:flex;
+            justify-content:space-between;
+        }
+
+        .small{
+            font-size:12px;
+        }
+
+        .total{
+            font-size:16px;
+            font-weight:bold;
+        }
+
+        button{
+            margin-top:10px;
+            width:100%;
+        }
+
+        @media print{
+
+            button{
+                display:none;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="center">
+
+    <h3><span th:text="${sales.merchantName}"></span></h3>
+
+    <div class="small">
+        Receipt : <span th:text="${sales.receiptNo}"></span>
+    </div>
+
+    <div class="small">
+        Date : <span th:text="${#temporals.format(sales.createdAt,'yyyy-MM-dd HH:mm')}"></span>
+    </div>
+
+</div>
+
+<div class="line"></div>
+
+<!-- ITEMS -->
+
+<div th:each="i : ${sales.items}">
+
+    <div class="small" th:text="${i.productName}"></div>
+
+    <div class="item small">
+
+        <div>
+            <span th:text="${i.qty}"></span>
+            x
+            <span th:text="${#numbers.formatInteger(i.price,3,'POINT')}"></span>
+        </div>
+
+        <div>
+            <span th:text="${#numbers.formatInteger(i.subtotal,3,'POINT')}"></span>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="line"></div>
+
+<!-- TOTAL -->
+
+<div class="item total">
+
+    <div>Total</div>
+
+    <div>
+        Rp
+        <span th:text="${#numbers.formatInteger(sales.totalAmount,3,'POINT')}"></span>
+    </div>
+
+</div>
+
+<div class="line"></div>
+
+<div class="center small">
+
+    Payment :
+    <span th:text="${sales.paymentMethod}"></span>
+
+    <br><br>
+
+    Terima Kasih
+
+</div>
+
+<button onclick="window.print()">
+    Print Receipt
+</button>
+
+<script>
+
+    window.onload=function(){
+        window.print();
+    }
+
+</script>
+
+</body>
+</html>

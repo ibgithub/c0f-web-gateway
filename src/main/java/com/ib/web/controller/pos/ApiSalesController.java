@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/sales")
 public class ApiSalesController {
@@ -19,11 +21,16 @@ public class ApiSalesController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody SalesCreateRequest req, Authentication authentication) {
-        String token = (String) authentication.getCredentials();
-        salesClientService.createSales(req, token);
+    public ResponseEntity<?> create(
+            @RequestBody SalesCreateRequest req,
+            Authentication authentication
+    ) {
 
-        return ResponseEntity.ok().build();
+        String token = (String) authentication.getCredentials();
+
+        Long salesId = salesClientService.createSales(req, token);
+
+        return ResponseEntity.ok(Map.of("id", salesId));
     }
 
 }

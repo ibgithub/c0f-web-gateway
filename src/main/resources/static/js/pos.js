@@ -300,14 +300,16 @@ document.addEventListener("DOMContentLoaded", function () {
             "Rp " + change.toLocaleString("id-ID")
     })
     document.getElementById("confirmPayment")?.addEventListener("click", function(){
-        let paymentMethod =
-            document.getElementById("paymentMethod").value
+
+        let paymentMethod = document.getElementById("paymentMethod").value
+
         let items = cart.map(i => ({
             productId: i.id,
             productName: i.name,
             qty: i.qty,
             price: i.price
         }))
+
         fetch("/api/sales",{
             method:"POST",
             headers:{
@@ -320,15 +322,24 @@ document.addEventListener("DOMContentLoaded", function () {
                 items:items
             })
         })
-            .then(()=>{
-                alert("Payment success")
+            .then(res => res.json())
+            .then(data => {
 
-                cart=[]
-                renderCart()
+                alert("Payment success")
 
                 bootstrap.Modal
                     .getInstance(document.getElementById("paymentModal"))
                     .hide()
+
+                window.open("/sales/" + data.id + "/receipt", "_blank")
+
+                cart = []
+                renderCart()
+
+            })
+            .catch(err => {
+                console.error(err)
+                alert("Payment gagal")
             })
     })
 });
