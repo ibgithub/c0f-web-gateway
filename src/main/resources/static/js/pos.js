@@ -198,6 +198,21 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
     }
+    function highlightLastCartItem(){
+
+        setTimeout(()=>{
+
+            let rows=document.querySelectorAll(".cart-row")
+
+            let last=rows[rows.length-1]
+
+            if(last){
+                last.classList.add("cart-highlight")
+            }
+
+        },10)
+
+    }
     document.getElementById("clearCart")?.addEventListener("click", function(){
 
         if(confirm("Batalkan semua pesanan?")){
@@ -252,4 +267,68 @@ document.addEventListener("DOMContentLoaded", function () {
 
     })
     document.getElementById("productSearch")?.focus();
+
+    document.querySelector(".btn-pay")?.addEventListener("click", function(){
+        console.log("masuk querySelector");
+        if(cart.length === 0){
+            alert("Cart kosong")
+            return
+        }
+        if(!merchantId){
+            alert("Merchant belum dipilih")
+        }
+        if(!outletId){
+            alert("Merchant belum dipilih")
+        }
+        console.log("merchantId=" + merchantId + " outletId=" + outletId );
+        let total = cart.reduce((sum,i)=> sum + (i.qty*i.price),0)
+
+        document.getElementById("paymentTotal").value =
+            "Rp " + total.toLocaleString("id-ID")
+
+        document.getElementById("cashAmount").value = total
+
+        new bootstrap.Modal(
+            document.getElementById("paymentModal")
+        ).show()
+    })
+    document.getElementById("cashAmount")?.addEventListener("keyup", function(){
+        let total = cart.reduce((sum,i)=> sum + (i.qty*i.price),0)
+        let cash = parseFloat(this.value || 0)
+        let change = cash - total
+        document.getElementById("changeAmount").value =
+            "Rp " + change.toLocaleString("id-ID")
+    })
+    document.getElementById("confirmPayment")?.addEventListener("click", function(){
+        let paymentMethod =
+            document.getElementById("paymentMethod").value
+        let items = cart.map(i => ({
+            productId: i.id,
+            productName: i.name,
+            qty: i.qty,
+            price: i.price
+        }))
+        fetch("/api/sales",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                merchantId: merchantId,
+                outletId: outletId,
+                paymentMethod: paymentMethod,
+                items:items
+            })
+        })
+            .then(()=>{
+                alert("Payment success")
+
+                cart=[]
+                renderCart()
+
+                bootstrap.Modal
+                    .getInstance(document.getElementById("paymentModal"))
+                    .hide()
+            })
+    })
 });

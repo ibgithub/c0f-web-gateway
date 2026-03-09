@@ -2,7 +2,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const merchantSelect = document.getElementById("merchantSelect");
     const categorySelect = document.getElementById("categorySelect");
-
+    if (!categorySelect) {
+        return;
+    }
     const allOptions = Array.from(categorySelect.options);
 
     merchantSelect.addEventListener("change", function () {

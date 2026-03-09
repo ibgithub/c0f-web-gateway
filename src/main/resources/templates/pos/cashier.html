@@ -101,6 +101,72 @@
         </div>
     </div>
 
+    <div class="modal fade" id="paymentModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Payment</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label>Total</label>
+                        <input id="paymentTotal"
+                               class="form-control"
+                               readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Payment Method</label>
+
+                        <select id="paymentMethod"
+                                class="form-select">
+
+                            <option value="CASH">Cash</option>
+                            <option value="QRIS">QRIS</option>
+                            <option value="CARD">Card</option>
+
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Cash</label>
+
+                        <input id="cashAmount"
+                               type="number"
+                               class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Change</label>
+
+                        <input id="changeAmount"
+                               class="form-control"
+                               readonly>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <button id="confirmPayment"
+                            class="btn btn-success">
+                        Confirm Payment
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
 </section>
 
 </body>
