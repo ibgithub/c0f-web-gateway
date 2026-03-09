@@ -102,6 +102,26 @@
                     </li>
                 </th:block>
 
+                <th:block sec:authorize="isAuthenticated()">
+                    <li class="nav-item dropdown" th:classappend="${currentUri != null and currentUri.startsWith('/reports')} ? 'active'">
+                        <a class="nav-link dropdown-toggle"
+                           data-bs-toggle="dropdown"
+                           href="#">
+                            <i class="fa fa-chart-bar me-1"></i>
+                            <span th:text="#{nav.reports}"></span>
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" th:href="@{/reports/sales}">
+                                    <i class="fa fa-chart-line me-2"></i>
+                                    <span th:text="#{nav.reports.sales}"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </th:block>
+
                 <!-- ADMIN -->
                 <th:block sec:authorize="hasRole('ADMIN')">
                     <li class="nav-item dropdown" th:classappend="${currentUri != null and currentUri.startsWith('/users')} ? 'active'">
