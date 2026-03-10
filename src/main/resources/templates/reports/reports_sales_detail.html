@@ -3,14 +3,14 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{base_layout}">
 <head>
-    <title class="fw-semibold" th:text="#{report.sales.title}"></title>
+    <title class="fw-semibold" th:text="#{report.sales.detail.title}"></title>
 </head>
 <body>
 <section layout:fragment="content">
     <div class="container pt-1">
         <div th:replace="~{fragments/list-header :: listHeader(
-                'report.sales.title',
-                '/reports/reports_sales',
+                'report.sales.detail.title',
+                '/reports/reports_sales_detail',
                 ${pageSize},
                 ${keyword},
                 ${success}

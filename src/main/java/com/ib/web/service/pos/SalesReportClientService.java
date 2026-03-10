@@ -72,7 +72,7 @@ public class SalesReportClientService {
         ApiResponse<PageResult<SalesReportSummaryDto>> response =
                 webClient.get()
                         .uri(uriBuilder -> uriBuilder
-                                .path("/api/sales/report-summary")
+                                .path("/api/sales/reports_sales")
                                 .queryParam("page", page)
                                 .queryParam("size", size)
                                 .queryParam("keyword", keyword)
