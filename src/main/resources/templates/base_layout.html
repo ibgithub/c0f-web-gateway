@@ -103,7 +103,7 @@
                 </th:block>
 
                 <th:block sec:authorize="isAuthenticated()">
-                    <li class="nav-item dropdown" th:classappend="${currentUri != null and currentUri.startsWith('/reports')} ? 'active'">
+                    <li class="nav-item dropdown" th:classappend="${currentUri != null and currentUri.startsWith('/reports_sales')} ? 'active'">
                         <a class="nav-link dropdown-toggle"
                            data-bs-toggle="dropdown"
                            href="#">
@@ -113,7 +113,7 @@
 
                         <ul class="dropdown-menu">
                             <li>
-                                <a class="dropdown-item" th:href="@{/reports/sales}">
+                                <a class="dropdown-item" th:href="@{/reports/reports_sales}">
                                     <i class="fa fa-chart-line me-2"></i>
                                     <span th:text="#{nav.reports.sales}"></span>
                                 </a>

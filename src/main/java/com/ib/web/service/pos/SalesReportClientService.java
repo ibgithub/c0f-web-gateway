@@ -1,6 +1,9 @@
 package com.ib.web.service.pos;
 
+import com.ib.web.common.ApiResponse;
+import com.ib.web.common.PageResult;
 import com.ib.web.dto.pos.SalesReportDto;
+import com.ib.web.dto.pos.SalesReportSummaryDto;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -63,6 +66,53 @@ public class SalesReportClientService {
                 );
 
         return response.getBody();
+    }
+
+    public PageResult<SalesReportSummaryDto> getSalesReportSummariesPage(String jwt, int page, int size, String keyword) {
+        ApiResponse<PageResult<SalesReportSummaryDto>> response =
+                webClient.get()
+                        .uri(uriBuilder -> uriBuilder
+                                .path("/api/sales/report-summary")
+                                .queryParam("page", page)
+                                .queryParam("size", size)
+                                .queryParam("keyword", keyword)
+                                .build())
+                        .headers(headers -> headers.setBearerAuth(jwt))
+                        .retrieve()
+                        .bodyToMono(new ParameterizedTypeReference<ApiResponse<PageResult<SalesReportSummaryDto>>>() {})
+                        .block(); // karena Thymeleaf tetap blocking
+
+        if (response == null || !response.isSuccess()) {
+            throw new RuntimeException("Failed to fetch merchants");
+        }
+
+        return response.getData();
+    }
+
+    public PageResult<SalesReportDto> getSalesReportsPage(String jwt, int page, int size, String keyword,Long merchantId,
+                                                          String fromDate,
+                                                          String toDate) {
+        ApiResponse<PageResult<SalesReportDto>> response =
+                webClient.get()
+                        .uri(uriBuilder -> uriBuilder
+                                .path("/api/sales/report")
+                                .queryParam("page", page)
+                                .queryParam("size", size)
+                                .queryParam("keyword", keyword)
+                                .queryParam("merchantId", merchantId)
+                                .queryParam("fromDate", fromDate)
+                                .queryParam("toDate", toDate)
+                                .build())
+                        .headers(headers -> headers.setBearerAuth(jwt))
+                        .retrieve()
+                        .bodyToMono(new ParameterizedTypeReference<ApiResponse<PageResult<SalesReportDto>>>() {})
+                        .block(); // karena Thymeleaf tetap blocking
+
+        if (response == null || !response.isSuccess()) {
+            throw new RuntimeException("Failed to fetch merchants");
+        }
+
+        return response.getData();
     }
 
 }

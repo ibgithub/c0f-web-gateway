@@ -1,6 +1,8 @@
 package com.ib.web.controller.pos;
 
+import com.ib.web.common.PageResult;
 import com.ib.web.dto.pos.SalesReportDto;
+import com.ib.web.dto.pos.SalesReportSummaryDto;
 import com.ib.web.service.AuthClientService;
 import com.ib.web.service.JwtService;
 import com.ib.web.service.pos.SalesReportClientService;
@@ -36,6 +38,31 @@ public class SalesReportWebController {
         return request.getRequestURI();
     }
 
+    @GetMapping("/reports_sales")
+    public String salesReport(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String keyword,
+            Model model, Authentication authentication
+    ) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "redirect:/login";
+        }
+        String jwt = (String) authentication.getCredentials();
+        PageResult<SalesReportSummaryDto> result =
+                salesReportClientService.getSalesReportSummariesPage(jwt, page, size, keyword);
+
+        model.addAttribute("activeMenu", "reports_sales");
+        model.addAttribute("salesReportSummaries", result.getContent());
+        model.addAttribute("currentPage", result.getPage());
+        model.addAttribute("totalPages", result.getTotalPages());
+        model.addAttribute("pageSize", result.getSize());
+        model.addAttribute("totalElements", result.getTotalElements());
+        model.addAttribute("keyword", keyword == null ? "" : keyword);
+
+        return "reports/reports_sales";
+    }
+
     @GetMapping("/sales")
     public String salesReport(HttpSession session,
                               @RequestParam(required = false) String fromDate,
@@ -64,6 +91,33 @@ public class SalesReportWebController {
         model.addAttribute("fromDate", fromDate);
         model.addAttribute("toDate", toDate);
 
-        return "reports/report_sales";
+        return "reports_sales";
     }
+
+    @GetMapping
+    public String salesReports(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String keyword,
+            Model model, Authentication authentication) {
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "redirect:/login";
+        }
+
+        String jwt = (String) authentication.getCredentials();
+
+//        PageResult<MerchantDto> result =
+//                salesReportClientService.getMerchantsByRolePage(jwt, page, size, keyword);
+
+        model.addAttribute("activeMenu", "merchants");
+//        model.addAttribute("merchants", result.getContent());
+//        model.addAttribute("currentPage", result.getPage());
+//        model.addAttribute("totalPages", result.getTotalPages());
+//        model.addAttribute("pageSize", result.getSize());
+//        model.addAttribute("totalElements", result.getTotalElements());
+        model.addAttribute("keyword", keyword == null ? "" : keyword);
+        return "reports_sales";
+    }
+
 }
