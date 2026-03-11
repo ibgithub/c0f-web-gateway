@@ -39,7 +39,7 @@
                             <td class="text-end">
                                 <div class="d-inline-flex align-items-center gap-1">
                                     <!-- VIEW -->
-                                    <a th:href="'/reports_sales_detail/' + ${salesSummary.outletId} + '/' + ${salesSummary.salesDate}"
+                                    <a th:href="'/reports/reports_sales_detail/' + ${salesSummary.outletId} + '/' + ${salesSummary.salesDate}"
                                        class="btn btn-sm btn-outline-secondary btn-table-action"
                                        data-bs-toggle="tooltip"
                                        data-bs-placement="top"
@@ -53,7 +53,7 @@
                     </table>
                 </div>
                 <div th:replace="~{fragments/list-toolbar :: listToolbar(
-                    '/reports_sales',
+                    '/reports/reports_sales',
                     ${currentPage},
                     ${totalPages},
                     ${pageSize},
