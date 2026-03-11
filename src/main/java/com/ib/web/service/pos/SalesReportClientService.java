@@ -7,7 +7,9 @@ import com.ib.web.dto.pos.SalesReportSummaryDto;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -77,6 +79,17 @@ public class SalesReportClientService {
         }
 
         return response.getData();
+    }
+
+    public SalesReportDto getSalesReportDtoBySalesId(String token, Long salesId) {
+        HttpEntity<?> entity = new HttpEntity<>(headers(token));
+
+        return restTemplate.exchange(
+                baseUrl + "/api/sales/reports_sales_detail_item/" + salesId,
+                HttpMethod.GET,
+                entity,
+                SalesReportDto.class
+        ).getBody();
     }
 
 }

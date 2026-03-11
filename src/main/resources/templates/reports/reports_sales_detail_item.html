@@ -3,67 +3,149 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{base_layout}">
 <head>
-    <title class="fw-semibold" th:text="#{report.sales.title}"></title>
+    <title th:text="#{report.sales.detail.item.title}">Detail Penjualan</title>
 </head>
 <body>
 <section layout:fragment="content">
     <div class="container pt-1">
-        <div th:replace="~{fragments/list-header :: listHeader(
-                'report.sales.title',
-                '/reports/reports_sales_detail',
-                ${pageSize},
-                ${keyword},
-                ${success}
-        )}"></div>
 
-        <!-- Card -->
-        <div class="card shadow-sm border-0">
-            <div class="card-body rounded-3 pt-2 pb-3">
-                <div class="table-responsive">
+        <!-- PAGE TITLE -->
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <h4 class="fw-semibold mb-0" th:text="#{report.sales.detail.item.title}">
+                Detail Penjualan
+            </h4>
+
+            <!--<a th:href="@{/reports/sales}"
+               class="btn btn-outline-secondary btn-sm">
+                <i class="fa fa-arrow-left me-1"></i> Kembali
+            </a>-->
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-body p-4">
+
+                <!-- HEADER INFO -->
+                <div class="card border-0 bg-light-subtle rounded-4 mb-4">
+                    <div class="card-body p-4">
+                        <div class="row g-4">
+                            <!-- KOLOM KIRI -->
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-between align-items-start py-2 border-bottom">
+                                    <span class="text-secondary">Nomor Kwitansi</span>
+                                    <span class="fw-semibold text-end"
+                                          th:text="${salesReport.receiptNo != null ? salesReport.receiptNo : '-'}">
+                                    </span>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-start py-2 border-bottom">
+                                    <span class="text-secondary">Tanggal Transaksi</span>
+                                    <span class="fw-semibold text-end"
+                                          th:text="${salesReport.createdAt != null ? #temporals.format(salesReport.createdAt, 'dd-MM-yyyy HH:mm:ss') : '-'}">
+                                    </span>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-start py-2">
+                                    <span class="text-secondary">Nama Kasir</span>
+                                    <span class="fw-semibold text-end"
+                                          th:text="${salesReport.cashierName != null ? salesReport.cashierName : '-'}">
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- KOLOM KANAN -->
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-between align-items-start py-2 border-bottom">
+                                    <span class="text-secondary">Metode Pembayaran</span>
+                                    <span class="fw-semibold text-end"
+                                          th:text="${salesReport.paymentMethod != null ? salesReport.paymentMethod : '-'}">
+                                    </span>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center py-2">
+                                    <span class="text-secondary">Status Transaksi</span>
+                                    <span class="badge rounded-pill px-3 py-2"
+                                          th:classappend="${salesReport.status == 'COMPLETED'} ? ' text-bg-success' :
+                                          (${salesReport.status == 'VOID' or salesReport.status == 'CANCELLED'} ? ' text-bg-danger' :
+                                          (${salesReport.status == 'REFUNDED'} ? ' text-bg-warning' : ' text-bg-secondary'))"
+                                          th:text="${salesReport.status != null ? salesReport.status : '-'}">
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ITEM TABLE -->
+                <div class="mb-4">
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light">
                         <tr>
-                            <th class="fw-semibold text-secondary" th:text="#{merchant.name}"></th>
-                            <th class="fw-semibold text-secondary" th:text="#{outlet.name}"></th>
-                            <th class="fw-semibold text-secondary" th:text="#{salesSummary.salesDate}"></th>
-                            <th class="fw-semibold text-secondary" th:text="#{salesSummary.totalAmount}"></th>
-                            <th class="text-end fw-semibold text-secondary" th:text="#{action}"></th>
+                            <th class="fw-semibold text-secondary" th:text="#{salesReport.productName}">Nama Produk</th>
+                            <th class="fw-semibold text-secondary text-end" th:text="#{salesReport.qty}">Kuantitas</th>
+                            <th class="fw-semibold text-secondary text-end" th:text="#{salesReport.price}">Harga</th>
+                            <th class="fw-semibold text-secondary text-end" th:text="#{salesReport.discount}">Diskon</th>
+                            <th class="fw-semibold text-secondary text-end" th:text="#{salesReport.subtotal}">Sub Total</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="salesSummary : ${salesReportSummaries}">
-                            <td th:text="${salesSummary.merchantName}"></td>
-                            <td th:text="${salesSummary.outletName}"></td>
-                            <td th:text="${salesSummary.salesDate}"></td>
-                            <td class="money-cell" th:insert="~{fragments/money :: money(${salesSummary.totalAmount})}"></td>
-                            <td class="text-end">
-                                <div class="d-inline-flex align-items-center gap-1">
-                                    <!-- VIEW -->
-                                    <a th:href="'/reports_sales_detail/' + ${salesSummary.outletId} + '/' + ${salesSummary.salesDate}"
-                                       class="btn btn-sm btn-outline-secondary btn-table-action"
-                                       data-bs-toggle="tooltip"
-                                       data-bs-placement="top"
-                                       th:title="#{view}">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                </div>
+                        <tr th:each="item : ${items}">
+                            <td th:text="${item.productName}">Ayam Goreng</td>
+                            <td class="text-end" th:text="${item.qty}">1</td>
+                            <td class="money-cell text-end" th:insert="~{fragments/money :: money(${item.price})}"></td>
+                            <td class="money-cell text-end" th:insert="~{fragments/money :: money(${item.discount})}"></td>
+                            <td class="money-cell text-end" th:insert="~{fragments/money :: money(${item.subtotal})}"></td>
+                        </tr>
+
+                        <!-- jika item kosong -->
+                        <tr th:if="${#lists.isEmpty(items)}">
+                            <td colspan="5" class="text-center text-secondary py-4">
+                                Tidak ada item penjualan
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
-                <div th:replace="~{fragments/list-toolbar :: listToolbar(
-                    '/reports_sales',
-                    ${currentPage},
-                    ${totalPages},
-                    ${pageSize},
-                    ${totalElements},
-                    ${false},
-                    '',
-                    #{view},
-                    ${keyword}
-                    )}">
+
+                <!-- SUMMARY -->
+                <div class="row justify-content-end">
+                    <div class="col-lg-5 col-md-6">
+                        <div class="border rounded-4 p-3 bg-light-subtle">
+
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-secondary">Subtotal</span>
+                                <span class="fw-semibold"
+                                      th:insert="~{fragments/money :: money(${salesReport.subtotal})}">
+                                </span>
+                            </div>
+
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-secondary">Diskon</span>
+                                <span class="fw-semibold"
+                                      th:insert="~{fragments/money :: money(${salesReport.discountAmount})}">
+                                </span>
+                            </div>
+
+                            <div class="d-flex justify-content-between mb-3">
+                                <span class="text-secondary">Pajak</span>
+                                <span class="fw-semibold"
+                                      th:insert="~{fragments/money :: money(${salesReport.taxAmount})}">
+                                </span>
+                            </div>
+
+                            <hr class="my-2"/>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold fs-6">Grand Total</span>
+                                <span class="fw-bold fs-5 text-primary"
+                                      th:insert="~{fragments/money :: money(${salesReport.totalAmount})}">
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>

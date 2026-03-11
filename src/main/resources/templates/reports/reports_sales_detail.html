@@ -23,10 +23,11 @@
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light">
                         <tr>
+                            <th class="fw-semibold text-secondary" th:text="#{salesReport.cashierName}"></th>
                             <th class="fw-semibold text-secondary" th:text="#{salesReport.receiptNo}"></th>
                             <th class="fw-semibold text-secondary" th:text="#{salesReport.createdAt}"></th>
                             <th class="fw-semibold text-secondary" th:text="#{salesReport.paymentMethod}"></th>
-                            <th class="fw-semibold text-secondary" th:text="#{salesReport.paymentStatus}"></th>
+                            <!--<th class="fw-semibold text-secondary" th:text="#{salesReport.paymentStatus}"></th>-->
                             <th class="fw-semibold text-secondary" th:text="#{salesReport.status}"></th>
                             <th class="fw-semibold text-secondary text-end" th:text="#{salesReport.totalAmount}"></th>
                             <th class="text-end fw-semibold text-secondary" th:text="#{action}"></th>
@@ -35,16 +36,17 @@
                         <tbody>
 
                         <tr th:each="salesReport : ${salesReports}">
+                            <td th:text="${salesReport.cashierName}"></td>
                             <td th:text="${salesReport.receiptNo}"></td>
-                            <td th:text="${salesReport.createdAt}"></td>
+                            <td th:insert="~{fragments/datetime :: datetime(${salesReport.createdAt})}"></td>
                             <td th:text="${salesReport.paymentMethod}"></td>
-                            <td th:text="${salesReport.paymentStatus}"></td>
+                            <!--<td th:text="${salesReport.paymentStatus}"></td>-->
                             <td th:text="${salesReport.status}"></td>
                             <td class="money-cell" th:insert="~{fragments/money :: money(${salesReport.totalAmount})}"></td>
                             <td class="text-end">
                                 <div class="d-inline-flex align-items-center gap-1">
                                     <!-- VIEW -->
-                                    <a th:href="'/reports_sales_detail_item/' + ${salesReport.id} "
+                                    <a th:href="'/reports/reports_sales_detail_item/' + ${salesReport.id} "
                                        class="btn btn-sm btn-outline-secondary btn-table-action"
                                        data-bs-toggle="tooltip"
                                        data-bs-placement="top"

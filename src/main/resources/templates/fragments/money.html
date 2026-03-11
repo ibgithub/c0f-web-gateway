@@ -3,7 +3,7 @@
 <body>
 
 <th:block th:fragment="money(amount)">
-    <span th:text="${#numbers.formatDecimal(amount, 0, 'POINT', 2, 'COMMA')}"></span>
+    <span th:text="${#numbers.formatDecimal(amount != null ? amount : 0, 1, 'POINT', 2, 'COMMA')}">0,00</span>
 </th:block>
 
 </body>

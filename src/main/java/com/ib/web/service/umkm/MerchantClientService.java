@@ -92,6 +92,7 @@ public class MerchantClientService {
                 Void.class
         );
     }
+
     public MerchantDto getById(Long id, String token) {
         HttpEntity<?> entity = new HttpEntity<>(headers(token));
 

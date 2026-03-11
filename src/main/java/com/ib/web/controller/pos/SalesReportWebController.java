@@ -87,4 +87,17 @@ public class SalesReportWebController {
         return "reports/reports_sales_detail";
     }
 
+    @GetMapping("/reports_sales_detail_item/{salesId}")
+    public String salesReportDetailItem(Model model,
+            @PathVariable Long salesId, Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "redirect:/login";
+        }
+        String jwt = (String) authentication.getCredentials();
+        SalesReportDto salesReport = salesReportClientService.getSalesReportDtoBySalesId(jwt, salesId);
+
+        model.addAttribute("salesReport", salesReport);
+        model.addAttribute("items", salesReport.getItems());
+        return "reports/reports_sales_detail_item";
+    }
 }

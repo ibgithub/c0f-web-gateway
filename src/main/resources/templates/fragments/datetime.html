@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<th:block th:fragment="datetime(value)">
+    <span th:text="${value != null ? #temporals.format(value, 'dd-MM-yyyy HH:mm') : '-'}">-</span>
+</th:block>
+
+</body>
+</html>
