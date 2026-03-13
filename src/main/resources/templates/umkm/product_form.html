@@ -36,15 +36,26 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label" th:text="#{product.merchant}"></label>
-                                    <select id="merchantSelect" class="form-select"
-                                            th:field="*{merchantId}"
-                                            th:disabled="${mode == 'view'}">
-                                        <option value="" th:text="#{select.merchant}"></option>
-                                        <option th:each="m : ${merchants}"
-                                                th:value="${m.id}"
-                                                th:text="${m.name}">
-                                        </option>
-                                    </select>
+                                    <!-- Mode Add: pilih merchant -->
+                                    <div th:if="${mode == 'add'}">
+                                        <select id="merchantSelect" class="form-select"
+                                                th:field="*{merchantId}"
+                                                th:disabled="${mode == 'view'}">
+                                            <option value="" th:text="#{select.merchant}"></option>
+                                            <option th:each="m : ${merchants}"
+                                                    th:value="${m.id}"
+                                                    th:text="${m.name}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <!-- Mode Edit/View: tampilkan readonly + hidden -->
+                                    <div th:if="${mode != 'add'}">
+                                        <input type="hidden" th:field="*{merchantId}" />
+                                        <input type="text"
+                                               class="form-control"
+                                               th:value="${product.merchantName}"
+                                               readonly />
+                                    </div>
                                     <div th:if="${#fields.hasErrors('merchantId')}"
                                          th:errors="*{merchantId}"
                                          class="text-danger small mt-1">
@@ -52,16 +63,26 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" th:text="#{product.category}"></label>
-                                    <select id="categorySelect" class="form-select"
-                                            th:field="*{categoryId}"
-                                            th:disabled="${mode == 'view'}">
-                                        <option value="" th:text="#{select.category}"></option>
-                                        <option th:each="c : ${categories}"
-                                                th:value="${c.id}"
-                                                th:text="${c.name}"
-                                                th:data-merchant="${c.merchantId}">
-                                        </option>
-                                    </select>
+                                    <!-- Mode Add: pilih merchant -->
+                                    <div th:if="${mode == 'add'}">
+                                        <select id="categorySelect" class="form-select"
+                                                th:field="*{categoryId}"
+                                                th:disabled="${mode == 'view'}">
+                                            <option value="" th:text="#{select.category}"></option>
+                                            <option th:each="c : ${categories}"
+                                                    th:value="${c.id}"
+                                                    th:text="${c.name}"
+                                                    th:data-merchant="${c.merchantId}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div th:if="${mode != 'add'}">
+                                        <input type="hidden" th:field="*{categoryId}" />
+                                        <input type="text"
+                                               class="form-control"
+                                               th:value="${product.categoryName}"
+                                               readonly />
+                                    </div>
                                     <div th:if="${#fields.hasErrors('categoryId')}"
                                          th:errors="*{categoryId}"
                                          class="text-danger small mt-1">
@@ -111,8 +132,8 @@
                                     '/products/' + ${product.id} + '/edit',
                                     '/products/' + ${product.id} + '/delete',
                                     '/products',
-                                    ${role == 'ADMIN'},
-                                    ${role == 'ADMIN'}
+                                    ${role == 'ADMIN' or role == 'MERCHANT_USER'},
+                                    ${role == 'ADMIN' or role == 'MERCHANT_USER'}
                             )}"></div>
                 </form>
         </div>

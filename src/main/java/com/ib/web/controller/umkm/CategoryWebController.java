@@ -123,6 +123,7 @@ public class CategoryWebController {
         String token = (String) session.getAttribute("JWT");
         CategoryDto category = categoryClientService.getById(id, token);
         model.addAttribute("category", category);
+        model.addAttribute("merchantId", category.getMerchantId());
         model.addAttribute("mode", "view");
         model.addAttribute("self", false);
         return "umkm/category_form";

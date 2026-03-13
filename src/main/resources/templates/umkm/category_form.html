@@ -35,17 +35,27 @@
                         <div class="card-body p-4">
                             <div class="mb-3">
                                 <label class="form-label" th:text="#{category.merchantName}"></label>
-                                <select class="form-select"
-                                        th:field="*{merchantId}"
-                                        th:disabled="${mode == 'view'}">
-                                    <option value=""
-                                            th:text="#{select.merchant}">
-                                    </option>
-                                    <option th:each="m : ${merchants}"
-                                            th:value="${m.id}"
-                                            th:text="${m.name}">
-                                    </option>
-                                </select>
+                                <!-- Mode Add: pilih merchant -->
+                                <div th:if="${mode == 'add'}">
+                                    <select class="form-select"
+                                            th:field="*{merchantId}">
+                                        <option value=""
+                                                th:text="#{select.merchant}">
+                                        </option>
+                                        <option th:each="m : ${merchants}"
+                                                th:value="${m.id}"
+                                                th:text="${m.name}">
+                                        </option>
+                                    </select>
+                                </div>
+                                <!-- Mode Edit/View: tampilkan readonly + hidden -->
+                                <div th:if="${mode != 'add'}">
+                                    <input type="hidden" th:field="*{merchantId}" />
+                                    <input type="text"
+                                           class="form-control"
+                                           th:value="${category.merchantName}"
+                                           readonly />
+                                </div>
                                 <div th:if="${#fields.hasErrors('merchantId')}"
                                      th:errors="*{merchantId}"
                                      class="text-danger small mt-1">
