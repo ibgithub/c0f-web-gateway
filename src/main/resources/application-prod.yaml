@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+auth:
+  service:
+    url: http://localhost:8081
+member:
+  service:
+    url: http://localhost:8082
+umkm:
+  service:
+    url: http://localhost:8083
+jwt:
+  secret: my-super-secret-key-minimum-32-bytes!!!
+logging:
+  level:
+    org.springframework.web.servlet.mvc.method.annotation: DEBUG
+spring:
+  messages:
+    basename: messages
+    encoding: UTF-8
+    fallback-to-system-locale: false

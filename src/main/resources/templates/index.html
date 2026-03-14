@@ -2,309 +2,501 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:lang="${#locale.language}"
       layout:decorate="~{base_layout}">
 <head>
-    <title>Home</title>
-    <!--<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Best Store</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">-->
+    <title th:text="#{home.title}">Teman-UMKM</title>
 </head>
 <body>
 
 <section layout:fragment="content">
-    <div class="row">
-        <div class="col-md-3">
-            <span class="hipster img-fluid rounded"></span>
-        </div>
 
-        <div class="col-md-9">
-            <h3>Selamat Datang di website kami,
-            </h3>
-            <h1>Koperasi C0F</h1>
+    <!-- HERO PREMIUM -->
+    <div class="home2-hero p-4 p-md-5 mb-4">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-7">
+                <span class="home2-badge mb-3 d-inline-block">
+                    <i class="fa-solid fa-bolt me-2"></i>
+                    <span th:text="#{home.hero.badge}">Cocok untuk Warung, Kedai, dan UMKM Kuliner</span>
+                </span>
 
+                <h1 class="display-5 fw-bold mb-3" th:text="#{home.hero.heading}">Teman-UMKM</h1>
 
-            <div class="row mt-5">
-                <div class="col-lg-12">
-                    <h2>Kegiatan Kami</h2>
+                <p class="lead mb-3">
+                    <strong th:text="#{home.hero.lead}">
+                        Kasir modern untuk UMKM yang membantu usaha Anda menjadi lebih rapi, cepat, dan menguntungkan.
+                    </strong>
+                </p>
+
+                <p class="mb-4" th:text="#{home.hero.desc}">
+                    Catat transaksi lebih mudah, kelola produk dan outlet dengan rapi, serta lihat laporan penjualan harian untuk mengetahui omzet, produk paling laris, dan produk yang paling menguntungkan.
+                </p>
+
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    <a href="#paket" class="btn btn-light btn-lg">
+                        <i class="fa-solid fa-tags me-2"></i>
+                        <span th:text="#{home.hero.btn.package}">Lihat Paket</span>
+                    </a>
+
+                    <a href="#hubungi-kami" class="btn btn-outline-light btn-lg">
+                        <i class="fa-brands fa-whatsapp me-2"></i>
+                        <span th:text="#{home.hero.btn.demo}">Demo Gratis</span>
+                    </a>
+
+                    <th:block sec:authorize="!isAuthenticated()">
+                        <a th:href="@{/login}" class="btn btn-outline-light btn-lg">
+                            <i class="fa-solid fa-right-to-bracket me-2"></i>
+                            <span th:text="#{home.hero.btn.login}">Login</span>
+                        </a>
+                    </th:block>
+
+                    <th:block sec:authorize="isAuthenticated()">
+                        <a th:href="@{/cashier}" class="btn btn-outline-light btn-lg">
+                            <i class="fa-solid fa-cash-register me-2"></i>
+                            <span th:text="#{home.hero.btn.cashier}">Buka Kasir</span>
+                        </a>
+                    </th:block>
+                </div>
+
+                <div class="small text-white-50">
+                    <i class="fa-solid fa-circle-check me-1"></i>
+                    <span th:text="#{home.hero.note.installation}">Instalasi dibantu</span>
+
+                    <span class="mx-2">•</span>
+
+                    <i class="fa-solid fa-circle-check me-1"></i>
+                    <span th:text="#{home.hero.note.printer}">Printer struk tersedia</span>
+
+                    <span class="mx-2">•</span>
+
+                    <i class="fa-solid fa-circle-check me-1"></i>
+                    <span th:text="#{home.hero.note.support}">Support WhatsApp</span>
                 </div>
             </div>
-            <div class="accordion" id="accordionActivity">
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRecent" aria-expanded="true" aria-controls="collapseRecent">
-                            <span >Highlights</span>
-                        </button>
-                    </h2>
-                    <div id="collapseRecent" class="accordion-collapse collapse show" data-bs-parent="#accordionActivity">
-                        <div class="accordion-body">
-                            <div class="row">
-                                <div class="col-lg-1"></div>
-                                <div class="col-lg-10">
-                                    <img src="/images/koperasi-c0f.png" class="img-fluid" sizes="" alt="Open Donation">
-                                </div>
-                                <div class="col-lg-1"></div>
+
+            <div class="col-lg-5">
+                <div class="card border-0 shadow-lg rounded-4">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-3 text-dark" th:text="#{home.benefit.card.title}">Apa yang didapat UMKM?</h5>
+
+                        <div class="home2-mini-stat mb-3">
+                            <div class="home2-mini-icon bg-primary">
+                                <i class="fa-solid fa-cash-register"></i>
                             </div>
-                            <div class="row">
-                                <p><br>🤝<strong>[Welcome]</strong>🤝
-                                    <br><br>🙏 Assalamu'alaikum, salam sehat dan sejahtera teman-teman,
-                                    <br>Kalimat 1
-                                    <br>Kalimat 2
-
-                                <p>Paragraf 1
-                                    <br>Baris 1
-                                    <br>Baris 2
-                                    <br>Baris 3
-                                </p>
-
-                                <p>Paragraf 2
-                                    <br>Baris 21
-                                    <br>Baris 22
-                                    <br>Baris 23
-                                </p>
-
-                                <p>Paragraf 3
-                                    <br>Baris 31
-                                    <br>Baris 32
-                                    <br>Baris 33
-                                </p>
-
+                            <div>
+                                <div class="fw-semibold text-dark" th:text="#{home.benefit.card.item1.title}">Kasir Web & Android</div>
+                                <small class="text-muted" th:text="#{home.benefit.card.item1.desc}">Bisa dipakai dari laptop maupun HP Android</small>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMasy" aria-expanded="false" aria-controls="collapseMasy">
-                            <span>Kepemudaan dan Sosial Kemasyarakatan</span>
-                        </button>
-                    </h2>
-                    <div id="collapseMasy" class="accordion-collapse collapse" data-bs-parent="#accordionActivity">
-                        <div class="accordion-body">
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <canvas id="chBar"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="bs-component">
-                                        <div class="card text-white bg-info mb-3" style="max-width: 20rem">
-                                            <div><h4 class="card-header">Tanggap Bencana</h4></div>
-                                            <div class="card-body">
-                                                <p class="card-text">Pengumpulan dan penyampaian donasi serta bantuan secara cepat jika terjadi bencana alam</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="bs-component">
-                                        <div class="card text-white bg-success mb-3" style="max-width: 20rem">
-                                            <div><h4 class="card-header">Tanggap Sosial</h4></div>
-                                            <div class="card-body">
-                                                <p class="card-text">Bantuan sosial kepada masyarakat yang membutuhkan</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
+                        <div class="home2-mini-stat mb-3">
+                            <div class="home2-mini-icon bg-success">
+                                <i class="fa-solid fa-boxes-stacked"></i>
+                            </div>
+                            <div>
+                                <div class="fw-semibold text-dark" th:text="#{home.benefit.card.item2.title}">Data Lebih Rapi</div>
+                                <small class="text-muted" th:text="#{home.benefit.card.item2.desc}">Produk, outlet, dan transaksi lebih tertata</small>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDisaster" aria-expanded="false" aria-controls="collapseDisaster">
-                            <span>Contoh Tanggap Bencana: Pengumpulan dan Penyerahan Bantuan Erupsi Gunung Berapi</span>
-                        </button>
-                    </h2>
-                    <div id="collapseDisaster" class="accordion-collapse collapse" data-bs-parent="#accordionActivity">
-                        <div class="accordion-body">
-                            <div class="row">
-                                <div class="col-lg-1"></div>
-                                <div class="col-lg-10">
-                                    <img src="/images/flowcharts/01flow_chart_erupsi.png" class="img-fluid" sizes="" alt="Open Donation">
-                                </div>
-                                <div class="col-lg-1"></div>
+
+                        <div class="home2-mini-stat mb-3">
+                            <div class="home2-mini-icon bg-warning text-dark">
+                                <i class="fa-solid fa-chart-line"></i>
                             </div>
-                            <div class="row">
-                                <p>
-                                    <br><strong>Keterangan: -</strong>
-                                </p>
+                            <div>
+                                <div class="fw-semibold text-dark" th:text="#{home.benefit.card.item3.title}">Laporan Harian</div>
+                                <small class="text-muted" th:text="#{home.benefit.card.item3.desc}">Omzet, produk terlaris, dan analisa keuntungan</small>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSocial1" aria-expanded="false" aria-controls="collapseSocial1">
-                            <span>Contoh Tanggap Sosial: Bantuan Ke Sekolah Yang Tertinggal</span>
-                        </button>
-                    </h2>
-                    <div id="collapseSocial1" class="accordion-collapse collapse" data-bs-parent="#accordionActivity">
-                        <div class="accordion-body">
-                            <div class="row">
-                                <div class="col-lg-1"></div>
-                                <div class="col-lg-10">
-                                    <img src="/images/flowcharts/02flow_chart_sekolah.png" class="img-fluid" sizes="" alt="Open Donation">
-                                </div>
-                                <div class="col-lg-1"></div>
+
+                        <div class="home2-mini-stat">
+                            <div class="home2-mini-icon bg-dark">
+                                <i class="fa-solid fa-print"></i>
                             </div>
-                            <div class="row">
-                                <p>
-                                    <br><strong>Keterangan: -</strong>
-                                </p>
+                            <div>
+                                <div class="fw-semibold text-dark" th:text="#{home.benefit.card.item4.title}">Printer Struk</div>
+                                <small class="text-muted" th:text="#{home.benefit.card.item4.desc}">Tinggal pakai, tanpa repot setup sendiri</small>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="row mt-5">
-                <div class="col-lg-12">
-                    <h2>Tentang Anggota</h2>
-                </div>
-            </div>
-            <div class="accordion" id="accordionMember">
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMember" aria-expanded="true" aria-controls="collapseMember">
-                            <span>Alumni ITS yang terdaftar di MIDA</span>
-                        </button>
-                    </h2>
-                    <div id="collapseMember" class="accordion-collapse collapse" data-bs-parent="#accordionMember">
-                        <div class="accordion-body">
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <canvas id="chPieAlumni"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="bs-component">
-                                        <div class="card text-white bg-info mb-3" style="max-width: 20rem">
-                                            <div><h4 class="card-header">Sinkronisasi Data Alumni</h4></div>
-                                            <div class="card-body">
-                                                <p class="card-text">Data Alumni (no whatsap dan kota domisili) didapatkan dari sinkronisasi data dari <a class="link-light" href="https://mida.gruup.id/">MIDA ITS</a>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="bs-component">
-                                        <div class="card text-white bg-success mb-3" style="max-width: 20rem">
-                                            <div><h4 class="card-header">Whatsap ke Alumni</h4></div>
-                                            <div class="card-body">
-                                                <p class="card-text">Terdapat pesan whatsap ke alumni jika ada pengumpulan dana atau kegiatan sosial lainnya</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--<div class="col-lg-4"></div>
-                                <div class="col-lg-4">
-                                    <div class="bs-component">
-                                        <div class="card text-white bg-warning mb-3" style="max-width: 20rem">
-                                            <div><h4 class="card-header">Login Sebagai User</h4></div>
-                                            <div class="card-body">
-                                                <p class="card-text">Jika sudah terdataftar di MIDA maka akan bisa login ke tanggapsosial.com untuk melihat fitur seperti laporan keuangan, dsb</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4"></div>-->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdmin" aria-expanded="false" aria-controls="collapseAdmin">
-                            <span>Admin Web Tanggap Sosial</span>
-                        </button>
-                    </h2>
-                    <div id="collapseAdmin" class="accordion-collapse collapse" data-bs-parent="#accordionMember">
-                        <div class="accordion-body">
-                            Mengadministrasikan website, menginformasikan jika ada kegiatan ataupun pengumpulan dana
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mt-5">
-                <div class="col-lg-12">
-                    <h2>Keuangan</h2>
-                </div>
-            </div>
-            <div class="accordion" id="accordionFinancial">
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFinancial" aria-expanded="true" aria-controls="collapseFinancial">
-                            <span>Laporan Keuangan</span>
-                        </button>
-                    </h2>
-                    <div id="collapseFinancial" class="accordion-collapse collapse" data-bs-parent="#accordionFinancial">
-                        <div class="accordion-body">
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <canvas id="chBarFinancial"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="bs-component">
-                                        <div class="card text-white bg-info mb-3" style="max-width: 20rem">
-                                            <div><h4 class="card-header">Transparan</h4></div>
-                                            <div class="card-body">
-                                                <p class="card-text">Laporan keuangan ditampilkan secara transparan</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="bs-component">
-                                        <div class="card text-white bg-success mb-3" style="max-width: 20rem">
-                                            <div><h4 class="card-header">Mutasi Rekening</h4></div>
-                                            <div class="card-body">
-                                                <p class="card-text">Mutasi rekening akan terupdate 30 menit kemudian menggunakan scrapper internet banking</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAccountNo" aria-expanded="false" aria-controls="collapseAccountNo">
-                            <span>Nomor Rekening Kami</span>
-                        </button>
-                    </h2>
-                    <div id="collapseAccountNo" class="accordion-collapse collapse show" data-bs-parent="#accordionFinancial">
-                        <div class="accordion-body">
-                            <div class="row">
-                                <div class="col-lg-4">
-                                </div>
-                                <div class="col-lg-4 center">
-                                    <strong>🏧BNI, No Rek 1011195580</strong>
-                                    <br><strong>Atas Nama: Ikatan Alumni ITS</strong>
-                                </div>
-                                <div class="col-lg-4">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
+
+    <!-- MASALAH UMUM -->
+    <div class="text-center mb-4">
+        <h2 class="fw-bold" th:text="#{home.problem.title}">Masalah yang Sering Dialami UMKM</h2>
+        <p class="text-muted mb-0" th:text="#{home.problem.subtitle}">
+            Banyak usaha kecil sebenarnya ramai, tapi datanya belum tercatat dengan rapi.
+        </p>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="card home2-problem-card h-100">
+                <div class="card-body p-4 text-center">
+                    <div class="home2-problem-icon text-danger">
+                        <i class="fa-solid fa-file-pen"></i>
+                    </div>
+                    <h6 class="fw-bold" th:text="#{home.problem.item1.title}">Masih Catat Manual</h6>
+                    <p class="text-muted mb-0 small" th:text="#{home.problem.item1.desc}">
+                        Transaksi masih ditulis tangan atau hanya mengandalkan ingatan.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card home2-problem-card h-100">
+                <div class="card-body p-4 text-center">
+                    <div class="home2-problem-icon text-primary">
+                        <i class="fa-solid fa-money-bill-wave"></i>
+                    </div>
+                    <h6 class="fw-bold" th:text="#{home.problem.item2.title}">Omzet Sulit Dipantau</h6>
+                    <p class="text-muted mb-0 small" th:text="#{home.problem.item2.desc}">
+                        Pemilik usaha tidak tahu pasti berapa penjualan hari ini.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card home2-problem-card h-100">
+                <div class="card-body p-4 text-center">
+                    <div class="home2-problem-icon text-warning">
+                        <i class="fa-solid fa-fire"></i>
+                    </div>
+                    <h6 class="fw-bold" th:text="#{home.problem.item3.title}">Tidak Tahu Produk Terlaris</h6>
+                    <p class="text-muted mb-0 small" th:text="#{home.problem.item3.desc}">
+                        Sulit menentukan produk mana yang paling laku dan perlu diprioritaskan.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card home2-problem-card h-100">
+                <div class="card-body p-4 text-center">
+                    <div class="home2-problem-icon text-success">
+                        <i class="fa-solid fa-coins"></i>
+                    </div>
+                    <h6 class="fw-bold" th:text="#{home.problem.item4.title}">Tidak Tahu Margin Terbaik</h6>
+                    <p class="text-muted mb-0 small" th:text="#{home.problem.item4.desc}">
+                        Produk ramai belum tentu paling untung. Perlu data untuk mengambil keputusan.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FITUR -->
+    <div class="text-center mb-4">
+        <h2 class="fw-bold" th:text="#{home.feature.title}">Fitur Utama Teman-UMKM</h2>
+        <p class="text-muted mb-0" th:text="#{home.feature.subtitle}">
+            Dibuat sederhana, cepat dipahami, dan langsung terasa manfaatnya untuk usaha harian.
+        </p>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card home2-feature-card h-100">
+                <div class="card-body p-4">
+                    <div class="home2-icon-box home2-icon-blue">
+                        <i class="fa-solid fa-cash-register"></i>
+                    </div>
+                    <h5 class="fw-bold" th:text="#{home.feature.item1.title}">Kasir (Web & Android)</h5>
+                    <p class="text-muted mb-0" th:text="#{home.feature.item1.desc}">
+                        Proses transaksi lebih cepat dan fleksibel. Bisa digunakan di laptop maupun HP Android.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card home2-feature-card h-100">
+                <div class="card-body p-4">
+                    <div class="home2-icon-box home2-icon-green">
+                        <i class="fa-solid fa-store"></i>
+                    </div>
+                    <h5 class="fw-bold" th:text="#{home.feature.item2.title}">Kelola Outlet & Produk</h5>
+                    <p class="text-muted mb-0" th:text="#{home.feature.item2.desc}">
+                        Atur outlet, kategori, dan produk yang dijual agar operasional lebih rapi.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card home2-feature-card h-100">
+                <div class="card-body p-4">
+                    <div class="home2-icon-box home2-icon-orange">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </div>
+                    <h5 class="fw-bold" th:text="#{home.feature.item3.title}">Laporan Penjualan Harian</h5>
+                    <p class="text-muted mb-0" th:text="#{home.feature.item3.desc}">
+                        Pantau omzet, produk paling laris, dan produk paling menguntungkan setiap hari.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KENAPA SEWA -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-10">
+            <div class="card home2-rental-card border-0">
+                <div class="card-body p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold" th:text="#{home.rental.title}">Kenapa Sistem Sewa Lebih Praktis?</h2>
+                        <p class="text-muted mb-0" th:text="#{home.rental.subtitle}">
+                            UMKM tidak perlu repot beli perangkat dan setup sendiri.
+                        </p>
+                    </div>
+
+                    <div class="row g-4">
+                        <div class="col-md-3">
+                            <div class="text-center">
+                                <div class="home2-rental-icon bg-primary">
+                                    <i class="fa-solid fa-wallet"></i>
+                                </div>
+                                <h6 class="fw-bold mt-3" th:text="#{home.rental.item1.title}">Modal Awal Lebih Ringan</h6>
+                                <p class="text-muted small mb-0" th:text="#{home.rental.item1.desc}">
+                                    Tidak perlu keluar biaya besar di awal untuk beli perangkat dan setup.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="text-center">
+                                <div class="home2-rental-icon bg-success">
+                                    <i class="fa-solid fa-print"></i>
+                                </div>
+                                <h6 class="fw-bold mt-3" th:text="#{home.rental.item2.title}">Printer Disiapkan</h6>
+                                <p class="text-muted small mb-0" th:text="#{home.rental.item2.desc}">
+                                    Printer struk tersedia sebagai fasilitas pinjam pakai selama berlangganan.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="text-center">
+                                <div class="home2-rental-icon bg-warning text-dark">
+                                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                                </div>
+                                <h6 class="fw-bold mt-3" th:text="#{home.rental.item3.title}">Instalasi Dibantu</h6>
+                                <p class="text-muted small mb-0" th:text="#{home.rental.item3.desc}">
+                                    Sistem dipasang dan disiapkan agar tenant tinggal langsung pakai.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="text-center">
+                                <div class="home2-rental-icon bg-dark">
+                                    <i class="fa-solid fa-headset"></i>
+                                </div>
+                                <h6 class="fw-bold mt-3" th:text="#{home.rental.item4.title}">Support WhatsApp</h6>
+                                <p class="text-muted small mb-0" th:text="#{home.rental.item4.desc}">
+                                    Kalau ada kendala, tenant bisa langsung konsultasi lewat WhatsApp.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAKET -->
+    <div class="row justify-content-center mb-5" id="paket">
+        <div class="col-lg-10">
+            <div class="home2-pricing p-4 p-md-5">
+                <div class="row align-items-center g-4">
+                    <div class="col-md-7">
+                        <span class="badge bg-light text-success px-3 py-2 rounded-pill mb-3"
+                              th:text="#{home.pricing.badge}">
+                            Promo Launching
+                        </span>
+
+                        <h3 class="fw-bold mb-3" th:text="#{home.pricing.title}">Mulai dari Rp69.000 / bulan</h3>
+
+                        <p class="mb-3" th:text="#{home.pricing.desc}">
+                            Solusi cocok untuk warung, pecel lele, nasi goreng, kedai kopi sederhana, angkringan, dan UMKM kuliner yang ingin langsung punya sistem kasir modern.
+                        </p>
+
+                        <ul class="mb-0 home2-list">
+                            <li th:text="#{home.pricing.item1}">Minimal kontrak 4 bulan</li>
+                            <li th:text="#{home.pricing.item2}">Kasir Web & Android</li>
+                            <li th:text="#{home.pricing.item3}">Printer thermal sebagai fasilitas pinjam pakai</li>
+                            <li th:text="#{home.pricing.item4}">Instalasi & setup awal dibantu</li>
+                            <li th:text="#{home.pricing.item5}">Support WhatsApp</li>
+                            <li th:text="#{home.pricing.item6}">Kertas struk awal (bisa disesuaikan)</li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-5">
+                        <div class="card border-0 shadow-sm rounded-4">
+                            <div class="card-body p-4">
+                                <h5 class="fw-bold mb-3 text-dark" th:text="#{home.pricing.note.title}">Catatan Paket</h5>
+                                <p class="mb-2 text-dark" th:text="#{home.pricing.note.item1}">
+                                    Printer merupakan fasilitas pinjam pakai selama masa berlangganan.
+                                </p>
+                                <p class="mb-2 text-dark" th:text="#{home.pricing.note.item2}">
+                                    Jika berhenti sebelum masa minimal berakhir, perangkat dapat ditarik kembali.
+                                </p>
+                                <p class="mb-2 text-dark" th:text="#{home.pricing.note.item3}">
+                                    Harga dapat menyesuaikan jumlah outlet, kebutuhan perangkat, dan area instalasi.
+                                </p>
+                                <p class="mb-0 text-dark" th:text="#{home.pricing.note.item4}">
+                                    Cocok untuk tenant yang ingin langsung pakai tanpa ribet setup sendiri.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="text-center mb-4">
+        <h2 class="fw-bold" th:text="#{home.faq.title}">Pertanyaan yang Sering Ditanyakan</h2>
+        <p class="text-muted mb-0" th:text="#{home.faq.subtitle}">
+            Supaya calon tenant lebih mudah memahami sistem sewa Teman-UMKM.
+        </p>
+    </div>
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-10">
+            <div class="accordion home2-faq" id="faqAccordion">
+
+                <div class="accordion-item mb-3 border-0 rounded-4 overflow-hidden shadow-sm">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button fw-semibold" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#faq1">
+                            <span th:text="#{home.faq.q1}">Apakah saya harus beli printer sendiri?</span>
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body" th:text="#{home.faq.a1}">
+                            Tidak. Printer thermal tersedia sebagai fasilitas pinjam pakai selama masa berlangganan, sehingga tenant bisa langsung menggunakan sistem tanpa repot membeli perangkat di awal.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item mb-3 border-0 rounded-4 overflow-hidden shadow-sm">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fw-semibold" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#faq2">
+                            <span th:text="#{home.faq.q2}">Apakah instalasi dan setting awal dibantu?</span>
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body" th:text="#{home.faq.a2}">
+                            Ya. Instalasi, setup awal, dan pengenalan penggunaan sistem dibantu agar tenant bisa langsung memakai aplikasi dengan lebih nyaman.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item mb-3 border-0 rounded-4 overflow-hidden shadow-sm">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fw-semibold" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#faq3">
+                            <span th:text="#{home.faq.q3}">Minimal berlangganan berapa lama?</span>
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body" th:text="#{home.faq.a3}">
+                            Minimal masa berlangganan adalah 4 bulan. Hal ini agar biaya perangkat, instalasi, dan support awal tetap masuk akal untuk kedua belah pihak.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item mb-3 border-0 rounded-4 overflow-hidden shadow-sm">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fw-semibold" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#faq4">
+                            <span th:text="#{home.faq.q4}">Kalau berhenti sebelum 4 bulan bagaimana?</span>
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body" th:text="#{home.faq.a4}">
+                            Karena printer adalah fasilitas pinjam pakai, maka perangkat dapat ditarik kembali apabila tenant berhenti sebelum masa minimal berlangganan berakhir.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item border-0 rounded-4 overflow-hidden shadow-sm">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fw-semibold" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#faq5">
+                            <span th:text="#{home.faq.q5}">Cocok untuk usaha seperti apa?</span>
+                        </button>
+                    </h2>
+                    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body" th:text="#{home.faq.a5}">
+                            Sangat cocok untuk warung makan, pecel lele, nasi goreng, kedai kopi sederhana, angkringan, booth minuman, dan berbagai UMKM kuliner yang ingin sistem kasir praktis tanpa biaya awal yang besar.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA PENUTUP -->
+    <div class="row justify-content-center" id="hubungi-kami">
+        <div class="col-lg-10">
+            <div class="card home2-contact-card border-0">
+                <div class="card-body p-4 p-md-5 text-center">
+                    <div class="mb-3">
+                        <i class="fa-brands fa-whatsapp text-success" style="font-size: 3rem;"></i>
+                    </div>
+
+                    <h2 class="fw-bold mb-3" th:text="#{home.cta.title}">Ingin Coba untuk Usaha Anda?</h2>
+
+                    <p class="text-muted mb-4" th:text="#{home.cta.desc}">
+                        Konsultasi dulu gratis. Cocok untuk Anda yang ingin mencoba sistem kasir modern tanpa repot beli perangkat dan setup sendiri.
+                    </p>
+
+                    <h5 class="fw-bold mb-2" th:text="#{home.cta.contact}">Hubungi Imam</h5>
+                    <p class="mb-4">
+                        <a href="https://wa.me/6281318XXXXXX"
+                           target="_blank"
+                           class="text-decoration-none fw-semibold">
+                            <i class="fa-brands fa-whatsapp me-2"></i>
+                            <span th:text="#{home.cta.whatsapp}">WhatsApp</span>: 081318175855
+                        </a>
+                    </p>
+
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                        <a href="https://wa.me/6281318175855"
+                           target="_blank"
+                           class="btn btn-success btn-lg px-4">
+                            <i class="fa-brands fa-whatsapp me-2"></i>
+                            <span th:text="#{home.cta.btn.chat}">Chat WhatsApp</span>
+                        </a>
+
+                        <th:block sec:authorize="!isAuthenticated()">
+                            <a th:href="@{/login}" class="btn btn-outline-primary btn-lg px-4">
+                                <i class="fa-solid fa-right-to-bracket me-2"></i>
+                                <span th:text="#{home.cta.btn.login}">Login</span>
+                            </a>
+                        </th:block>
+
+                        <th:block sec:authorize="isAuthenticated()">
+                            <a th:href="@{/cashier}" class="btn btn-outline-primary btn-lg px-4">
+                                <i class="fa-solid fa-cash-register me-2"></i>
+                                <span th:text="#{home.cta.btn.cashier}">Masuk Kasir</span>
+                            </a>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </section>
 
 </body>
