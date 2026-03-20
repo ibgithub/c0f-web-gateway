@@ -331,7 +331,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     .getInstance(document.getElementById("paymentModal"))
                     .hide()
 
-                window.open("/sales/" + data.id + "/receipt", "_blank")
+                window.open("/sales/" + data.id + "/receipt-qz", "_blank")
 
                 cart = []
                 renderCart()

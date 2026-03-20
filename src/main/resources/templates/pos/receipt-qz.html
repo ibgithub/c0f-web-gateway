@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Receipt QZ Tray</title>
+
+    <style>
+        body {
+            font-family: monospace;
+            max-width: 380px;
+            margin: 20px auto;
+            padding: 12px;
+            background: #f8f9fa;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .line {
+            border-top: 1px dashed #000;
+            margin: 8px 0;
+        }
+
+        .item {
+            margin-bottom: 8px;
+        }
+
+        .item-name {
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        button {
+            flex: 1;
+            padding: 10px;
+            border: 0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: #0d6efd;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .status {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #333;
+            min-height: 18px;
+        }
+
+        .small {
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="center">
+        <h3 style="margin: 0;" th:text="${sales.merchantName}">Nama Toko</h3>
+        <div class="small">
+            Receipt : <span th:text="${sales.receiptNo}">INV-001</span>
+        </div>
+        <div class="small">
+            Date : <span th:text="${#temporals.format(sales.createdAt, 'yyyy-MM-dd HH:mm')}">2026-03-20 08:30</span>
+        </div>
+    </div>
+
+    <div class="line"></div>
+
+    <div th:each="i : ${sales.items}" class="item">
+        <div class="item-name" th:text="${i.productName}">Nama Produk</div>
+        <div class="item-row">
+            <div>
+                <span th:text="${i.qty}">1</span>
+                x
+                <span th:text="${#numbers.formatInteger(i.price, 3, 'POINT')}">10.000</span>
+            </div>
+            <div th:text="${#numbers.formatInteger(i.subtotal, 3, 'POINT')}">10.000</div>
+        </div>
+    </div>
+
+    <div class="line"></div>
+
+    <div class="total-row">
+        <div>Total</div>
+        <div>
+            Rp <span th:text="${#numbers.formatInteger(sales.totalAmount, 3, 'POINT')}">50.000</span>
+        </div>
+    </div>
+
+    <div class="line"></div>
+
+    <div class="center small">
+        Payment :
+        <span th:text="${sales.paymentMethod}">CASH</span>
+        <br><br>
+        Terima Kasih
+    </div>
+
+    <div class="actions">
+        <button class="btn-primary" type="button" onclick="printReceiptQz()">
+            Print via QZ Tray
+        </button>
+
+        <button class="btn-secondary" type="button" onclick="window.print()">
+            Browser Print
+        </button>
+    </div>
+
+    <div id="status" class="status">Siap print via QZ Tray</div>
+</div>
+
+<!-- IMPORTANT: simpan qz-tray.js di static/js -->
+<script src="/js/qz-tray.js"></script>
+
+<!--<script type="application/json" id="sales-json" th:text="${salesJson}"></script>-->
+
+<script th:inline="javascript">
+    console.log("RECEIPT-QZ SCRIPT LOADED V2");
+    //const sales = JSON.parse(document.getElementById('sales-json').textContent);
+    const sales = /*[[${sales}]]*/ {};
+    // Sesuaikan dengan nama printer kamu
+    const PRINTER_NAME = "POS-JK-5802H";
+    // Lebar umum 58mm thermal = sekitar 32 char (monospace plain text)
+    const RECEIPT_WIDTH = 32;
+
+    function setStatus(message) {
+        document.getElementById('status').innerText = message;
+    }
+
+    function formatRupiah(value) {
+        return new Intl.NumberFormat('id-ID').format(value || 0);
+    }
+
+    function repeatChar(char, count) {
+        return char.repeat(Math.max(0, count));
+    }
+
+    function padRight(text, width) {
+        text = String(text || '');
+        if (text.length >= width) return text.substring(0, width);
+        return text + ' '.repeat(width - text.length);
+    }
+
+    function padLeft(text, width) {
+        text = String(text || '');
+        if (text.length >= width) return text.substring(0, width);
+        return ' '.repeat(width - text.length) + text;
+    }
+
+    function centerText(text, width = RECEIPT_WIDTH) {
+        text = String(text || '');
+        if (text.length >= width) return text.substring(0, width);
+        const left = Math.floor((width - text.length) / 2);
+        return ' '.repeat(left) + text;
+    }
+
+    function wrapText(text, width = RECEIPT_WIDTH) {
+        text = String(text || '');
+        const words = text.split(' ');
+        const lines = [];
+        let current = '';
+
+        for (const word of words) {
+            const test = current ? current + ' ' + word : word;
+            if (test.length <= width) {
+                current = test;
+            } else {
+                if (current) lines.push(current);
+
+                // kalau satu kata terlalu panjang
+                if (word.length > width) {
+                    let remaining = word;
+                    while (remaining.length > width) {
+                        lines.push(remaining.substring(0, width));
+                        remaining = remaining.substring(width);
+                    }
+                    current = remaining;
+                } else {
+                    current = word;
+                }
+            }
+        }
+
+        if (current) lines.push(current);
+        return lines;
+    }
+
+    function leftRight(left, right, width = RECEIPT_WIDTH) {
+        left = String(left || '');
+        right = String(right || '');
+
+        const space = width - left.length - right.length;
+        if (space >= 1) {
+            return left + ' '.repeat(space) + right;
+        }
+
+        // kalau terlalu panjang, fallback: right di baris baru
+        return left + '\n' + padLeft(right, width);
+    }
+
+    function buildReceiptText(data) {
+        const lines = [];
+
+        // Header
+        lines.push(centerText(data.merchantName || 'TEMAN UMKM'));
+        lines.push(`Receipt : ${data.receiptNo || '-'}`);
+        lines.push(`Date    : ${formatDateForReceipt(data.createdAt)}`);
+        lines.push(repeatChar('-', RECEIPT_WIDTH));
+
+        // Items
+        (data.items || []).forEach(item => {
+            const productNameLines = wrapText(item.productName || '-', RECEIPT_WIDTH);
+            productNameLines.forEach(line => lines.push(line));
+
+            const left = `${item.qty || 0} x ${formatRupiah(item.price || 0)}`;
+            const right = formatRupiah(item.subtotal || 0);
+            lines.push(leftRight(left, right, RECEIPT_WIDTH));
+        });
+
+        lines.push(repeatChar('-', RECEIPT_WIDTH));
+
+        // Total
+        lines.push(leftRight('TOTAL', formatRupiah(data.totalAmount || 0), RECEIPT_WIDTH));
+
+        // Optional: kalau nanti ada paidAmount / changeAmount tinggal aktifkan
+        if (data.paidAmount != null) {
+            lines.push(leftRight('BAYAR', formatRupiah(data.paidAmount), RECEIPT_WIDTH));
+        }
+
+        if (data.changeAmount != null) {
+            lines.push(leftRight('KEMBALI', formatRupiah(data.changeAmount), RECEIPT_WIDTH));
+        }
+
+        lines.push('');
+        lines.push(`Payment : ${data.paymentMethod || '-'}`);
+        lines.push('');
+        lines.push(centerText('Terima Kasih'));
+        lines.push('');
+        lines.push('');
+        lines.push('');
+
+        return lines.join('\n');
+    }
+
+    function formatDateForReceipt(value) {
+        if (!value) return '-';
+
+        // Jika backend inject String ISO
+        const d = new Date(value);
+        if (!isNaN(d.getTime())) {
+            const yyyy = d.getFullYear();
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const dd = String(d.getDate()).padStart(2, '0');
+            const hh = String(d.getHours()).padStart(2, '0');
+            const mi = String(d.getMinutes()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd} ${hh}:${mi}`;
+        }
+
+        // fallback kalau bukan format JS Date-friendly
+        return String(value);
+    }
+
+    async function ensureQzConnected() {
+        if (!window.qz) {
+            throw new Error("qz-tray.js tidak ditemukan. Pastikan file ada di /static/js/qz-tray.js");
+        }
+
+        if (!qz.websocket.isActive()) {
+            setStatus('Menghubungkan ke QZ Tray...');
+            await qz.websocket.connect();
+        }
+    }
+
+    async function printReceiptQz() {
+        try {
+            setStatus('Menyiapkan printer...');
+
+            await ensureQzConnected();
+
+            setStatus('Mencari printer...');
+            const printer = await qz.printers.find("POS-JK-5802H"); //PRINTER_NAME
+
+            const config = qz.configs.create(printer);
+
+            const receiptText = buildReceiptText(sales);
+
+            console.log('=== RECEIPT TEXT ===');
+            console.log(receiptText);
+
+            const data = [
+                {
+                    type: 'raw',
+                    format: 'plain',
+                    data: receiptText
+                }
+            ];
+
+            setStatus('Mengirim data ke printer...');
+            await qz.print(config, data);
+
+            setStatus('Receipt berhasil dikirim ke printer ✔');
+        } catch (err) {
+            console.error(err);
+            setStatus('Gagal print: ' + err);
+            alert('Gagal print via QZ Tray:\n' + err);
+        }
+    }
+
+    // OPTIONAL: auto print setelah halaman dibuka
+    // Kalau mau aktifkan nanti, uncomment:
+    /*
+    window.addEventListener('load', async () => {
+        try {
+            await printReceiptQz();
+        } catch (e) {
+            console.error(e);
+        }
+    });
+    */
+</script>
+
+</body>
+</html>

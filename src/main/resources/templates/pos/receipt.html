@@ -1,66 +1,97 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-
     <meta charset="UTF-8">
     <title>Receipt</title>
 
     <style>
-
-        body{
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 58mm;
             font-family: monospace;
-            width:300px;    /*80mm atau 58mm*/
-            margin:auto;
+            font-size: 11px;
+            background: #fff;
         }
 
-        .center{
-            text-align:center;
+        body {
+            box-sizing: border-box;
+            padding: 2mm;
         }
 
-        .right{
-            text-align:right;
+        .center {
+            text-align: center;
         }
 
-        .line{
-            border-top:1px dashed black;
-            margin:6px 0;
+        .right {
+            text-align: right;
         }
 
-        .item{
-            display:flex;
-            justify-content:space-between;
+        .line {
+            border-top: 1px dashed black;
+            margin: 4px 0;
         }
 
-        .small{
-            font-size:12px;
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 4px;
         }
 
-        .total{
-            font-size:16px;
-            font-weight:bold;
+        .small {
+            font-size: 10px;
+            line-height: 1.2;
         }
 
-        button{
-            margin-top:10px;
-            width:100%;
+        .total {
+            font-size: 13px;
+            font-weight: bold;
         }
 
-        @media print{
+        h3 {
+            margin: 0 0 4px 0;
+            font-size: 13px;
+            line-height: 1.2;
+            word-break: break-word;
+        }
 
-            button{
-                display:none;
+        button {
+            margin-top: 10px;
+            width: 100%;
+            padding: 8px;
+            font-size: 12px;
+        }
+
+        @media print {
+            html, body {
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 58mm !important;
+                height: auto !important;
+                overflow: hidden !important;
+                background: #fff !important;
             }
 
+            body {
+                padding: 2mm !important;
+            }
+
+            button {
+                display: none !important;
+            }
+
+            @page {
+                size: 58mm auto;
+                margin: 0;
+            }
         }
-
     </style>
-
 </head>
 
 <body>
 
 <div class="center">
-
     <h3><span th:text="${sales.merchantName}"></span></h3>
 
     <div class="small">
@@ -70,29 +101,25 @@
     <div class="small">
         Date : <span th:text="${#temporals.format(sales.createdAt,'yyyy-MM-dd HH:mm')}"></span>
     </div>
-
 </div>
 
 <div class="line"></div>
 
 <!-- ITEMS -->
-
-<div th:each="i : ${sales.items}">
+<div th:each="i : ${sales.items}" style="margin-bottom: 3px;">
 
     <div class="small" th:text="${i.productName}"></div>
 
     <div class="item small">
-
         <div>
             <span th:text="${i.qty}"></span>
             x
             <span th:text="${#numbers.formatInteger(i.price,3,'POINT')}"></span>
         </div>
 
-        <div>
+        <div class="right">
             <span th:text="${#numbers.formatInteger(i.subtotal,3,'POINT')}"></span>
         </div>
-
     </div>
 
 </div>
@@ -100,29 +127,21 @@
 <div class="line"></div>
 
 <!-- TOTAL -->
-
 <div class="item total">
-
     <div>Total</div>
-
     <div>
         Rp
         <span th:text="${#numbers.formatInteger(sales.totalAmount,3,'POINT')}"></span>
     </div>
-
 </div>
 
 <div class="line"></div>
 
 <div class="center small">
-
     Payment :
     <span th:text="${sales.paymentMethod}"></span>
-
     <br><br>
-
     Terima Kasih
-
 </div>
 
 <button onclick="window.print()">
@@ -130,11 +149,10 @@
 </button>
 
 <script>
-
-    window.onload=function(){
-        window.print();
-    }
-
+    // Saat debugging, lebih aman print manual dulu
+    // window.onload = function () {
+    //     window.print();
+    // }
 </script>
 
 </body>
